@@ -1,0 +1,55 @@
+basePath: /api/v1
+definitions:
+  common.Response:
+    properties:
+      code:
+        type: integer
+      data: {}
+      message:
+        type: string
+      page:
+        $ref: '#/definitions/common.ResponsePage'
+      status:
+        type: string
+    type: object
+  common.ResponsePage:
+    properties:
+      current_page:
+        type: integer
+      elements_page:
+        type: integer
+      total_elements:
+        type: integer
+      total_page:
+        type: integer
+    type: object
+info:
+  contact:
+    email: arcorium.l@gmail.com
+    name: arcorium
+    url: github.com/arcorium
+  description: Simple manga explorer used to read manga and save the manga
+  title: Manga Explorer API
+  version: "1.0"
+paths:
+  /login:
+    post:
+      consumes:
+      - application/json
+      description: login to get token
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/common.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/common.Response'
+      summary: login
+      tags:
+      - auth
+      - account
+swagger: "2.0"
