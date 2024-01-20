@@ -4,10 +4,10 @@ import (
 	"github.com/gin-gonic/gin"
 	"manga-explorer/internal/app/common"
 	"manga-explorer/internal/app/common/status"
-	dto2 "manga-explorer/internal/domain/mangas/dto"
+	"manga-explorer/internal/domain/mangas/dto"
 	"manga-explorer/internal/domain/mangas/service"
-	"manga-explorer/internal/util"
 	"manga-explorer/internal/util/httputil"
+	"manga-explorer/internal/util/httputil/resp"
 )
 
 func NewChapterController(chapterService service.IChapter) ChapterController {
@@ -21,121 +21,123 @@ type ChapterController struct {
 }
 
 func (m ChapterController) InsertChapterPage(ctx *gin.Context) {
-	pageInput, status := httputil.BindUriMultipartForm[dto2.PageCreateInput](ctx)
-	if status.IsError() {
-		httputil.ErrorResponse(ctx, status)
+	var input dto.PageCreateInput
+	stat, fieldsErr := httputil.BindUriMultipartForm(ctx, &input)
+	if stat.IsError() {
+		resp.ErrorDetailed(ctx, stat, fieldsErr)
 		return
 	}
-	status = m.chapterService.InsertChapterPage(&pageInput)
-	httputil.Response(ctx, status, nil)
+	stat = m.chapterService.InsertChapterPage(&input)
+	resp.Conditional(ctx, stat, nil, nil)
 }
 func (m ChapterController) DeleteChapterPage(ctx *gin.Context) {
-	pageInput, status := httputil.BindUriJson[dto2.PageDeleteInput](ctx)
-	if status.IsError() {
-		httputil.ErrorResponse(ctx, status)
+	var pageInput dto.PageDeleteInput
+	stat, fieldsErr := httputil.BindUriJson(ctx, &pageInput)
+	if stat.IsError() {
+		resp.ErrorDetailed(ctx, stat, fieldsErr)
 	}
 
-	status = m.chapterService.DeleteChapterPages(&pageInput)
-	httputil.Response(ctx, status, nil)
+	stat = m.chapterService.DeleteChapterPages(&pageInput)
+	resp.Conditional(ctx, stat, nil, nil)
 }
 func (m ChapterController) EditChapter(ctx *gin.Context) {
-	editInput, status := httputil.BindUriJson[dto2.ChapterEditInput](ctx)
-	if status.IsError() {
-		httputil.ErrorResponse(ctx, status)
+	var editInput dto.ChapterEditInput
+	stat, fieldsErr := httputil.BindUriJson(ctx, &editInput)
+	if stat.IsError() {
+		resp.ErrorDetailed(ctx, stat, fieldsErr)
 		return
 	}
 
-	status = m.chapterService.EditChapter(&editInput)
-	httputil.Response(ctx, status, nil)
+	stat = m.chapterService.EditChapter(&editInput)
+	resp.Conditional(ctx, stat, nil, nil)
 }
 func (m ChapterController) CreateChapterComments(ctx *gin.Context) {
-	commentInput, status := httputil.BindUriJson[dto2.ChapterCommentCreateInput](ctx)
-	if status.IsError() {
-		httputil.ErrorResponse(ctx, status)
+	var input dto.ChapterCommentCreateInput
+	stat, fieldsErr := httputil.BindUriJson(ctx, &input)
+	if stat.IsError() {
+		resp.ErrorDetailed(ctx, stat, fieldsErr)
 		return
 	}
 
-	status = m.chapterService.CreateChapterComment(&commentInput)
-	httputil.Response(ctx, status, nil)
+	stat = m.chapterService.CreateChapterComment(&input)
+	resp.Conditional(ctx, stat, nil, nil)
 }
 func (m ChapterController) CreatePageComments(ctx *gin.Context) {
-	commentInput, status := httputil.BindUriJson[dto2.PageCommentCreateInput](ctx)
-	if status.IsError() {
-		httputil.ErrorResponse(ctx, status)
+	var input dto.PageCommentCreateInput
+	stat, fieldsErr := httputil.BindUriJson(ctx, &input)
+	if stat.IsError() {
+		resp.ErrorDetailed(ctx, stat, fieldsErr)
 		return
 	}
-	status = m.chapterService.CreatePageComment(&commentInput)
-	httputil.Response(ctx, status, nil)
+	stat = m.chapterService.CreatePageComment(&input)
+	resp.Conditional(ctx, stat, nil, nil)
 }
 func (m ChapterController) FindChapterComments(ctx *gin.Context) {
 	chapterId := ctx.Param("chapter_id")
 	if len(chapterId) == 0 {
-		httputil.ErrorResponse(ctx, common.StatusError(status.BAD_PARAMETER_ERROR))
+		resp.ErrorDetailed(ctx, status.Error(status.BAD_PARAMETER_ERROR), common.NewNotPresentParameter("chapter_id"))
 		return
 	}
 
-	comments, status := m.chapterService.FindChapterComments(chapterId)
-	httputil.Response(ctx, status, comments)
+	comments, stat := m.chapterService.FindChapterComments(chapterId)
+	resp.Conditional(ctx, stat, comments, nil)
 }
 func (m ChapterController) FindPageComments(ctx *gin.Context) {
 	pageId := ctx.Param("page_id")
 	if len(pageId) == 0 {
-		httputil.ErrorResponse(ctx, common.StatusError(status.BAD_PARAMETER_ERROR))
+		resp.ErrorDetailed(ctx, status.Error(status.BAD_PARAMETER_ERROR), common.NewNotPresentParameter("page_id"))
 		return
 	}
-	comments, status := m.chapterService.FindPageComments(pageId)
-	httputil.Response(ctx, status, comments)
+	comments, stat := m.chapterService.FindPageComments(pageId)
+	resp.Conditional(ctx, stat, comments, nil)
 }
 func (m ChapterController) CreateChapter(ctx *gin.Context) {
-	chapterInput, stat := httputil.BindUriJson[dto2.ChapterCreateInput](ctx)
+	// TODO: Add support for creating chapter and inserting pages so each chapter should not have empty pages
+	var input dto.ChapterCreateInput
+	stat, fieldsErr := httputil.BindUriJson(ctx, &input)
 	if stat.IsError() {
-		httputil.ErrorResponse(ctx, stat)
+		resp.ErrorDetailed(ctx, stat, fieldsErr)
 		return
 	}
 
 	// Set translator / chapter creator
-	claims, err := util.GetContextValue[*common.AccessTokenClaims](ctx, common.ClaimsKey)
-	if err != nil {
-		httputil.ErrorResponse(ctx, common.StatusError(status.AUTH_UNAUTHORIZED))
+	claims, stat := common.GetClaims(ctx)
+	if stat.IsError() {
+		resp.Error(ctx, stat)
 		return
 	}
-	chapterInput.TranslatorId = claims.UserId
+	input.TranslatorId = claims.UserId
 
-	stat = m.chapterService.CreateChapter(&chapterInput)
-	httputil.Response(ctx, stat, nil)
+	stat = m.chapterService.CreateChapter(&input)
+	resp.Conditional(ctx, stat, nil, nil)
 }
 func (m ChapterController) DeleteChapter(ctx *gin.Context) {
 	chapterId := ctx.Param("chapter_id")
 	if len(chapterId) == 0 {
-		httputil.ErrorResponse(ctx, common.StatusError(status.BAD_PARAMETER_ERROR))
+		resp.ErrorDetailed(ctx, status.Error(status.BAD_PARAMETER_ERROR), common.NewNotPresentParameter("chapter_id"))
 		return
 	}
 
-	status := m.chapterService.DeleteChapter(chapterId)
-	httputil.Response(ctx, status, nil)
+	stat := m.chapterService.DeleteChapter(chapterId)
+	resp.Conditional(ctx, stat, nil, nil)
 }
 func (m ChapterController) FindChapterPages(ctx *gin.Context) {
 	chapterId := ctx.Param("chapter_id")
 	if len(chapterId) == 0 {
-		httputil.ErrorResponse(ctx, common.StatusError(status.BAD_PARAMETER_ERROR))
+		resp.ErrorDetailed(ctx, status.Error(status.BAD_PARAMETER_ERROR), common.NewNotPresentParameter("chapter_id"))
 		return
 	}
 
-	pages, status := m.chapterService.FindChapterPages(chapterId)
-	httputil.Response(ctx, status, pages)
+	pages, stat := m.chapterService.FindChapterPages(chapterId)
+	resp.Conditional(ctx, stat, pages, nil)
 }
 func (m ChapterController) FindVolumeChapters(ctx *gin.Context) {
-	//var volumeInput dto.VolumeDeleteInput
-	//if err := ctx.BindUri(&volumeInput); err != nil {
-	//	httputil.ErrorResponse(ctx, common.StatusError(common.BAD_PARAMETER_ERROR))
-	//	return
-	//}
 	volumeId := ctx.Param("volume_id")
 	if len(volumeId) == 0 {
-		httputil.ErrorResponse(ctx, common.StatusError(status.BAD_PARAMETER_ERROR))
+		resp.ErrorDetailed(ctx, status.Error(status.BAD_PARAMETER_ERROR), common.NewNotPresentParameter("volume_id"))
 		return
 	}
 
-	chapters, status := m.chapterService.FindVolumeChapters(volumeId)
-	httputil.Response(ctx, status, chapters)
+	chapters, stat := m.chapterService.FindVolumeChapters(volumeId)
+	resp.Conditional(ctx, stat, chapters, nil)
 }

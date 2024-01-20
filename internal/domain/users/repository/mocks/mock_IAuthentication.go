@@ -3,7 +3,7 @@
 package repository
 
 import (
-	auth "manga-explorer/internal/domain/auth"
+	auth "manga-explorer/internal/domain/users"
 
 	mock "github.com/stretchr/testify/mock"
 )

@@ -2,8 +2,8 @@ package pg
 
 import (
 	"context"
-	"manga-explorer/internal/domain/auth"
-	"manga-explorer/internal/domain/auth/repository"
+	"manga-explorer/internal/domain/users"
+	"manga-explorer/internal/domain/users/repository"
 	"manga-explorer/internal/util"
 	"time"
 
@@ -18,7 +18,7 @@ type credentialRepository struct {
 	db bun.IDB
 }
 
-func (c credentialRepository) Create(cred *auth.Credential) error {
+func (c credentialRepository) Create(cred *users.Credential) error {
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second*5)
 	defer cancel()
 
@@ -28,10 +28,10 @@ func (c credentialRepository) Create(cred *auth.Credential) error {
 	return util.CheckSqlResult(res, err)
 }
 
-func (c credentialRepository) Find(userId, credId string) (*auth.Credential, error) {
+func (c credentialRepository) Find(userId, credId string) (*users.Credential, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second*5)
 	defer cancel()
-	cred := new(auth.Credential)
+	cred := new(users.Credential)
 	err := c.db.NewSelect().
 		Model(cred).
 		Where("id = ? AND user_id = ?", credId, userId).
@@ -49,7 +49,7 @@ func (c credentialRepository) UpdateAccessTokenId(credentialId, accessTokenId st
 	defer cancel()
 
 	// TODO: Move this into service
-	cred := auth.Credential{
+	cred := users.Credential{
 		Id:            credentialId,
 		AccessTokenId: accessTokenId,
 		UpdatedAt:     time.Now(),
@@ -63,11 +63,11 @@ func (c credentialRepository) UpdateAccessTokenId(credentialId, accessTokenId st
 	return util.CheckSqlResult(res, err)
 }
 
-func (c credentialRepository) FindByAccessTokenId(accessTokenId string) (*auth.Credential, error) {
+func (c credentialRepository) FindByAccessTokenId(accessTokenId string) (*users.Credential, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second*5)
 	defer cancel()
 
-	cred := new(auth.Credential)
+	cred := new(users.Credential)
 	err := c.db.NewSelect().
 		Model(cred).
 		Where("access_token_id = ?", accessTokenId).
@@ -79,8 +79,8 @@ func (c credentialRepository) FindByAccessTokenId(accessTokenId string) (*auth.C
 	return cred, err
 }
 
-func (c credentialRepository) FindUserCredentials(userId string) ([]auth.Credential, error) {
-	var creds []auth.Credential
+func (c credentialRepository) FindUserCredentials(userId string) ([]users.Credential, error) {
+	var creds []users.Credential
 
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second*5)
 	defer cancel()
@@ -98,7 +98,7 @@ func (c credentialRepository) Remove(userId, credId string) error {
 	defer cancel()
 
 	res, err := c.db.NewDelete().
-		Model((*auth.Credential)(nil)).
+		Model((*users.Credential)(nil)).
 		Where("id = ? AND user_id = ?", credId, userId).
 		Exec(ctx)
 
@@ -110,7 +110,7 @@ func (c credentialRepository) RemoveByAccessTokenId(userId, accessTokenId string
 	defer cancel()
 
 	res, err := c.db.NewDelete().
-		Model((*auth.Credential)(nil)).
+		Model((*users.Credential)(nil)).
 		Where("user_id = ? AND access_token_id = ?", userId, accessTokenId).
 		Exec(ctx)
 
@@ -122,7 +122,7 @@ func (c credentialRepository) RemoveUserCredentials(userId string) error {
 	defer cancel()
 
 	res, err := c.db.NewDelete().
-		Model((*auth.Credential)(nil)).
+		Model((*users.Credential)(nil)).
 		Where("user_id = ?", userId).
 		Exec(ctx)
 

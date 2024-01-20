@@ -6,7 +6,7 @@ import (
 	"manga-explorer/internal/app/common/status"
 	"manga-explorer/internal/domain/users"
 	"manga-explorer/internal/util"
-	"manga-explorer/internal/util/httputil"
+	"manga-explorer/internal/util/httputil/resp"
 	"slices"
 )
 
@@ -40,20 +40,20 @@ func (r RoleRestrictionMiddleware) Handle(ctx *gin.Context) {
 	// Open claims
 	claims, err := util.GetContextValue[*common.AccessTokenClaims](ctx, r.config.ClaimsKey)
 	if err != nil {
-		httputil.ErrorResponse(ctx, common.StatusError(status.AUTH_UNAUTHORIZED))
+		resp.Error(ctx, status.Error(status.AUTH_UNAUTHORIZED))
 		ctx.Abort()
 		return
 	}
 
 	role, err := users.NewRole(claims.Role)
 	if err != nil {
-		httputil.ErrorResponse(ctx, common.StatusError(status.JWT_TOKEN_MALFORMED))
+		resp.Error(ctx, status.Error(status.JWT_TOKEN_MALFORMED))
 		ctx.Abort()
 		return
 	}
 
 	if !r.hasPermission(role) {
-		httputil.ErrorResponse(ctx, common.StatusError(status.AUTH_UNAUTHORIZED))
+		resp.Error(ctx, status.Error(status.AUTH_UNAUTHORIZED))
 		ctx.Abort()
 		return
 	}

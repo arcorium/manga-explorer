@@ -1,7 +1,6 @@
 package service
 
 import (
-	"manga-explorer/internal/app/common"
 	"manga-explorer/internal/app/common/status"
 	"manga-explorer/internal/domain/mangas/dto"
 	"manga-explorer/internal/domain/mangas/mapper"
@@ -18,22 +17,23 @@ type mangaGenreService struct {
 	genreRepo repository.IGenre
 }
 
-func (m mangaGenreService) CreateGenre(input dto.GenreCreateInput) common.Status {
+func (m mangaGenreService) CreateGenre(input dto.GenreCreateInput) status.Object {
 	genre := mapper.MapGenreCreateInput(input)
 	err := m.genreRepo.CreateGenre(&genre)
-	return common.NewRepositoryStatus(err, status.SUCCESS_CREATED)
+	return status.FromRepository(err, status.CREATED)
 }
 
-func (m mangaGenreService) DeleteGenre(genreId string) common.Status {
+func (m mangaGenreService) DeleteGenre(genreId string) status.Object {
 	err := m.genreRepo.DeleteGenreById(genreId)
-	return common.NewRepositoryStatus(err)
+	return status.FromRepository(err, status.DELETED)
 }
 
-func (m mangaGenreService) ListGenre() ([]dto.GenreResponse, common.Status) {
+func (m mangaGenreService) ListGenre() ([]dto.GenreResponse, status.Object) {
 	genres, err := m.genreRepo.ListGenres()
-	if err != nil {
-		return nil, common.NewRepositoryStatus(err)
+	stat := status.FromRepository(err)
+	if stat.IsError() {
+		return nil, stat
 	}
 	genreResponses := containers.CastSlicePtr(genres, mapper.ToGenreResponse)
-	return genreResponses, common.StatusSuccess()
+	return genreResponses, stat
 }

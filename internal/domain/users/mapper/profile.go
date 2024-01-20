@@ -8,10 +8,11 @@ import (
 
 func ToProfileResponse(profile *users.Profile) dto.ProfileResponse {
 	return dto.ProfileResponse{
-		FirstName: profile.FirstName,
-		LastName:  profile.LastName,
-		PhotoURL:  profile.PhotoURL,
-		Bio:       profile.Bio,
+		UserResponse: ToUserResponse(profile.User),
+		FirstName:    profile.FirstName,
+		LastName:     profile.LastName,
+		PhotoURL:     profile.PhotoURL,
+		Bio:          profile.Bio,
 	}
 }
 

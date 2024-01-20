@@ -4,7 +4,9 @@ import (
 	"errors"
 	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt"
+	"github.com/google/uuid"
 	"golang.org/x/crypto/bcrypt"
+	"manga-explorer/internal/util/obj"
 	"math/rand"
 	"strconv"
 	"strings"
@@ -112,4 +114,8 @@ func GenerateJWTToken(claims jwt.Claims, method jwt.SigningMethod, secretKey []b
 		claims = jwt.MapClaims{}
 	}
 	return jwt.NewWithClaims(method, claims).SignedString(secretKey)
+}
+
+func IsUUID(str string) bool {
+	return obj.Wrap(uuid.Parse(str)).Err() == nil
 }

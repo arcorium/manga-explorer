@@ -2,14 +2,13 @@ package route
 
 import (
 	"github.com/gin-gonic/gin"
-	"manga-explorer/internal/api/http/controller/v1/authentication"
 	"manga-explorer/internal/api/http/controller/v1/mangas"
 	"manga-explorer/internal/api/http/controller/v1/users"
 	"manga-explorer/internal/api/http/middleware"
 )
 
 type ConfigController struct {
-	Auth         authentication.AuthController
+	Auth         users.AuthController
 	User         users.UserController
 	Manga        mangas.MangaController
 	MangaChapter mangas.ChapterController

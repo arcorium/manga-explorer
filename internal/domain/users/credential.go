@@ -1,14 +1,13 @@
-package auth
+package users
 
 import (
-	"manga-explorer/internal/domain/users"
 	"time"
 
 	"github.com/google/uuid"
 	"github.com/uptrace/bun"
 )
 
-func NewCredential(user *users.User, deviceName, accessTokenId, token string) Credential {
+func NewCredential(user *User, deviceName, accessTokenId, token string) Credential {
 	return Credential{
 		Id:            uuid.NewString(),
 		UserId:        user.Id,
@@ -45,5 +44,5 @@ type Credential struct {
 	UpdatedAt time.Time `bun:",default:current_timestamp,notnull"`
 	CreatedAt time.Time `bun:",default:current_timestamp,notnull"`
 
-	User *users.User `bun:"rel:belongs-to,join:user_id=id,on_delete:CASCADE"`
+	User *User `bun:"rel:belongs-to,join:user_id=id,on_delete:CASCADE"`
 }

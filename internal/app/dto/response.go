@@ -1,14 +1,18 @@
 package dto
 
 import (
-	"manga-explorer/internal/app/common"
+	"manga-explorer/internal/app/common/status"
 )
 
-func NewErrorResponse[T any](stat common.Status, details ...T) ErrorResponse[T] {
-	return ErrorResponse[T]{
+func NewErrorResponse(stat status.Object, details any) ErrorResponse {
+	var detail any
+	if details == nil && len(stat.DetailMessage()) > 0 {
+		detail = stat.DetailMessage()
+	}
+	return ErrorResponse{
 		Code:    stat.Code,
 		Message: stat.ErrorMessage(),
-		Details: details,
+		Details: detail,
 	}
 }
 
@@ -19,10 +23,10 @@ func NewSuccessResponse(data any, page *ResponsePage) SuccessResponse {
 	}
 }
 
-type ErrorResponse[T any] struct {
+type ErrorResponse struct {
 	Code    uint   `json:"code"`
 	Message string `json:"message"`
-	Details []T    `json:"details"`
+	Details any    `json:"details,omitempty"`
 }
 
 type SuccessResponse struct {

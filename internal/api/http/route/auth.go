@@ -17,12 +17,10 @@ func (a authRoute) V1Route(config *Config, router gin.IRouter) {
 
 	authRouter.POST("/refresh-token", controller.RefreshToken)
 	authRouter.POST("/login", controller.Login)
-	authRouter.POST("/register", controller.Register)
-	authRouter.POST("/reset-password", controller.RequestResetPassword)
-	authRouter.PATCH("/reset-password/:token", controller.ResetPassword)
 
 	authRouter.Use(config.Middleware.Auth.Handle)
 	authRouter.GET("/logout/all", controller.LogoutAllDevice)
 	authRouter.GET("/logout/:id", controller.Logout)
+	authRouter.GET("/logout", controller.Logout)
 	authRouter.GET("/devices", controller.GetCredentials)
 }

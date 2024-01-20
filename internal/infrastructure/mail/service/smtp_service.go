@@ -1,11 +1,12 @@
-package mail
+package service
 
 import (
 	"gopkg.in/gomail.v2"
 	"manga-explorer/internal/app/common"
+	"manga-explorer/internal/infrastructure/mail"
 )
 
-func NewSMTPMailService(config *common.Config) IService {
+func NewSMTPMailService(config *common.Config) IMail {
 	return &sMTPService{config: config}
 }
 
@@ -13,7 +14,7 @@ type sMTPService struct {
 	config *common.Config
 }
 
-func (s sMTPService) SendEmail(mail *Mail) error {
+func (s sMTPService) SendEmail(mail *mail.Mail) error {
 	// Construct gomail message
 	m := gomail.NewMessage()
 	m.SetHeader("From", mail.From)

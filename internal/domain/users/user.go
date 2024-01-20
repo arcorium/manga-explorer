@@ -1,7 +1,7 @@
 package users
 
 import (
-	"manga-explorer/internal/app/common"
+	"manga-explorer/internal/app/common/constant"
 	"regexp"
 	"time"
 
@@ -59,11 +59,11 @@ func (u *User) ValidatePassword(rawPassword string) bool {
 }
 
 func (u *User) GenerateAccessTokenClaims(duration time.Duration) jwt.MapClaims {
-	defaultClaims := DefaultClaims(duration, common.IssuerName)
+	defaultClaims := DefaultClaims(duration, constant.IssuerName)
 	defaultClaims["id"] = uuid.NewString()
 	defaultClaims["uid"] = u.Id
 	defaultClaims["name"] = u.Username
-	defaultClaims["role"] = u.Role
+	defaultClaims["role"] = u.Role.String() // TODO: Maybe better to have the uint8 instead
 	return defaultClaims
 }
 

@@ -18,10 +18,10 @@ func NewRole(val string) (Role, error) {
 type Role uint8
 
 func (r Role) String() string {
-	switch r.Underlying() {
-	case 0:
+	switch r {
+	case RoleAdmin:
 		return "admin"
-	case 1:
+	case RoleUser:
 		return "user"
 	default:
 		return "unknown"
@@ -41,3 +41,7 @@ func (r Role) Validate() error {
 
 var RoleUser = Role(0)
 var RoleAdmin = Role(1)
+
+type Device struct {
+	Name string `json:"name"`
+}

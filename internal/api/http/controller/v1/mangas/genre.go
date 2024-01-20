@@ -7,6 +7,7 @@ import (
 	"manga-explorer/internal/domain/mangas/dto"
 	"manga-explorer/internal/domain/mangas/service"
 	"manga-explorer/internal/util/httputil"
+	"manga-explorer/internal/util/httputil/resp"
 )
 
 func NewGenreController(genreService service.IGenre) GenreController {
@@ -18,27 +19,28 @@ type GenreController struct {
 }
 
 func (m GenreController) ListGenre(ctx *gin.Context) {
-	genres, status := m.genreService.ListGenre()
-	httputil.Response(ctx, status, genres)
+	genres, stat := m.genreService.ListGenre()
+	resp.Conditional(ctx, stat, genres, nil)
 }
 
 func (m GenreController) CreateGenre(ctx *gin.Context) {
 	var genreInput dto.GenreCreateInput
-	if err := ctx.BindJSON(&genreInput); err != nil {
-		httputil.ErrorResponse(ctx, common.StatusError(status.BAD_BODY_REQUEST_ERROR))
+	stat, fieldsErr := httputil.BindJson(ctx, &genreInput)
+	if stat.IsError() {
+		resp.ErrorDetailed(ctx, stat, fieldsErr)
 		return
 	}
 
-	status := m.genreService.CreateGenre(genreInput)
-	httputil.Response(ctx, status, nil)
+	stat = m.genreService.CreateGenre(genreInput)
+	resp.Conditional(ctx, stat, nil, nil)
 }
 
 func (m GenreController) DeleteGenre(ctx *gin.Context) {
 	genreId := ctx.Param("genre_id")
 	if len(genreId) == 0 {
-		httputil.ErrorResponse(ctx, common.StatusError(status.BAD_PARAMETER_ERROR))
+		resp.ErrorDetailed(ctx, status.Error(status.BAD_PARAMETER_ERROR), common.NewNotPresentParameter("genre_id"))
 		return
 	}
-	status := m.genreService.DeleteGenre(genreId)
-	httputil.Response(ctx, status, nil)
+	stat := m.genreService.DeleteGenre(genreId)
+	resp.Conditional(ctx, stat, nil, nil)
 }

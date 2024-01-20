@@ -36,6 +36,7 @@ func (m _mangaRoute) MangaRoute(config *Config, router gin.IRouter) {
 	// Admin
 	mangaRoute.Use(config.Middleware.AdminRestrict.Handle)
 	mangaRoute.POST("/", mangaController.CreateManga)
+	mangaRoute.POST("/:manga_id", mangaController.EditManga)
 	mangaRoute.POST("/:manga_id/volumes", mangaController.CreateVolume)
 	mangaRoute.DELETE("/:manga_id/volumes/:volume", mangaController.DeleteVolume)
 	mangaRoute.POST("/:manga_id/chapters", chapterController.CreateChapter)

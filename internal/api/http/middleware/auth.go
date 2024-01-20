@@ -4,6 +4,7 @@ import (
 	"errors"
 	"log"
 	"manga-explorer/internal/app/common/status"
+	"manga-explorer/internal/util/httputil/resp"
 	"strings"
 	"time"
 
@@ -11,7 +12,6 @@ import (
 	"github.com/golang-jwt/jwt"
 	"manga-explorer/internal/app/common"
 	"manga-explorer/internal/util"
-	"manga-explorer/internal/util/httputil"
 )
 
 type AuthMiddlewareConfig struct {
@@ -47,20 +47,20 @@ type AuthMiddleware struct {
 func (a AuthMiddleware) Handle(ctx *gin.Context) {
 	data := ctx.GetHeader(a.config.HeaderLookUp)
 	if len(data) == 0 {
-		httputil.ErrorResponse(ctx, common.StatusError(status.AUTH_UNAUTHORIZED))
+		resp.Error(ctx, status.Error(status.AUTH_UNAUTHORIZED))
 		ctx.Abort()
 		return
 	}
 
 	split := strings.Split(data, " ")
 	if len(split) != 2 {
-		httputil.ErrorResponse(ctx, common.StatusError(status.TOKEN_LOOKUP_MALFORMED))
+		resp.Error(ctx, status.Error(status.TOKEN_LOOKUP_MALFORMED))
 		ctx.Abort()
 		return
 	}
 
 	if split[0] != a.config.TokenType {
-		httputil.ErrorResponse(ctx, common.StatusError(status.TOKEN_MALTYPE))
+		resp.Error(ctx, status.Error(status.TOKEN_MALTYPE))
 		ctx.Abort()
 		return
 	}
@@ -74,17 +74,17 @@ func (a AuthMiddleware) Handle(ctx *gin.Context) {
 		var verr *jwt.ValidationError
 		ok := errors.As(err, &verr)
 		if !ok {
-			httputil.ErrorResponse(ctx, common.StatusError(status.INTERNAL_SERVER_ERROR))
+			resp.Error(ctx, status.Error(status.INTERNAL_SERVER_ERROR))
 			ctx.Abort()
 			return
 		}
 
 		if verr.Errors&jwt.ValidationErrorExpired != 0 {
-			httputil.ErrorResponse(ctx, common.StatusError(status.ACCESS_TOKEN_EXPIRED))
+			resp.Error(ctx, status.Error(status.ACCESS_TOKEN_EXPIRED))
 			ctx.Abort()
 			return
 		} else if verr.Errors&jwt.ValidationErrorMalformed != 0 {
-			httputil.ErrorResponse(ctx, common.StatusError(status.TOKEN_MALFORMED))
+			resp.Error(ctx, status.Error(status.TOKEN_MALFORMED))
 			ctx.Abort()
 			return
 		}
@@ -93,7 +93,7 @@ func (a AuthMiddleware) Handle(ctx *gin.Context) {
 	// Validate
 	if err := claims.Valid(); err != nil {
 		log.Println(err)
-		httputil.ErrorResponse(ctx, common.StatusError(status.TOKEN_NOT_VALID))
+		resp.Error(ctx, status.Error(status.TOKEN_NOT_VALID))
 		ctx.Abort()
 		return
 	}

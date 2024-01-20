@@ -3,11 +3,13 @@ package users
 import (
 	"github.com/gin-gonic/gin"
 	"manga-explorer/internal/app/common"
+	"manga-explorer/internal/app/common/constant"
 	"manga-explorer/internal/app/common/status"
-	dto2 "manga-explorer/internal/domain/users/dto"
+	"manga-explorer/internal/domain/users/dto"
 	"manga-explorer/internal/domain/users/service"
 	"manga-explorer/internal/util"
 	"manga-explorer/internal/util/httputil"
+	"manga-explorer/internal/util/httputil/resp"
 )
 
 func NewUserController(userService service.IUser) UserController {
@@ -21,99 +23,168 @@ type UserController struct {
 func (u *UserController) GetUserProfile(ctx *gin.Context) {
 	id := ctx.Param("id")
 	if len(id) == 0 {
-		claims, err := util.GetContextValue[*common.AccessTokenClaims](ctx, common.ClaimsKey)
-		if err != nil {
-			httputil.ErrorResponse(ctx, common.StatusError(status.AUTH_UNAUTHORIZED))
+		claims, stat := common.GetClaims(ctx)
+		if stat.IsError() {
+			resp.Error(ctx, stat)
 			return
 		}
 		id = claims.UserId
 	}
 
-	usr, cerr := u.userService.FindUserProfileById(id)
-	httputil.Response(ctx, cerr, usr)
-}
-
-func (u *UserController) GetUserProfiles(ctx *gin.Context) {
-	res, status := u.userService.GetAllUsers()
-	httputil.Response(ctx, status, res)
-}
-
-func (u *UserController) AddUser(ctx *gin.Context) {
-	input, status := httputil.BindUriJson[dto2.AddUserInput](ctx)
-	if status.IsError() {
-		httputil.ErrorResponse(ctx, status)
+	// Validate
+	if !util.IsUUID(id) {
+		stat := status.Error(status.BAD_PARAMETER_ERROR)
+		resp.ErrorDetailed(ctx, stat, common.NewParameterError("id", "should be an UUID type"))
 		return
 	}
 
-	status = u.userService.AddUser(&input)
-	httputil.Response(ctx, status, nil)
+	usr, cerr := u.userService.FindUserProfileById(id)
+	resp.Conditional(ctx, cerr, usr, nil)
+}
+
+func (u *UserController) GetUserProfiles(ctx *gin.Context) {
+	res, stat := u.userService.GetAllUsers()
+	resp.Conditional(ctx, stat, res, nil)
+}
+
+func (u *UserController) AddUser(ctx *gin.Context) {
+	var input dto.AddUserInput
+	stat, fieldsErr := httputil.BindUriJson(ctx, &input)
+	if stat.IsError() {
+		resp.ErrorDetailed(ctx, stat, fieldsErr)
+		return
+	}
+
+	stat = u.userService.AddUser(&input)
+	resp.Conditional(ctx, stat, nil, nil)
+}
+
+func (u *UserController) Register(ctx *gin.Context) {
+	var input dto.UserRegisterInput
+	stat, fieldsErr := httputil.BindJson(ctx, &input)
+	if stat.IsError() {
+		resp.ErrorDetailed(ctx, stat, fieldsErr)
+		return
+	}
+
+	userResponse, stat := u.userService.RegisterUser(&input)
+	if stat.IsError() {
+		resp.Error(ctx, stat)
+		return
+	}
+
+	resp.Success(ctx, stat, userResponse, nil)
 }
 
 func (u *UserController) DeleteUser(ctx *gin.Context) {
 	id, present := ctx.GetQuery("id")
 	if !present {
-		httputil.ErrorResponse(ctx, common.StatusError(status.BAD_PARAMETER_ERROR))
+		resp.ErrorDetailed(ctx, status.Error(status.BAD_QUERY_ERROR), common.NewNotPresentParameter("id"))
 		return
 	}
 
-	status := u.userService.DeleteUser(id)
-	httputil.Response(ctx, status, nil)
+	// Validate
+	if !util.IsUUID(id) {
+		stat := status.Error(status.BAD_PARAMETER_ERROR)
+		resp.ErrorDetailed(ctx, stat, common.NewParameterError("id", "should be an UUID type"))
+		return
+	}
+
+	stat := u.userService.DeleteUser(id)
+	resp.Conditional(ctx, stat, nil, nil)
 }
 
 func (u *UserController) EditUser(ctx *gin.Context) {
-	var input dto2.UpdateUserInput
-	status := httputil.BindAuthorizedJSON(ctx, &input)
-	if status.IsError() {
-		httputil.ErrorResponse(ctx, status)
+	var input dto.UpdateUserInput
+	stat, fieldsErr := httputil.BindAuthorizedJSON(ctx, &input)
+	if stat.IsError() {
+		resp.ErrorDetailed(ctx, stat, fieldsErr)
 		return
 	}
 
-	status = u.userService.UpdateUser(&input)
-	httputil.Response(ctx, status, nil)
+	stat = u.userService.UpdateUser(&input)
+	resp.Conditional(ctx, stat, nil, nil)
 }
 
 func (u *UserController) UpdateUserExtended(ctx *gin.Context) {
-	input, status := httputil.BindUriJson[dto2.UpdateUserExtendedInput](ctx)
-	if status.IsError() {
-		httputil.ErrorResponse(ctx, status)
+	var input dto.UpdateUserExtendedInput
+	stat, fieldsErr := httputil.BindUriJson(ctx, &input)
+	if stat.IsError() {
+		resp.ErrorDetailed(ctx, stat, fieldsErr)
 		return
 	}
 
-	status = u.userService.UpdateUserExtended(&input)
-	httputil.Response(ctx, status, nil)
+	stat = u.userService.UpdateUserExtended(&input)
+	resp.Conditional(ctx, stat, nil, nil)
 }
 
 func (u *UserController) EditUserProfile(ctx *gin.Context) {
-	var input dto2.ProfileUpdateInput
-	status := httputil.BindAuthorizedJSON(ctx, &input)
-	if status.IsError() {
-		httputil.ErrorResponse(ctx, status)
+	var input dto.ProfileUpdateInput
+	stat, fieldsErr := httputil.BindAuthorizedJSON(ctx, &input)
+	if stat.IsError() {
+		resp.ErrorDetailed(ctx, stat, fieldsErr)
 		return
 	}
 
-	status = u.userService.UpdateProfile(&input)
-	httputil.Response(ctx, status, nil)
+	stat = u.userService.UpdateProfile(&input)
+	resp.Conditional(ctx, stat, nil, nil)
 }
 
 func (u *UserController) UpdateUserProfileExtended(ctx *gin.Context) {
-	input, status := httputil.BindUriJson[dto2.UpdateProfileExtendedInput](ctx)
-	if status.IsError() {
-		httputil.ErrorResponse(ctx, status)
+	var input dto.UpdateProfileExtendedInput
+	stat, fieldsErr := httputil.BindUriJson(ctx, &input)
+	if stat.IsError() {
+		resp.ErrorDetailed(ctx, stat, fieldsErr)
 		return
 	}
 
-	status = u.userService.UpdateProfileExtended(&input)
-	httputil.Response(ctx, status, nil)
+	stat = u.userService.UpdateProfileExtended(&input)
+	resp.Conditional(ctx, stat, nil, nil)
 }
 
 func (u *UserController) ChangePassword(ctx *gin.Context) {
-	var input dto2.ChangePasswordInput
-	status := httputil.BindAuthorizedJSON(ctx, &input)
-	if status.IsError() {
-		httputil.ErrorResponse(ctx, status)
+	var input dto.ChangePasswordInput
+	stat, fieldsErr := httputil.BindAuthorizedJSON(ctx, &input)
+	if stat.IsError() {
+		resp.ErrorDetailed(ctx, stat, fieldsErr)
 		return
 	}
 
-	status = u.userService.ChangePassword(&input)
-	httputil.Response(ctx, status, nil)
+	stat = u.userService.ChangePassword(&input)
+	resp.Conditional(ctx, stat, nil, nil)
+}
+
+func (u *UserController) RequestResetPassword(ctx *gin.Context) {
+	var input dto.ResetPasswordRequestInput
+	stat, fieldsErr := httputil.BindJson(ctx, &input)
+	if stat.IsError() {
+		resp.ErrorDetailed(ctx, stat, fieldsErr)
+		return
+	}
+
+	stat = u.userService.RequestResetPassword(&input)
+	if stat.IsError() {
+		resp.Error(ctx, stat)
+		return
+	}
+	resp.SuccessMessage(ctx, stat, constant.MSG_SUCCESS_REQUEST_RESET_PASSWORD)
+}
+
+func (u *UserController) ResetPassword(ctx *gin.Context) {
+	var input dto.ResetPasswordInput
+	stat, fieldsErr := httputil.BindUriJson(ctx, &input)
+	if stat.IsError() {
+		resp.ErrorDetailed(ctx, stat, fieldsErr)
+		return
+	}
+
+	// Reset user password
+	stat = u.userService.ResetPassword(&input)
+	if stat.IsError() {
+		resp.Error(ctx, stat)
+		return
+	}
+
+	// SelfLogout user devices
+	resp.Conditional(ctx, stat, nil, nil)
 }

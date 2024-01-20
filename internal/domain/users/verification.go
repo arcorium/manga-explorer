@@ -9,7 +9,7 @@ import (
 	"github.com/uptrace/bun"
 )
 
-func New(userId string, usage Usage) Verification {
+func NewVerification(userId string, usage Usage) Verification {
 	// Generate token with UUID as Underlying data
 	id := uuid.NewString()
 	hasher := sha256.New()

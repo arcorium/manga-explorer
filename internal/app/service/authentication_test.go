@@ -8,11 +8,9 @@ import (
 	"manga-explorer/internal/app/common"
 	"manga-explorer/internal/app/common/status"
 	"manga-explorer/internal/domain/auth"
-	"manga-explorer/internal/domain/auth/dto"
-	"manga-explorer/internal/domain/auth/mapper"
-	"manga-explorer/internal/domain/auth/repository"
-	mockAuthRepo "manga-explorer/internal/domain/auth/repository/mocks"
 	"manga-explorer/internal/domain/users"
+	"manga-explorer/internal/domain/users/dto"
+	"manga-explorer/internal/domain/users/mapper"
 	"manga-explorer/internal/util"
 	"manga-explorer/internal/util/containers"
 	"time"
@@ -38,7 +36,7 @@ func config() *common.Config {
 	return conf
 }
 
-func newCredentialService(authRepos repository.IAuthentication, userRepos userRepo.IUser) credentialService {
+func newCredentialService(authRepos userRepo.IAuthentication, userRepos userRepo.IUser) credentialService {
 	return credentialService{
 		config:   config(),
 		authRepo: authRepos,
@@ -57,7 +55,7 @@ func Test_credentialService_Authenticate(t *testing.T) {
 
 	// Auth repo mock
 	//errCredential := auth.NewCredential(&temp, "Test", uuid.NewString(), util.GenerateRandomString(40))
-	authMock := mockAuthRepo.NewAuthenticationMock(t)
+	authMock := mockUserRepo.NewAuthenticationMock(t)
 	//authMock.EXPECT().Create(&errCredential).Return(simpleError)
 	authMock.EXPECT().Create(mock.AnythingOfType("*auth.Credential")).Return(nil)
 
@@ -67,7 +65,7 @@ func Test_credentialService_Authenticate(t *testing.T) {
 	tests := []struct {
 		name  string
 		args  args
-		want1 common.Status
+		want1 status.Object
 	}{
 		{
 			name: "Normal",
@@ -132,7 +130,7 @@ func Test_credentialService_GetCredentials(t *testing.T) {
 
 	// Auth repo mock
 	userId := uuid.NewString()
-	creds := []auth.Credential{
+	creds := []users.Credential{
 		{
 			Id:            uuid.NewString(),
 			UserId:        userId,
@@ -156,7 +154,7 @@ func Test_credentialService_GetCredentials(t *testing.T) {
 			CreatedAt: time.Now(),
 		},
 	}
-	authMock := mockAuthRepo.NewAuthenticationMock(t)
+	authMock := mockUserRepo.NewAuthenticationMock(t)
 	authMock.EXPECT().FindUserCredentials(userId).Return(creds, nil)
 	authMock.EXPECT().FindUserCredentials(mock.AnythingOfType("string")).Return(nil, sql.ErrNoRows)
 
@@ -167,7 +165,7 @@ func Test_credentialService_GetCredentials(t *testing.T) {
 		name  string
 		args  args
 		want  []dto.CredentialResponse
-		want1 common.Status
+		want1 status.Object
 	}{
 		{
 			name: "Normal",
@@ -213,7 +211,7 @@ func Test_credentialService_Logout(t *testing.T) {
 	userId := uuid.NewString()
 	credId := uuid.NewString()
 
-	authMock := mockAuthRepo.NewAuthenticationMock(t)
+	authMock := mockUserRepo.NewAuthenticationMock(t)
 	authMock.EXPECT().Remove(userId, credId).Return(nil)
 	authMock.EXPECT().Remove(userId, mock.AnythingOfType("string")).Return(sql.ErrNoRows)
 	authMock.EXPECT().Remove(mock.AnythingOfType("string"), mock.AnythingOfType("string")).Return(sql.ErrNoRows)
@@ -227,7 +225,7 @@ func Test_credentialService_Logout(t *testing.T) {
 	tests := []struct {
 		name string
 		args args
-		want common.Status
+		want status.Object
 	}{
 		{
 			name: "Normal",
@@ -274,7 +272,7 @@ func Test_credentialService_Logout(t *testing.T) {
 
 func Test_credentialService_LogoutDevices(t *testing.T) {
 	userId := uuid.NewString()
-	authMock := mockAuthRepo.NewAuthenticationMock(t)
+	authMock := mockUserRepo.NewAuthenticationMock(t)
 	authMock.EXPECT().RemoveUserCredentials(userId).Return(nil)
 	authMock.EXPECT().RemoveUserCredentials(mock.AnythingOfType("string")).Return(sql.ErrNoRows)
 
@@ -285,7 +283,7 @@ func Test_credentialService_LogoutDevices(t *testing.T) {
 	tests := []struct {
 		name string
 		args args
-		want common.Status
+		want status.Object
 	}{
 		{
 			name: "Normal",
@@ -314,7 +312,7 @@ func Test_credentialService_LogoutDevices(t *testing.T) {
 
 func Test_credentialService_RefreshToken(t *testing.T) {
 	userId := uuid.NewString()
-	authMock := mockAuthRepo.NewAuthenticationMock(t)
+	authMock := mockUserRepo.NewAuthenticationMock(t)
 	authMock.EXPECT().RemoveUserCredentials(userId).Return(nil)
 	authMock.EXPECT().RemoveUserCredentials(mock.AnythingOfType("string")).Return(sql.ErrNoRows)
 
@@ -326,7 +324,7 @@ func Test_credentialService_RefreshToken(t *testing.T) {
 		name  string
 		args  args
 		want  dto.RefreshTokenResponse
-		want1 common.Status
+		want1 status.Object
 	}{}
 	c := newCredentialService(authMock, userMock)
 	for _, tt := range tests {
@@ -345,7 +343,7 @@ func Test_credentialService_RefreshToken(t *testing.T) {
 func Test_credentialService_SelfLogout(t *testing.T) {
 	type fields struct {
 		config   *common.Config
-		authRepo repository.IAuthentication
+		authRepo userRepo.IAuthentication
 		userRepo userRepo.IUser
 	}
 	type args struct {
@@ -356,7 +354,7 @@ func Test_credentialService_SelfLogout(t *testing.T) {
 		name   string
 		fields fields
 		args   args
-		want   common.Status
+		want   status.Object
 	}{
 		// TODO: Add test cases.
 	}

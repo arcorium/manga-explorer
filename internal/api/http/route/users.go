@@ -12,16 +12,21 @@ type userRoute struct {
 }
 
 func (u userRoute) V1Route(config *Config, router gin.IRouter) {
-	user := router.Group("/users", config.Middleware.Auth.Handle)
+	user := router.Group("/users")
 	admin := user.Group("/", config.Middleware.AdminRestrict.Handle)
 
 	userController := &config.Controller.User
 
-	user.PUT("/", userController.EditUser)
+	user.POST("/register", userController.Register)
+	user.POST("/reset-password", userController.RequestResetPassword)
+	user.PATCH("/reset-password/:token", userController.ResetPassword)
 	user.POST("/change-password", userController.ChangePassword)
 
+	user.Use(config.Middleware.Auth.Handle)
+	user.PUT("/", userController.EditUser)
 	// Profiles thingies
 	user.GET("/:id/profiles", userController.GetUserProfile)
+	user.GET("/profiles", userController.GetUserProfile)
 	user.PUT("/profiles", userController.EditUserProfile)
 	// Admin
 	admin.PUT("/:id", userController.UpdateUserExtended)

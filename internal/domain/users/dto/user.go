@@ -8,21 +8,25 @@ type UserResponse struct {
 	Id       string `json:"id"`
 	Username string `json:"username"`
 	Email    string `json:"email"`
-	Role     uint8  `json:"role"`
+	Role     string `json:"role"`
 }
 
 type UserRegisterInput struct {
 	Username  string `json:"username" binding:"required"`
-	Email     string `json:"email" binding:"required"`
+	Email     string `json:"email" binding:"required,email"`
 	Password  string `json:"password" binding:"required"`
 	FirstName string `json:"first_name" binding:"required"`
 	LastName  string `json:"last_name"`
 }
 
+type ResetPasswordRequestInput struct {
+	Email string `json:"email" binding:"required,email"`
+}
+
 type UpdateUserInput struct {
 	UserId   string `json:"-"`
 	Username string `json:"username"`
-	Email    string `json:"email"`
+	Email    string `json:"email" binding:"email"`
 	Password string `json:"password"`
 }
 
@@ -41,12 +45,9 @@ func (c *ChangePasswordInput) SetUserId(claims *common.AccessTokenClaims) {
 }
 
 type ResetPasswordInput struct {
+	Token       string `uri:"token"`
 	UserId      string `json:"-"`
 	NewPassword string `json:"new_password" binding:"required"`
-}
-
-func (r *ResetPasswordInput) SetUserId(claims *common.AccessTokenClaims) {
-	r.UserId = claims.UserId
 }
 
 type UpdateUserExtendedInput struct {

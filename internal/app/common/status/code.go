@@ -3,9 +3,11 @@ package status
 const (
 	// Success Code
 	SUCCESS = iota
-	SUCCESS_CREATED
+	CREATED
+	UPDATED
+	DELETED
 
-	// Status Code
+	// Object Code
 	BAD_BODY_REQUEST_ERROR
 	USER_AGENT_UNKNOWN_ERROR
 	BAD_PARAMETER_ERROR
@@ -42,7 +44,7 @@ const (
 )
 
 var Messages = map[int]string{
-	BAD_BODY_REQUEST_ERROR:       "Some field in request body is missing",
+	BAD_BODY_REQUEST_ERROR:       "Request body is malformed",
 	USER_AGENT_UNKNOWN_ERROR:     "Unknown user-agent",
 	BAD_QUERY_ERROR:              "URL query is have malformed type",
 	BAD_PARAMETER_ERROR:          "URL parameter is missing",

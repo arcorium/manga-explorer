@@ -29,7 +29,7 @@ func (u UserRepository) GetAllUsers() ([]users.User, error) {
 		Model(&result).
 		Scan(ctx)
 
-	return result, err
+	return util.CheckSliceResult(result, err).Unwrap()
 }
 
 func (u UserRepository) CreateProfile(profile *users.Profile) error {
@@ -47,13 +47,13 @@ func (u UserRepository) UpdateProfile(profile *users.Profile) error {
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second*5)
 	defer cancel()
 
-	_, err := u.db.NewUpdate().
+	res, err := u.db.NewUpdate().
 		Model(profile).
 		OmitZero().
 		Where("user_id = ?", profile.UserId).
 		Exec(ctx)
 
-	return err
+	return util.CheckSqlResult(res, err)
 }
 
 func (u UserRepository) CreateUser(user *users.User, profile *users.Profile) error {
@@ -93,7 +93,11 @@ func (u UserRepository) FindUserById(id string) (*users.User, error) {
 		Model(usr).
 		Where("id = ?", id).
 		Scan(ctx)
-	return usr, err
+
+	if err != nil {
+		return nil, err
+	}
+	return usr, nil
 }
 
 func (u UserRepository) FindUserProfiles(userId string) (*users.Profile, error) {
@@ -103,9 +107,14 @@ func (u UserRepository) FindUserProfiles(userId string) (*users.Profile, error) 
 	profile := new(users.Profile)
 	err := u.db.NewSelect().
 		Model(profile).
+		Relation("User").
 		Where("user_id = ?", userId).
 		Scan(ctx)
-	return profile, err
+
+	if err != nil {
+		return nil, err
+	}
+	return profile, nil
 }
 
 func (u UserRepository) FindUserByEmail(email string) (*users.User, error) {
@@ -117,7 +126,11 @@ func (u UserRepository) FindUserByEmail(email string) (*users.User, error) {
 		Model(usr).
 		Where("email = ?", email).
 		Scan(ctx, usr)
-	return usr, err
+
+	if err != nil {
+		return nil, err
+	}
+	return usr, nil
 }
 
 func (u UserRepository) UpdateUser(user *users.User) error {

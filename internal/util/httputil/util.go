@@ -1,58 +1,90 @@
 package httputil
 
 import (
+	"errors"
 	"github.com/gin-gonic/gin"
+	"github.com/go-playground/validator/v10"
 	"manga-explorer/internal/app/common"
+	"manga-explorer/internal/app/common/constant"
 	"manga-explorer/internal/app/common/status"
 	"manga-explorer/internal/app/dto"
 	"manga-explorer/internal/util"
 )
 
-func BindUriJson[T any](ctx *gin.Context) (T, common.Status) {
-	var t T
-	if err := ctx.BindUri(&t); err != nil {
-		return t, common.StatusError(status.BAD_PARAMETER_ERROR)
+func BindUriJson[T any](ctx *gin.Context, data *T) (status.Object, []common.FieldError) {
+	if err := ctx.BindUri(data); err != nil {
+		var verr validator.ValidationErrors
+		errors.As(err, &verr)
+		return status.Error(status.BAD_PARAMETER_ERROR), common.GetFieldsError(verr)
 	}
 
-	if err := ctx.BindJSON(&t); err != nil {
-		return t, common.StatusError(status.BAD_BODY_REQUEST_ERROR)
-	}
-	return t, common.StatusSuccess()
+	return BindJson(ctx, data)
 }
 
-func BindQueryJson[T any](ctx *gin.Context) (T, common.Status) {
+func BindQueryJson[T any](ctx *gin.Context, data *T) (status.Object, []common.FieldError) {
 	var t T
 	if err := ctx.BindQuery(&t); err != nil {
-		return t, common.StatusError(status.BAD_QUERY_ERROR)
+		var verr validator.ValidationErrors
+		errors.As(err, &verr)
+		return status.Error(status.BAD_QUERY_ERROR), common.GetFieldsError(verr)
 	}
 
-	if err := ctx.BindJSON(&t); err != nil {
-		return t, common.StatusError(status.BAD_BODY_REQUEST_ERROR)
-	}
-	return t, common.StatusSuccess()
+	return BindJson(ctx, data)
 }
 
-func BindUriMultipartForm[T any](ctx *gin.Context) (T, common.Status) {
-	var t T
-	if err := ctx.BindUri(&t); err != nil {
-		return t, common.StatusError(status.BAD_QUERY_ERROR)
+func BindJson[T any](ctx *gin.Context, data *T) (status.Object, []common.FieldError) {
+	if err := ctx.BindJSON(data); err != nil {
+		var verr validator.ValidationErrors
+		errors.As(err, &verr)
+		return status.Error(status.BAD_BODY_REQUEST_ERROR), common.GetFieldsError(verr)
 	}
-
-	if err := ctx.Bind(&t); err != nil {
-		return t, common.StatusError(status.BAD_BODY_REQUEST_ERROR)
-	}
-	return t, common.StatusSuccess()
+	return status.Success(), nil
 }
 
-func BindAuthorizedJSON(ctx *gin.Context, data dto.AuthorizedDTO) common.Status {
-	claims, err := util.GetContextValue[*common.AccessTokenClaims](ctx, common.ClaimsKey)
+func BindUri[T any](ctx *gin.Context, data *T) (status.Object, []common.FieldError) {
+	if err := ctx.BindUri(data); err != nil {
+		var verr validator.ValidationErrors
+		errors.As(err, &verr)
+		return status.Error(status.BAD_PARAMETER_ERROR), common.GetFieldsError(verr)
+	}
+	return status.Success(), nil
+}
+
+func BindQuery[T any](ctx *gin.Context, data *T) (status.Object, []common.FieldError) {
+	if err := ctx.BindQuery(data); err != nil {
+		var verr validator.ValidationErrors
+		errors.As(err, &verr)
+		return status.Error(status.BAD_QUERY_ERROR), common.GetFieldsError(verr)
+	}
+	return status.Success(), nil
+}
+
+func BindUriMultipartForm[T any](ctx *gin.Context, data *T) (status.Object, []common.FieldError) {
+	if err := ctx.BindUri(data); err != nil {
+		var verr validator.ValidationErrors
+		errors.As(err, &verr)
+		return status.Error(status.BAD_PARAMETER_ERROR), common.GetFieldsError(verr)
+	}
+
+	if err := ctx.Bind(data); err != nil {
+		var verr validator.ValidationErrors
+		errors.As(err, &verr)
+		return status.Error(status.BAD_BODY_REQUEST_ERROR), common.GetFieldsError(verr)
+	}
+	return status.Success(), nil
+}
+
+func BindAuthorizedJSON(ctx *gin.Context, data dto.AuthorizedDTO) (status.Object, []common.FieldError) {
+	claims, err := util.GetContextValue[*common.AccessTokenClaims](ctx, constant.ClaimsKey)
 	if err != nil {
-		return common.StatusError(status.AUTH_UNAUTHORIZED)
+		return status.Error(status.AUTH_UNAUTHORIZED), nil
 	}
 
 	if err = ctx.BindJSON(&data); err != nil {
-		return common.StatusError(status.BAD_BODY_REQUEST_ERROR)
+		var verr validator.ValidationErrors
+		errors.As(err, &verr)
+		return status.Error(status.BAD_BODY_REQUEST_ERROR), common.GetFieldsError(verr)
 	}
 	data.SetUserId(claims)
-	return common.StatusSuccess()
+	return status.Success(), nil
 }

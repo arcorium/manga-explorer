@@ -7,7 +7,6 @@ import (
 	"github.com/uptrace/bun/dbfixture"
 	"log"
 	"manga-explorer/database/fixtures"
-	"manga-explorer/internal/domain/auth"
 	"manga-explorer/internal/domain/mangas"
 	"manga-explorer/internal/domain/users"
 	"manga-explorer/internal/domain/users/repository"
@@ -26,7 +25,7 @@ import (
 var tables = []interface{}{
 	(*users.User)(nil),
 	(*users.Profile)(nil),
-	(*auth.Credential)(nil),
+	(*users.Credential)(nil),
 	(*users.Verification)(nil),
 	(*mangas.Manga)(nil),
 	(*mangas.Volume)(nil),

@@ -12,7 +12,7 @@ func ToUserResponse(user *users.User) dto.UserResponse {
 		Id:       user.Id,
 		Username: user.Username,
 		Email:    user.Email,
-		Role:     user.Role.Underlying(),
+		Role:     user.Role.String(),
 	}
 }
 

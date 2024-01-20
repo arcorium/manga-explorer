@@ -1,7 +1,7 @@
 package dto
 
 import (
-	"manga-explorer/internal/app/common"
+	"manga-explorer/internal/app/common/constant"
 	"regexp"
 )
 
@@ -12,25 +12,9 @@ type LoginInput struct {
 	Password string `json:"password" binding:"required"`
 }
 
-func (l LoginInput) Validate() bool {
-	return emailRegex.MatchString(l.Email) && len(l.Password) > 0
-}
-
-type ResetPasswordRequestInput struct {
-	Email string `json:"email" binding:"required"`
-}
-
-func (r ResetPasswordRequestInput) Validate() bool {
-	return emailRegex.MatchString(r.Email)
-}
-
 type RefreshTokenInput struct {
 	Type        string `json:"token_type" binding:"required"`
 	AccessToken string `json:"access_token" binding:"required"`
-}
-
-func (r RefreshTokenInput) Validate() bool {
-	return r.Type == common.TokenType && len(r.AccessToken) > 0
 }
 
 var NoLoginResponse = LoginResponse{}
@@ -54,14 +38,14 @@ type CredentialResponse struct {
 
 func NewLoginResponse(token string) LoginResponse {
 	return LoginResponse{
-		Type:        common.TokenType,
+		Type:        constant.TokenType,
 		AccessToken: token,
 	}
 }
 
 func NewRefreshTokenResponse(token string) RefreshTokenResponse {
 	return RefreshTokenResponse{
-		Type:        common.TokenType,
+		Type:        constant.TokenType,
 		AccessToken: token,
 	}
 }

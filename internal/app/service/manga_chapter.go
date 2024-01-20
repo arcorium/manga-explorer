@@ -1,14 +1,14 @@
 package service
 
 import (
-	"manga-explorer/internal/app/common"
 	"manga-explorer/internal/app/common/status"
-	"manga-explorer/internal/app/service/utility/file"
 	"manga-explorer/internal/domain/mangas"
 	mangaDto "manga-explorer/internal/domain/mangas/dto"
 	"manga-explorer/internal/domain/mangas/mapper"
 	"manga-explorer/internal/domain/mangas/repository"
 	"manga-explorer/internal/domain/mangas/service"
+	"manga-explorer/internal/infrastructure/file"
+	fileService "manga-explorer/internal/infrastructure/file/service"
 	"manga-explorer/internal/util"
 	"manga-explorer/internal/util/containers"
 )
@@ -21,126 +21,132 @@ func NewChapterService(chapterRepo repository.IChapter, commentRepo repository.I
 }
 
 type mangaChapterService struct {
-	fileService file.IService
+	fileService fileService.IFile
 
 	chapterRepo repository.IChapter
 	commentRepo repository.IComment
 }
 
-func (m mangaChapterService) DeleteChapter(chapterId string) common.Status {
+func (m mangaChapterService) DeleteChapter(chapterId string) status.Object {
 	err := m.chapterRepo.DeleteChapter(chapterId)
-	return common.NewRepositoryStatus(err)
+	return status.FromRepository(err)
 }
 
-func (m mangaChapterService) FindChapterPages(chapterId string) ([]mangaDto.PageResponse, common.Status) {
+func (m mangaChapterService) FindChapterPages(chapterId string) ([]mangaDto.PageResponse, status.Object) {
 	pages, err := m.chapterRepo.FindChapterPages(chapterId)
-	if err != nil {
-		return nil, common.NewRepositoryStatus(err)
+	stat := status.FromRepository(err)
+	if stat.IsError() {
+		return nil, stat
 	}
 	pageResponses := containers.CastSlicePtr(pages, mapper.ToPageResponse)
-	return pageResponses, common.StatusSuccess()
+	return pageResponses, stat
 }
 
-func (m mangaChapterService) CreateChapter(input *mangaDto.ChapterCreateInput) common.Status {
+func (m mangaChapterService) CreateChapter(input *mangaDto.ChapterCreateInput) status.Object {
 	chapter := mapper.MapChapterCreateInput(input)
 	err := m.chapterRepo.CreateChapter(&chapter)
-	return common.NewRepositoryStatus(err, status.SUCCESS_CREATED)
+	return status.FromRepository(err, status.CREATED)
 }
 
-func (m mangaChapterService) InsertChapterPage(input *mangaDto.PageCreateInput) common.Status {
+func (m mangaChapterService) InsertChapterPage(input *mangaDto.PageCreateInput) status.Object {
 	page := mapper.MapPageCreateInput(input)
 	format, err := util.GetFileFormat(input.Image.Filename)
 	if err != nil {
-		return common.StatusError(status.INTERNAL_SERVER_ERROR)
+		return status.Error(status.INTERNAL_SERVER_ERROR)
 	}
 	page.ImageURL = m.fileService.GetURL(file.ImageAsset, page.Id, format)
 
 	// Read bytes
 	fl, err := input.Image.Open()
 	if err != nil {
-		return common.StatusError(status.INTERNAL_SERVER_ERROR)
+		return status.Error(status.INTERNAL_SERVER_ERROR)
 	}
 
 	var bytes []byte
 	_, err = fl.Read(bytes)
 	if err != nil {
-		return common.StatusError(status.INTERNAL_SERVER_ERROR)
+		return status.Error(status.INTERNAL_SERVER_ERROR)
 	}
 	// Upload image
 	m.fileService.Upload(page.ImageURL, bytes)
 
 	err = m.chapterRepo.InsertChapterPages([]mangas.Page{page})
-	return common.NewRepositoryStatus(err, status.SUCCESS_CREATED)
+	return status.FromRepository(err, status.UPDATED)
 }
 
-func (m mangaChapterService) EditChapter(input *mangaDto.ChapterEditInput) common.Status {
+func (m mangaChapterService) EditChapter(input *mangaDto.ChapterEditInput) status.Object {
 	chapter := mapper.MapChapterEditInput(input)
 	err := m.chapterRepo.EditChapter(&chapter)
-	return common.NewRepositoryStatus(err)
+	return status.FromRepository(err, status.UPDATED)
 }
 
-func (m mangaChapterService) CreateChapterComment(input *mangaDto.ChapterCommentCreateInput) common.Status {
+func (m mangaChapterService) CreateChapterComment(input *mangaDto.ChapterCommentCreateInput) status.Object {
 	comment := mapper.MapChapterCommentCreateInput(input)
 	if input.HasParent() {
 		parent, err := m.commentRepo.FindComment(input.ParentId)
-		if err != nil {
-			return common.StatusError(status.INTERNAL_SERVER_ERROR)
+		stat := status.FromRepository(err)
+		if stat.IsError() {
+			return status.Error(status.INTERNAL_SERVER_ERROR)
 		}
 
 		// Validate
 		if !comment.ValidateAsReply(parent) {
-			return common.StatusError(status.BAD_BODY_REQUEST_ERROR)
+			return status.Error(status.BAD_BODY_REQUEST_ERROR, "Couldn't reply to such comment")
 		}
 	}
 	err := m.commentRepo.CreateComment(&comment)
-	return common.NewRepositoryStatus(err, status.SUCCESS_CREATED)
+	return status.FromRepository(err, status.CREATED)
 }
 
-func (m mangaChapterService) CreatePageComment(input *mangaDto.PageCommentCreateInput) common.Status {
+func (m mangaChapterService) CreatePageComment(input *mangaDto.PageCommentCreateInput) status.Object {
 	comment := mapper.MapPageCommentCreateInput(input)
 	if input.HasParent() {
 		parent, err := m.commentRepo.FindComment(input.ParentId)
-		if err != nil {
-			return common.StatusError(status.INTERNAL_SERVER_ERROR)
+		stat := status.FromRepository(err)
+		if stat.IsError() {
+			return status.Error(status.INTERNAL_SERVER_ERROR)
 		}
 
 		// Validate
 		if !comment.ValidateAsReply(parent) {
-			return common.StatusError(status.BAD_BODY_REQUEST_ERROR)
+			return status.Error(status.BAD_BODY_REQUEST_ERROR, "Couldn't reply to such comment")
 		}
 	}
 	err := m.commentRepo.CreateComment(&comment)
-	return common.NewRepositoryStatus(err, status.SUCCESS_CREATED)
+	return status.FromRepository(err, status.CREATED)
 }
 
-func (m mangaChapterService) DeleteChapterPages(input *mangaDto.PageDeleteInput) common.Status {
+func (m mangaChapterService) DeleteChapterPages(input *mangaDto.PageDeleteInput) status.Object {
 	err := m.chapterRepo.DeleteChapterPages(input.ChapterId, input.Pages)
-	return common.NewRepositoryStatus(err)
+	return status.FromRepository(err, status.DELETED)
 }
 
-func (m mangaChapterService) FindVolumeChapters(volumeId string) ([]mangaDto.ChapterResponse, common.Status) {
+func (m mangaChapterService) FindVolumeChapters(volumeId string) ([]mangaDto.ChapterResponse, status.Object) {
 	chapters, err := m.chapterRepo.FindVolumeChapters(volumeId)
-	if err != nil {
-		return nil, common.NewRepositoryStatus(err)
+	stat := status.FromRepository(err)
+	if stat.IsError() {
+		return nil, stat
 	}
 	chapterResponses := containers.CastSlicePtr(chapters, mapper.ToChapterResponse)
-	return chapterResponses, common.StatusSuccess()
+	return chapterResponses, stat
 }
 
-func (m mangaChapterService) FindChapterComments(chapterId string) ([]mangaDto.CommentResponse, common.Status) {
+func (m mangaChapterService) FindChapterComments(chapterId string) ([]mangaDto.CommentResponse, status.Object) {
 	comments, err := m.commentRepo.FindChapterComments(chapterId)
-	if err != nil {
-		return nil, common.NewRepositoryStatus(err)
+	stat := status.FromRepository(err)
+	if stat.IsError() {
+		return nil, stat
 	}
 	commentResponses := containers.CastSlicePtr(comments, mapper.ToCommentResponse)
-	return commentResponses, common.StatusSuccess()
+	return commentResponses, stat
 }
 
-func (m mangaChapterService) FindPageComments(pageId string) ([]mangaDto.CommentResponse, common.Status) {
+func (m mangaChapterService) FindPageComments(pageId string) ([]mangaDto.CommentResponse, status.Object) {
 	comments, err := m.commentRepo.FindPageComments(pageId)
-	if err != nil {
-		return nil, common.NewRepositoryStatus(err)
+	stat := status.FromRepository(err)
+	if stat.IsError() {
+		return nil, stat
 	}
 	commentResponses := containers.CastSlicePtr(comments, mapper.ToCommentResponse)
-	return commentResponses, common.StatusSuccess()
+	return commentResponses, stat
 }

@@ -4,20 +4,21 @@ import (
 	"github.com/google/uuid"
 	"github.com/stretchr/testify/require"
 	"github.com/uptrace/bun"
-	"manga-explorer/internal/domain/auth"
+	"manga-explorer/internal/domain/users"
+	"manga-explorer/internal/infrastructure/repository/authentication/pg"
 	"manga-explorer/internal/util/opt"
 	"reflect"
 	"testing"
 )
 
-func createCredentialForTest(userId string, deviceName, accessTokenId, token opt.Optional[string]) *auth.Credential {
-	temp := auth.NewCredential2(userId, deviceName.ValueOr("Test"), accessTokenId.ValueOr(uuid.NewString()), token.ValueOr(uuid.NewString()))
+func createCredentialForTest(userId string, deviceName, accessTokenId, token opt.Optional[string]) *users.Credential {
+	temp := users.NewCredential2(userId, deviceName.ValueOr("Test"), accessTokenId.ValueOr(uuid.NewString()), token.ValueOr(uuid.NewString()))
 	return &temp
 }
 
 func Test_credentialRepository_Create(t *testing.T) {
 	type args struct {
-		cred *auth.Credential
+		cred *users.Credential
 	}
 	tests := []struct {
 		name    string
@@ -34,7 +35,7 @@ func Test_credentialRepository_Create(t *testing.T) {
 		{
 			name: "Duplicate Credential Id",
 			args: args{
-				cred: &Credentials[0],
+				cred: &pg.Credentials[0],
 			},
 			wantErr: true,
 		},
@@ -61,7 +62,7 @@ func Test_credentialRepository_Create(t *testing.T) {
 		},
 	}
 	for _, tt := range tests {
-		tx, err := Db.Begin()
+		tx, err := pg.Db.Begin()
 		require.NoError(t, err)
 		c := NewCredential(tx)
 
@@ -84,23 +85,23 @@ func Test_credentialRepository_Find(t *testing.T) {
 	tests := []struct {
 		name    string
 		args    args
-		want    *auth.Credential
+		want    *users.Credential
 		wantErr bool
 	}{
 		{
 			name: "Normal",
 			args: args{
-				userId: Credentials[0].UserId,
-				credId: Credentials[0].Id,
+				userId: pg.Credentials[0].UserId,
+				credId: pg.Credentials[0].Id,
 			},
-			want:    &Credentials[0],
+			want:    &pg.Credentials[0],
 			wantErr: false,
 		},
 		{
 			name: "Bad UserId",
 			args: args{
 				userId: "asdadasdbuasd",
-				credId: Credentials[0].Id,
+				credId: pg.Credentials[0].Id,
 			},
 			want:    nil,
 			wantErr: true,
@@ -110,7 +111,7 @@ func Test_credentialRepository_Find(t *testing.T) {
 			name: "User not found",
 			args: args{
 				userId: uuid.NewString(),
-				credId: Credentials[0].Id,
+				credId: pg.Credentials[0].Id,
 			},
 			want:    nil,
 			wantErr: true,
@@ -118,7 +119,7 @@ func Test_credentialRepository_Find(t *testing.T) {
 		{
 			name: "Bad CredId",
 			args: args{
-				userId: Credentials[0].UserId,
+				userId: pg.Credentials[0].UserId,
 				credId: "asdasudaisvudasd",
 			},
 			want:    nil,
@@ -127,7 +128,7 @@ func Test_credentialRepository_Find(t *testing.T) {
 		{
 			name: "Credential not found",
 			args: args{
-				userId: Credentials[0].UserId,
+				userId: pg.Credentials[0].UserId,
 				credId: uuid.NewString(),
 			},
 			want:    nil,
@@ -144,7 +145,7 @@ func Test_credentialRepository_Find(t *testing.T) {
 		},
 	}
 	for _, tt := range tests {
-		c := NewCredential(Db)
+		c := NewCredential(pg.Db)
 		t.Run(tt.name, func(t *testing.T) {
 
 			got, err := c.Find(tt.args.userId, tt.args.credId)
@@ -175,15 +176,15 @@ func Test_credentialRepository_FindByAccessTokenId(t *testing.T) {
 	tests := []struct {
 		name    string
 		args    args
-		want    *auth.Credential
+		want    *users.Credential
 		wantErr bool
 	}{
 		{
 			name: "Normal",
 			args: args{
-				accessTokenId: Credentials[0].AccessTokenId,
+				accessTokenId: pg.Credentials[0].AccessTokenId,
 			},
-			want:    &Credentials[0],
+			want:    &pg.Credentials[0],
 			wantErr: false,
 		},
 		{
@@ -205,7 +206,7 @@ func Test_credentialRepository_FindByAccessTokenId(t *testing.T) {
 	}
 	for _, tt := range tests {
 
-		c := NewCredential(Db)
+		c := NewCredential(pg.Db)
 		t.Run(tt.name, func(t *testing.T) {
 			got, err := c.FindByAccessTokenId(tt.args.accessTokenId)
 			if (err != nil) != tt.wantErr {
@@ -235,15 +236,15 @@ func Test_credentialRepository_FindUserCredentials(t *testing.T) {
 	tests := []struct {
 		name    string
 		args    args
-		want    []auth.Credential
+		want    []users.Credential
 		wantErr bool
 	}{
 		{
 			name: "Normal",
 			args: args{
-				userId: Credentials[0].UserId,
+				userId: pg.Credentials[0].UserId,
 			},
-			want:    Credentials,
+			want:    pg.Credentials,
 			wantErr: false,
 		},
 		{
@@ -272,7 +273,7 @@ func Test_credentialRepository_FindUserCredentials(t *testing.T) {
 		},
 	}
 	for _, tt := range tests {
-		c := NewCredential(Db)
+		c := NewCredential(pg.Db)
 		t.Run(tt.name, func(t *testing.T) {
 			got, err := c.FindUserCredentials(tt.args.userId)
 			if (err != nil) != tt.wantErr {
@@ -311,8 +312,8 @@ func Test_credentialRepository_Remove(t *testing.T) {
 		{
 			name: "Normal",
 			args: args{
-				userId: Credentials[0].UserId,
-				credId: Credentials[0].Id,
+				userId: pg.Credentials[0].UserId,
+				credId: pg.Credentials[0].Id,
 			},
 			wantErr: false,
 		},
@@ -320,14 +321,14 @@ func Test_credentialRepository_Remove(t *testing.T) {
 			name: "User not found",
 			args: args{
 				userId: uuid.NewString(),
-				credId: Credentials[0].Id,
+				credId: pg.Credentials[0].Id,
 			},
 			wantErr: true,
 		},
 		{
 			name: "Credential of user doesn't exist",
 			args: args{
-				userId: Credentials[0].UserId,
+				userId: pg.Credentials[0].UserId,
 				credId: uuid.NewString(),
 			},
 			wantErr: true,
@@ -336,14 +337,14 @@ func Test_credentialRepository_Remove(t *testing.T) {
 			name: "Bad user id as uuid",
 			args: args{
 				userId: "asdad0zxczxc-asdad",
-				credId: Credentials[0].Id,
+				credId: pg.Credentials[0].Id,
 			},
 			wantErr: true,
 		},
 		{
 			name: "Bad credential id as uuid",
 			args: args{
-				userId: Credentials[0].UserId,
+				userId: pg.Credentials[0].UserId,
 				credId: "xzczczx-dasdnb",
 			},
 			wantErr: true,
@@ -351,7 +352,7 @@ func Test_credentialRepository_Remove(t *testing.T) {
 	}
 	for _, tt := range tests {
 
-		tx, err := Db.Begin()
+		tx, err := pg.Db.Begin()
 		require.NoError(t, err)
 		c := NewCredential(tx)
 
@@ -380,8 +381,8 @@ func Test_credentialRepository_RemoveByAccessTokenId(t *testing.T) {
 		{
 			name: "Normal",
 			args: args{
-				userId:        Credentials[0].UserId,
-				accessTokenId: Credentials[0].AccessTokenId,
+				userId:        pg.Credentials[0].UserId,
+				accessTokenId: pg.Credentials[0].AccessTokenId,
 			},
 			wantErr: false,
 		},
@@ -389,14 +390,14 @@ func Test_credentialRepository_RemoveByAccessTokenId(t *testing.T) {
 			name: "User doesn't exists",
 			args: args{
 				userId:        uuid.NewString(),
-				accessTokenId: Credentials[0].AccessTokenId,
+				accessTokenId: pg.Credentials[0].AccessTokenId,
 			},
 			wantErr: true,
 		},
 		{
 			name: "Access token doesn't exists",
 			args: args{
-				userId:        Credentials[0].UserId,
+				userId:        pg.Credentials[0].UserId,
 				accessTokenId: uuid.NewString(),
 			},
 			wantErr: true,
@@ -405,21 +406,21 @@ func Test_credentialRepository_RemoveByAccessTokenId(t *testing.T) {
 			name: "Bad user id as uuid",
 			args: args{
 				userId:        "asdadadas-zxcznca",
-				accessTokenId: Credentials[0].AccessTokenId,
+				accessTokenId: pg.Credentials[0].AccessTokenId,
 			},
 			wantErr: true,
 		},
 		{
 			name: "Bad access token id as uuid",
 			args: args{
-				userId:        Credentials[0].UserId,
+				userId:        pg.Credentials[0].UserId,
 				accessTokenId: "asdasdaszxc-asdnas",
 			},
 			wantErr: true,
 		},
 	}
 	for _, tt := range tests {
-		tx, err := Db.Begin()
+		tx, err := pg.Db.Begin()
 		require.NoError(t, err)
 		c := NewCredential(tx)
 
@@ -447,7 +448,7 @@ func Test_credentialRepository_RemoveUserCredentials(t *testing.T) {
 		{
 			name: "Normal",
 			args: args{
-				userId: Credentials[0].UserId,
+				userId: pg.Credentials[0].UserId,
 			},
 			wantErr: false,
 		},
@@ -474,7 +475,7 @@ func Test_credentialRepository_RemoveUserCredentials(t *testing.T) {
 		},
 	}
 	for _, tt := range tests {
-		tx, err := Db.Begin()
+		tx, err := pg.Db.Begin()
 		require.NoError(t, err)
 		c := NewCredential(tx)
 
@@ -502,7 +503,7 @@ func Test_credentialRepository_UpdateAccessTokenId(t *testing.T) {
 		{
 			name: "Normal",
 			args: args{
-				credentialId:  Credentials[0].Id,
+				credentialId:  pg.Credentials[0].Id,
 				accessTokenId: uuid.NewString(),
 			},
 			wantErr: false,
@@ -526,14 +527,14 @@ func Test_credentialRepository_UpdateAccessTokenId(t *testing.T) {
 		{
 			name: "Bad access token id as uuid",
 			args: args{
-				credentialId:  Credentials[0].Id,
+				credentialId:  pg.Credentials[0].Id,
 				accessTokenId: "asdasdas-zxczcased",
 			},
 			wantErr: true,
 		},
 	}
 	for _, tt := range tests {
-		tx, err := Db.Begin()
+		tx, err := pg.Db.Begin()
 		require.NoError(t, err)
 		c := NewCredential(tx)
 

@@ -1,16 +1,15 @@
-package httputil
+package resp
 
 import (
-	"manga-explorer/internal/app/common"
 	"manga-explorer/internal/app/common/status"
 	"net/http"
 )
 
-func HttpCodeFromError(err common.Status) int {
+func HttpCodeFromError(err status.Object) int {
 	switch err.Code {
 	case status.SUCCESS:
 		return http.StatusOK
-	case status.SUCCESS_CREATED:
+	case status.CREATED:
 		return http.StatusCreated
 	case status.VERIFICATION_TOKEN_MISUSE, status.BAD_BODY_REQUEST_ERROR, status.BAD_PARAMETER_ERROR,
 		status.JWT_TOKEN_MALFORMED, status.TOKEN_MALFORMED, status.TOKEN_MALTYPE, status.TOKEN_LOOKUP_MALFORMED:
