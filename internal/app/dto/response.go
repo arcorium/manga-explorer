@@ -8,6 +8,8 @@ func NewErrorResponse(stat status.Object, details any) ErrorResponse {
 	var detail any
 	if details == nil && len(stat.DetailMessage()) > 0 {
 		detail = stat.DetailMessage()
+	} else {
+		detail = details
 	}
 	return ErrorResponse{
 		Code:    stat.Code,

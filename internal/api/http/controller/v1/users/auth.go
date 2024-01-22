@@ -3,7 +3,9 @@ package users
 import (
 	"github.com/gin-gonic/gin"
 	"manga-explorer/internal/app/common"
+	"manga-explorer/internal/app/common/constant"
 	"manga-explorer/internal/app/common/status"
+	"manga-explorer/internal/domain/users"
 	"manga-explorer/internal/domain/users/dto"
 	authService "manga-explorer/internal/domain/users/service"
 	"manga-explorer/internal/util"
@@ -31,15 +33,23 @@ type AuthController struct {
 // @Failure 400 {object} common.ErrorResponse
 // @Router /login [post]
 func (a AuthController) Login(ctx *gin.Context) {
-	var req dto.LoginInput
-	stat, errFields := httputil.BindJson(ctx, &req)
+	var input dto.LoginInput
+	stat, errFields := httputil.BindJson(ctx, &input)
 	if stat.IsError() {
 		resp.ErrorDetailed(ctx, stat, errFields)
 		return
 	}
 
-	res, cerr := a.authService.Authenticate(&req)
-	resp.Conditional(ctx, cerr, res, nil)
+	// Get device name from context
+	usr, err := util.GetContextValue[*users.Device](ctx, constant.UserAgentKey)
+	if err != nil {
+		resp.Error(ctx, status.InternalError())
+		return
+	}
+	input.DeviceName = usr.Name
+
+	res, stat := a.authService.Authenticate(&input)
+	resp.Conditional(ctx, stat, res, nil)
 }
 
 // Logout Handle user logout, when the uri provide id parameter, those credential will be removed otherwise
@@ -76,14 +86,14 @@ func (a AuthController) LogoutAllDevice(ctx *gin.Context) {
 }
 
 func (a AuthController) RefreshToken(ctx *gin.Context) {
-	var req dto.RefreshTokenInput
-	stat, fieldErrors := httputil.BindJson(ctx, &req)
+	var input dto.RefreshTokenInput
+	stat, fieldErrors := httputil.BindJson(ctx, &input)
 	if stat.IsError() {
 		resp.ErrorDetailed(ctx, status.Error(status.BAD_BODY_REQUEST_ERROR), fieldErrors)
 		return
 	}
 
-	token, stat := a.authService.RefreshToken(&req)
+	token, stat := a.authService.RefreshToken(&input)
 	resp.Conditional(ctx, stat, token, nil)
 }
 
@@ -93,6 +103,6 @@ func (a AuthController) GetCredentials(ctx *gin.Context) {
 		resp.Error(ctx, stat)
 		return
 	}
-	creds, cerr := a.authService.GetCredentials(token.UserId)
-	resp.Conditional(ctx, cerr, creds, nil)
+	creds, stat := a.authService.GetCredentials(token.UserId)
+	resp.Conditional(ctx, stat, creds, nil)
 }

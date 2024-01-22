@@ -30,7 +30,7 @@ func SuccessMessage(ctx *gin.Context, status status.Object, message string) {
 }
 
 // ErrorDetailed Used to set common.Response as response for bad response
-func ErrorDetailed(ctx *gin.Context, status status.Object, details ...any) {
+func ErrorDetailed[T any](ctx *gin.Context, status status.Object, details T) {
 	res := ErrorWrapper[dto.ErrorResponse]{Internal: dto.NewErrorResponse(status, details)}
 	ctx.JSON(HttpCodeFromError(status), res)
 }

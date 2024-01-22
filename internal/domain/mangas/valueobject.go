@@ -10,15 +10,15 @@ var ErrUnknownStatus = errors.New("status unknown")
 
 func NewStatus(val string) (Status, error) {
 	switch val {
-	case "Completed":
+	case "completed":
 		return StatusCompleted, nil
-	case "On-going":
+	case "ongoing":
 		return StatusOnGoing, nil
-	case "Drafted":
+	case "drafted":
 		return StatusDraft, nil
-	case "Dropped":
+	case "dropped":
 		return StatusDropped, nil
-	case "Hiatus":
+	case "hiatus":
 		return StatusHiatus, nil
 	default:
 		return Status(math.MaxUint8), ErrUnknownStatus

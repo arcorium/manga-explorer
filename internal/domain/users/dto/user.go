@@ -45,7 +45,7 @@ func (c *ChangePasswordInput) SetUserId(claims *common.AccessTokenClaims) {
 }
 
 type ResetPasswordInput struct {
-	Token       string `uri:"token"`
+	Token       string `uri:"token" binding:"required"`
 	UserId      string `json:"-"`
 	NewPassword string `json:"new_password" binding:"required"`
 }
@@ -53,7 +53,7 @@ type ResetPasswordInput struct {
 type UpdateUserExtendedInput struct {
 	UserId   string `uri:"id" binding:"required"`
 	Username string `json:"username"`
-	Email    string `json:"email"`
+	Email    string `json:"email" binding:"email"`
 	Password string `json:"password"`
 }
 
@@ -67,10 +67,10 @@ type UpdateProfileExtendedInput struct {
 
 type AddUserInput struct {
 	Username  string `json:"username"`
-	Email     string `json:"email"`
+	Email     string `json:"email" binding:"email"`
 	Password  string `json:"password"`
 	Verified  bool   `json:"verified"`
-	Role      uint8  `json:"role"`
+	Role      string `json:"role" binding:"oneof= admin user"`
 	FirstName string `json:"first_name"`
 	LastName  string `json:"last_name"`
 	Bio       string `json:"bio"`

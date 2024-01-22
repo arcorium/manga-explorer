@@ -28,15 +28,17 @@ func NewUser(name, email, password string, role Role) (User, error) {
 
 	password, err := util.Hash(password)
 	if err != nil {
-		return usr, ErrHashPassword
+		return BadUser, ErrHashPassword
 	}
 	usr.Password = password
 
 	if !usr.ValidateEmail() {
-		return usr, ErrEmailValidation
+		return BadUser, ErrEmailValidation
 	}
 	return usr, nil
 }
+
+var BadUser User
 
 type User struct {
 	bun.BaseModel `bun:"table:users"`

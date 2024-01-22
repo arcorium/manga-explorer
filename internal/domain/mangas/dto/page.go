@@ -8,12 +8,12 @@ type PageResponse struct {
 }
 
 type PageCreateInput struct {
-	ChapterId string                `uri:"chapter_id" binding:"required"`
+	ChapterId string                `uri:"chapter_id" binding:"required,uuid4"`
 	Page      uint16                `form:"page" binding:"required"`
 	Image     *multipart.FileHeader `form:"image" binding:"required"`
 }
 
 type PageDeleteInput struct {
-	ChapterId string   `uri:"chapter_id" binding:"required"`
+	ChapterId string   `uri:"chapter_id" binding:"required,uuid4"`
 	Pages     []uint16 `json:"pages" binding:"required"`
 }

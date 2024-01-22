@@ -2,7 +2,7 @@ package status
 
 // StatusSuccess Use it when there is no error, it works like returning nil on error
 
-func NewStatus(code uint, err error, details ...string) Object {
+func New(code uint, err error, details ...string) Object {
 	var message string
 	if len(details) == 1 {
 		message = details[0]

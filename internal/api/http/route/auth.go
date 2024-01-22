@@ -15,10 +15,10 @@ func (a authRoute) V1Route(config *Config, router gin.IRouter) {
 	authRouter := router.Group("/auth/")
 	controller := &config.Controller.Auth
 
+	authRouter.POST("/login", config.Middleware.UserAgentChecker.Handle, controller.Login)
 	authRouter.POST("/refresh-token", controller.RefreshToken)
-	authRouter.POST("/login", controller.Login)
 
-	authRouter.Use(config.Middleware.Auth.Handle)
+	authRouter.Use(config.Middleware.Authorization.Handle)
 	authRouter.GET("/logout/all", controller.LogoutAllDevice)
 	authRouter.GET("/logout/:id", controller.Logout)
 	authRouter.GET("/logout", controller.Logout)

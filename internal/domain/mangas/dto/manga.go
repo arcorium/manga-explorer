@@ -31,15 +31,15 @@ type MangaFavoriteResponse struct {
 
 type MangaCreateInput struct {
 	Descriptions    []TranslationCreateInput `json:"descriptions" binding:"required"`
-	Status          string                   `json:"status" binding:"required"`
-	Origin          common.Country           `json:"origin" binding:"required"`
+	Status          string                   `json:"status" binding:"required,manga_status"`
+	Origin          common.Country           `json:"origin" binding:"required,iso3166_1_alpha3|iso3166_1_alpha2"`
 	PublicationYear uint16                   `json:"publication_year" binding:"required"`
 }
 
 type MangaEditInput struct {
 	MangaId         string         `uri:"manga_id" binding:"required"`
-	Status          string         `json:"status"`
-	Origin          common.Country `json:"origin"`
+	Status          string         `json:"status" binding:"required,manga_status"`
+	Origin          common.Country `json:"origin" binding:"iso3166_1_alpha3|iso3166_1_alpha2"`
 	Title           string         `json:"title"`
 	Description     string         `json:"description"`
 	PublicationYear uint16         `json:"publication_year"`

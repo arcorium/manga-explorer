@@ -2,19 +2,17 @@ package dto
 
 import (
 	"manga-explorer/internal/app/common/constant"
-	"regexp"
 )
 
-var emailRegex = regexp.MustCompile("^[a-zA-Z0-9|._]+@[a-zA-Z0-9]+(\\.[a-zA-Z0-9]{2,})+$")
-
 type LoginInput struct {
-	Email    string `json:"email" binding:"required,email"`
-	Password string `json:"password" binding:"required"`
+	DeviceName string `json:"-"`
+	Email      string `json:"email" binding:"required,email"`
+	Password   string `json:"password" binding:"required"`
 }
 
 type RefreshTokenInput struct {
-	Type        string `json:"token_type" binding:"required"`
-	AccessToken string `json:"access_token" binding:"required"`
+	Type        string `json:"token_type" binding:"required,eq=Bearer"`
+	AccessToken string `json:"access_token" binding:"required,jwt"`
 }
 
 var NoLoginResponse = LoginResponse{}

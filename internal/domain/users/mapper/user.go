@@ -39,7 +39,7 @@ func createUserForPasswordChange(userId, password string) (users.User, error) {
 
 	passwords, err := util.Hash(password)
 	if err != nil {
-		return usr, users.ErrHashPassword
+		return users.BadUser, users.ErrHashPassword
 	}
 	usr.Password = passwords
 	return usr, nil
@@ -55,9 +55,12 @@ func MapResetPasswordInput(input *dto.ResetPasswordInput) (users.User, error) {
 }
 
 func MapAddUserInput(input *dto.AddUserInput) (users.User, error) {
-	role := users.Role(input.Role)
+	role, err := users.NewRole(input.Role)
+	if err != nil {
+		return users.BadUser, err
+	}
 	if err := role.Validate(); err != nil {
-		return users.User{}, err
+		return users.BadUser, err
 	}
 	return users.NewUser(input.Username, input.Email, input.Password, role)
 }
@@ -71,12 +74,12 @@ func MapUpdateUserExtendedInput(input *dto.UpdateUserExtendedInput) (users.User,
 	}
 
 	if len(input.Password) == 0 {
-		return user, nil
+		return users.BadUser, nil
 	}
 
 	password, err := util.Hash(input.Password)
 	if err != nil {
-		return user, err
+		return users.BadUser, err
 	}
 	user.Password = password
 

@@ -1,6 +1,7 @@
 package common
 
 import (
+	"manga-explorer/internal/util"
 	"strconv"
 	"time"
 
@@ -37,9 +38,9 @@ type Config struct {
 	DbParam    string `mapstructure:"DB_PARAM"`
 }
 
-func LoadConfig(name string, path ...string) (Config, error) {
-	var conf Config
+var conf *Config
 
+func LoadConfig(name string, path ...string) (*Config, error) {
 	viper.SetDefault("IP", "localhost")
 	viper.SetDefault("PORT", 9999)
 	viper.SetDefault("ACCESS_TOKEN_DURATION", time.Minute*5)
@@ -54,10 +55,10 @@ func LoadConfig(name string, path ...string) (Config, error) {
 		viper.AddConfigPath(path[0])
 	}
 	if err := viper.ReadInConfig(); err != nil {
-		return conf, err
+		return nil, err
 	}
 	if err := viper.Unmarshal(&conf); err != nil {
-		return conf, err
+		return nil, err
 	}
 
 	conf.signingMethod = jwt.GetSigningMethod(conf.JWTSigningType)
@@ -83,4 +84,12 @@ func (c *Config) DatabaseDSN() string {
 		return dsn
 	}
 	return dsn + "?" + c.DbParam
+}
+
+// GetConfig retrieving singleton config object either created by LoadConfig or it will automatically use app.env file from current work directory
+func GetConfig() *Config {
+	if conf == nil {
+		return util.DropError(LoadConfig("app"))
+	}
+	return conf
 }

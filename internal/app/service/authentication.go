@@ -26,15 +26,15 @@ type credentialService struct {
 	userRepo userRepo.IUser // TODO: Use service and handle on controller instead
 }
 
-func (c credentialService) Authenticate(request *dto.LoginInput) (dto.LoginResponse, status.Object) {
+func (c credentialService) Authenticate(input *dto.LoginInput) (dto.LoginResponse, status.Object) {
 
-	usr, err := c.userRepo.FindUserByEmail(request.Email)
+	usr, err := c.userRepo.FindUserByEmail(input.Email)
 	stat := status.FromRepository(err)
 	if stat.IsError() {
 		return dto.NoLoginResponse, status.Error(status.USER_NOT_FOUND)
 	}
 
-	if !usr.ValidatePassword(request.Password) {
+	if !usr.ValidatePassword(input.Password) {
 		return dto.NoLoginResponse, status.Error(status.USER_LOGIN_ERROR)
 	}
 
@@ -52,7 +52,7 @@ func (c credentialService) Authenticate(request *dto.LoginInput) (dto.LoginRespo
 	}
 
 	// Save Credential
-	cred := users.NewCredential(usr, "Test", accessTokenClaims["id"].(string), refreshToken)
+	cred := users.NewCredential(usr, input.DeviceName, accessTokenClaims["id"].(string), refreshToken)
 	err = c.authRepo.Create(&cred)
 	stat = status.FromRepository(err)
 	if err != nil {

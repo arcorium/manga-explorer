@@ -16,8 +16,9 @@ type ConfigController struct {
 }
 
 type ConfigMiddleware struct {
-	Auth          middleware.AuthMiddleware
-	AdminRestrict middleware.RoleRestrictionMiddleware
+	Authorization    middleware.AuthMiddleware
+	UserAgentChecker middleware.UserAgentCheckerMiddleware
+	AdminRestrict    middleware.RoleRestrictionMiddleware
 }
 
 type Config struct {
@@ -26,7 +27,7 @@ type Config struct {
 }
 
 func NewRouter(config *Config, router gin.IRouter) Router {
-	return Router{config: config, router: router}
+	return Router{Config: config, router: router}
 }
 
 const (
@@ -34,7 +35,7 @@ const (
 )
 
 type Router struct {
-	config *Config
+	Config *Config
 	router gin.IRouter
 }
 
@@ -42,7 +43,7 @@ func (r *Router) Routes(routes ...IRoute) {
 	router := r.router.Group(RouterVersion1)
 
 	for _, route := range routes {
-		route.V1Route(r.config, router)
+		route.V1Route(r.Config, router)
 	}
 }
 

@@ -22,7 +22,7 @@ func (u userRoute) V1Route(config *Config, router gin.IRouter) {
 	user.PATCH("/reset-password/:token", userController.ResetPassword)
 	user.POST("/change-password", userController.ChangePassword)
 
-	user.Use(config.Middleware.Auth.Handle)
+	user.Use(config.Middleware.Authorization.Handle)
 	user.PUT("/", userController.EditUser)
 	// Profiles thingies
 	user.GET("/:id/profiles", userController.GetUserProfile)

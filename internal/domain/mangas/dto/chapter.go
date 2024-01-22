@@ -7,7 +7,7 @@ import (
 )
 
 type ChapterResponse struct {
-	Language  common.Country `json:"language"`
+	Language  common.Country `json:"language" `
 	Title     string         `json:"title"`
 	CreatedAt time.Time      `json:"created_at"`
 
@@ -17,18 +17,18 @@ type ChapterResponse struct {
 }
 
 type ChapterCreateInput struct {
-	MangaId      string         `uri:"manga_id" binding:"required"`
-	VolumeId     string         `json:"volume_id" binding:"required"`
-	Language     common.Country `json:"language" binding:"required"`
+	MangaId      string         `uri:"manga_id" binding:"required,uuid4"`
+	VolumeId     string         `json:"volume_id" binding:"required,uuid4"`
+	Language     common.Country `json:"language" binding:"required,iso3166_1_alpha3|iso3166_1_alpha2"`
 	Title        string         `json:"title" binding:"required"`
 	PublishDate  time.Time      `json:"publish_date"`
 	TranslatorId string         `json:"-"`
 }
 
 type ChapterEditInput struct {
-	ChapterId   string         `uri:"chapter_id" binding:"required"`
-	VolumeId    string         `json:"volume_id"`
+	ChapterId   string         `uri:"chapter_id" binding:"required,uuid4"`
+	VolumeId    string         `json:"volume_id" binding:"required,uuid4"`
 	Title       string         `json:"title"`
-	Language    common.Country `json:"language"`
+	Language    common.Country `json:"language" binding:"iso3166_1_alpha3|iso3166_1_alpha2"`
 	PublishDate time.Time      `json:"publish_date"`
 }

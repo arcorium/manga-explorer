@@ -15,7 +15,7 @@ func Success(code ...uint) Object {
 		panic("Bad success code")
 	}
 
-	return NewStatus(_code, nil)
+	return New(_code, nil)
 }
 
 func Updated() Object {
@@ -37,7 +37,11 @@ func Error(code int, msg ...string) Object {
 		panic("Object message is not defined!")
 	}
 
-	return NewStatus(uint(code), errors.New(message), msg...)
+	return New(uint(code), errors.New(message), msg...)
+}
+
+func InternalError() Object {
+	return Error(INTERNAL_SERVER_ERROR)
 }
 
 func FromRepository(err error, successCode ...uint) Object {

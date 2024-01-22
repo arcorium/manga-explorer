@@ -11,7 +11,7 @@ type CommentResponse struct {
 }
 
 type commentCreatInputParent struct {
-	ParentId string `json:"parent_id"`
+	ParentId string `json:"parent_id" binding:"uuid4"`
 	UserId   string `json:"-"`
 	Comment  string `json:"comment" binding:"required"`
 }

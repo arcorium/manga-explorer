@@ -2,7 +2,6 @@ package pg
 
 import (
 	"context"
-	"database/sql"
 	"manga-explorer/internal/domain/users"
 	"manga-explorer/internal/domain/users/repository"
 	"manga-explorer/internal/util"
@@ -60,7 +59,10 @@ func (u UserRepository) CreateUser(user *users.User, profile *users.Profile) err
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second*5)
 	defer cancel()
 
-	tx, err := u.db.BeginTx(ctx, &sql.TxOptions{})
+	tx, err := u.db.BeginTx(ctx, nil)
+	if err != nil {
+		return err
+	}
 
 	_, err = tx.NewInsert().
 		Model(user).

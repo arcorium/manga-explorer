@@ -3,10 +3,6 @@ inpackage: true
 dir: "{{.InterfaceDir}}/mocks"
 mockname: '{{trimPrefix .InterfaceName "I"}}Mock'
 packages:
-  manga-explorer/internal/domain/auth/repository:
-    config:
-      recursive: true
-      all: true
   manga-explorer/internal/domain/users/repository:
     config:
       recursive: true

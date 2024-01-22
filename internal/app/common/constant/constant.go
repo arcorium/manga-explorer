@@ -6,8 +6,6 @@ const (
 
 const TokenType = "Bearer"
 const ClaimsKey = "claims"
-const ResponderPagedKey = "page"
-const ResponderStatusKey = "status"
-const ResponderDataKey = "data"
+const UserAgentKey = "user_agent"
 
 const IssuerName = "manga-explorer"

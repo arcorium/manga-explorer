@@ -28,7 +28,7 @@ func (m _mangaRoute) MangaRoute(config *Config, router gin.IRouter) {
 	mangaRoute.GET("/:manga_id/comments", mangaController.FindMangaComments)
 	mangaRoute.GET("/:manga_id/ratings", mangaController.FindMangaRatings)
 	// Login user
-	mangaRoute.Use(config.Middleware.Auth.Handle)
+	mangaRoute.Use(config.Middleware.Authorization.Handle)
 	mangaRoute.POST("/:manga_id/comments", mangaController.CreateMangaComments)
 	mangaRoute.POST("/:manga_id/ratings", mangaController.CreateMangaRatings)
 	mangaRoute.GET("/favorite", mangaController.GetMangaFavorites)
@@ -50,7 +50,7 @@ func (m _mangaRoute) ChapterRoute(config *Config, router gin.IRouter) {
 	chapterRoute.GET("/:chapter_id/comments", chapterController.FindChapterComments)
 	chapterRoute.GET("/:chapter_id", chapterController.FindChapterPages)
 	// Login user
-	chapterRoute.Use(config.Middleware.Auth.Handle)
+	chapterRoute.Use(config.Middleware.Authorization.Handle)
 	chapterRoute.POST("/:chapter_id/comments", chapterController.CreateChapterComments)
 	// Admin
 	chapterRoute.Use(config.Middleware.AdminRestrict.Handle)
@@ -64,7 +64,7 @@ func (m _mangaRoute) ChapterRoute(config *Config, router gin.IRouter) {
 	pageRoute := router.Group("/pages")
 	pageRoute.GET("/:page_id/comments", chapterController.FindPageComments)
 	// Login user
-	pageRoute.Use(config.Middleware.Auth.Handle)
+	pageRoute.Use(config.Middleware.Authorization.Handle)
 	pageRoute.POST("/:page_id/comments", chapterController.CreatePageComments)
 
 	volumeRoute := router.Group("/volumes")
@@ -73,7 +73,7 @@ func (m _mangaRoute) ChapterRoute(config *Config, router gin.IRouter) {
 
 func (m _mangaRoute) GenreRoute(config *Config, router gin.IRouter) {
 	genreController := &config.Controller.MangaGenre
-	genreRoute := router.Group("/genres", config.Middleware.Auth.Handle, config.Middleware.AdminRestrict.Handle)
+	genreRoute := router.Group("/genres", config.Middleware.Authorization.Handle, config.Middleware.AdminRestrict.Handle)
 	genreRoute.GET("/", genreController.ListGenre)
 	genreRoute.POST("/", genreController.CreateGenre)
 	genreRoute.DELETE("/:genre_id", genreController.DeleteGenre)

@@ -111,15 +111,19 @@ func Drops(db *bun.DB) []error {
 	return errors
 }
 
-func Open(config *common.Config, log bool) *bun.DB {
+func Open(config *common.Config, log bool) (*bun.DB, error) {
 	dsn := config.DatabaseDSN()
 	sqldb := sql.OpenDB(pgdriver.NewConnector(pgdriver.WithDSN(dsn)))
+	if err := sqldb.Ping(); err != nil {
+		return nil, err
+	}
+
 	db := bun.NewDB(sqldb, pgdialect.New())
 	if log {
 		addDebugLog(db)
 	}
 	RegisterModels(db)
-	return db
+	return db, nil
 }
 
 func Close(db *bun.DB) {

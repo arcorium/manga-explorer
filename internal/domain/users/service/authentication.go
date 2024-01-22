@@ -6,8 +6,8 @@ import (
 )
 
 type IAuthentication interface {
-	Authenticate(request *dto.LoginInput) (dto.LoginResponse, status.Object)
-	RefreshToken(request *dto.RefreshTokenInput) (dto.RefreshTokenResponse, status.Object)
+	Authenticate(input *dto.LoginInput) (dto.LoginResponse, status.Object)
+	RefreshToken(input *dto.RefreshTokenInput) (dto.RefreshTokenResponse, status.Object)
 	GetCredentials(userId string) ([]dto.CredentialResponse, status.Object)
 	SelfLogout(userId, accessToken string) status.Object
 	Logout(userId, credId string) status.Object
