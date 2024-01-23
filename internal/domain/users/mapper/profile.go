@@ -4,16 +4,23 @@ import (
 	"manga-explorer/internal/domain/users"
 	"manga-explorer/internal/domain/users/dto"
 	"manga-explorer/internal/infrastructure/file"
+	fileService "manga-explorer/internal/infrastructure/file/service"
 	"time"
 )
 
-func ToProfileResponse(profile *users.Profile) dto.ProfileResponse {
+func toProfileResponse(profile *users.Profile, fl fileService.IFile) dto.InternalProfileResponse {
+	return dto.InternalProfileResponse{
+		FirstName: profile.FirstName,
+		LastName:  profile.LastName,
+		PhotoURL:  fl.GetFullpath(file.ProfileAsset, profile.PhotoURL),
+		Bio:       profile.Bio,
+	}
+}
+
+func ToProfileResponse(profile *users.Profile, file fileService.IFile) dto.ProfileResponse {
 	return dto.ProfileResponse{
-		UserResponse: ToUserResponse(profile.User),
-		FirstName:    profile.FirstName,
-		LastName:     profile.LastName,
-		PhotoURL:     profile.PhotoURL.HostnameFullpath(file.ProfileAsset),
-		Bio:          profile.Bio,
+		UserResponse:     ToUserResponse(profile.User), // User should be same
+		ProfileResponses: toProfileResponse(profile, file),
 	}
 }
 

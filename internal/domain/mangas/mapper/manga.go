@@ -5,36 +5,37 @@ import (
 	"manga-explorer/internal/domain/mangas"
 	"manga-explorer/internal/domain/mangas/dto"
 	"manga-explorer/internal/infrastructure/file"
+	fileService "manga-explorer/internal/infrastructure/file/service"
 	"manga-explorer/internal/util/containers"
 	"time"
 )
 
-func ToMangaResponse(manga *mangas.Manga) dto.MangaResponse {
+func ToMangaResponse(manga *mangas.Manga, fs fileService.IFile) dto.MangaResponse {
 	return dto.MangaResponse{
 		Id:              manga.Id,
 		Status:          manga.Status.Underlying(),
 		Origin:          manga.Origin,
 		PublicationYear: manga.PublicationYear,
-		CoverURL:        manga.CoverURL.HostnameFullpath(file.MangaAsset),
+		CoverURL:        fs.GetFullpath(file.CoverAsset, manga.CoverURL),
 		Comments:        containers.CastSlicePtr(manga.Comments, ToCommentResponse),
 		Ratings:         containers.CastSlicePtr(manga.Ratings, ToRatingResponse),
 		Translations:    containers.CastSlicePtr(manga.Translations, ToTranslationResponse),
-		Volumes:         containers.CastSlicePtr(manga.Volumes, ToVolumeResponse),
+		Volumes:         containers.CastSlicePtr1(manga.Volumes, fs, ToVolumeResponse),
 		ViewedCount:     0, // TODO: Implement it
 		FavoriteCount:   0,
 	}
 }
 
-func ToMangaHistoryResponse(history *mangas.MangaHistory) dto.MangaHistoryResponse {
+func ToMangaHistoryResponse(history *mangas.MangaHistory, fl fileService.IFile) dto.MangaHistoryResponse {
 	return dto.MangaHistoryResponse{
-		MangaResponse: ToMangaResponse(history.Manga),
+		MangaResponse: ToMangaResponse(history.Manga, fl),
 		LastView:      history.LastView,
 	}
 }
 
-func ToMangaFavoriteResponse(favorite *mangas.MangaFavorite) dto.MangaFavoriteResponse {
+func ToMangaFavoriteResponse(favorite *mangas.MangaFavorite, fl fileService.IFile) dto.MangaFavoriteResponse {
 	return dto.MangaFavoriteResponse{
-		MangaResponse: ToMangaResponse(favorite.Manga),
+		MangaResponse: ToMangaResponse(favorite.Manga, fl),
 		FavoritedAt:   favorite.CreatedAt,
 	}
 }

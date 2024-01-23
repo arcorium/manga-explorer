@@ -11,6 +11,7 @@ type AssetType string
 
 const (
 	MangaAsset   AssetType = "mangas"
+	CoverAsset             = "covers"
 	ProfileAsset           = "profiles"
 	UnknownAsset           = ""
 )

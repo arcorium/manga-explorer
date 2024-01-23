@@ -35,9 +35,10 @@ func main() {
 
 	repositories := factory.CreateRepositories(db)
 	database.AddAdminUser(repositories.User)
-	services := factory.CreateServices(config, &repositories)
 
 	engine := gin.Default()
+	services := factory.CreateServices(config, &repositories, engine)
+
 	router := factory.CreateRouter(config, &services, engine)
 
 	authRoute := route.NewAuthRoute()

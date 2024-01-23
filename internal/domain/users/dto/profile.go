@@ -2,13 +2,16 @@ package dto
 
 import "mime/multipart"
 
-type ProfileResponse struct {
-	UserResponse UserResponse `json:"user"`
-
+type InternalProfileResponse struct {
 	FirstName string `json:"first_name"`
 	LastName  string `json:"last_name"`
 	PhotoURL  string `json:"photo_url"`
 	Bio       string `json:"bio"`
+}
+
+type ProfileResponse struct {
+	UserResponse     UserResponse            `json:"user"`
+	ProfileResponses InternalProfileResponse `json:"profile"`
 }
 
 type ProfileUpdateInput struct {
@@ -19,6 +22,6 @@ type ProfileUpdateInput struct {
 }
 
 type ProfileImageUpdateInput struct {
-	UserId string                `json:"-"`
-	Image  *multipart.FileHeader `form:"image"` // When null, it is considered to be delete
+	UserId string                `json:"-" form:"-" binding:"required,uuid4"`
+	Image  *multipart.FileHeader `form:"image" binding:"required"`
 }

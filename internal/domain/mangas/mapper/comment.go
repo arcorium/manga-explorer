@@ -23,7 +23,7 @@ func MapMangaCommentCreateInput(input *dto.MangaCommentCreateInput) mangas.Comme
 	return mangas.Comment{
 		Id:         uuid.NewString(),
 		ParentId:   input.ParentId,
-		ObjectType: "manga",
+		ObjectType: mangas.CommentObjectManga,
 		ObjectId:   input.MangaId,
 		UserId:     input.UserId,
 		Comment:    input.Comment,
@@ -40,7 +40,7 @@ func MapChapterCommentCreateInput(input *dto.ChapterCommentCreateInput) mangas.C
 	return mangas.Comment{
 		Id:         uuid.NewString(),
 		ParentId:   input.ParentId,
-		ObjectType: "chapter",
+		ObjectType: mangas.CommentObjectChapter,
 		ObjectId:   input.ChapterId,
 		UserId:     input.UserId,
 		Comment:    input.Comment,
@@ -56,7 +56,7 @@ func MapPageCommentCreateInput(input *dto.PageCommentCreateInput) mangas.Comment
 	return mangas.Comment{
 		Id:         uuid.NewString(),
 		ParentId:   input.ParentId,
-		ObjectType: "page",
+		ObjectType: mangas.CommentObjectPage,
 		ObjectId:   input.PageId,
 		UserId:     input.UserId,
 		Comment:    input.Comment,

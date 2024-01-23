@@ -1,7 +1,6 @@
 package common
 
 import (
-	"manga-explorer/internal/infrastructure/file"
 	"manga-explorer/internal/util"
 	"strconv"
 	"time"
@@ -63,7 +62,6 @@ func LoadConfig(name string, path ...string) (*Config, error) {
 	}
 
 	conf.signingMethod = jwt.GetSigningMethod(conf.JWTSigningType)
-	file.SetHostName(conf.Endpoint()) // Set default hostname
 	return conf, nil
 }
 

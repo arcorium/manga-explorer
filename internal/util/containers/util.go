@@ -115,7 +115,7 @@ func MapKeys[K comparable, V any](maps map[K]V) []K {
 }
 
 type SafeConvertFunc[From any, To any] func(current From) (To, error)
-type ConvertFunc[From any, To any] func(current From) To
+type CastFunc[From any, To any] func(current From) To
 
 type ConvertFuncEnumerated[From any, To any] func(index int, current From) To
 
@@ -137,7 +137,7 @@ func SafeCastSlice[From any, To any](slice []From, convertFunc SafeConvertFunc[*
 }
 
 // CastSlice Used to convert []From into []To based on function parameter without error checking, use it when the object conversion never fail
-func CastSlice[From, To any](slice []From, convertFunc ConvertFunc[From, To]) []To {
+func CastSlice[From, To any](slice []From, convertFunc CastFunc[From, To]) []To {
 	if slice == nil {
 		return nil
 	}
@@ -150,7 +150,7 @@ func CastSlice[From, To any](slice []From, convertFunc ConvertFunc[From, To]) []
 }
 
 // CastSlicePtr works like CastSlice method, but instead of passing From type it will pass *From type in the function parameter
-func CastSlicePtr[From, To any](slice []From, convertFunc ConvertFunc[*From, To]) []To {
+func CastSlicePtr[From, To any](slice []From, convertFunc CastFunc[*From, To]) []To {
 	if slice == nil {
 		return nil
 	}
@@ -162,20 +162,17 @@ func CastSlicePtr[From, To any](slice []From, convertFunc ConvertFunc[*From, To]
 	return result
 }
 
-type ConvertFuncParam[From, To, Param any] func(current From, param Param) To
+type CastParamFunc[From, To, Param any] func(current From, param Param) To
 
-func CastSliceParam1[From any, To any, Param any](slice []From, params []Param, convertFunc ConvertFuncParam[*From, To, Param]) ([]To, error) {
+func CastSlicePtr1[From any, To any, Param any](slice []From, params Param, convertFunc CastParamFunc[*From, To, Param]) []To {
 	if slice == nil {
-		return nil, errors.New("slice is nil")
-	}
-	if len(slice) != len(params) {
-		return nil, errors.New("slice and params has different length")
+		return nil
 	}
 
 	result := make([]To, 0, len(slice))
 	for i := 0; i < len(slice); i++ {
-		result = append(result, convertFunc(&slice[i], params[i]))
+		result = append(result, convertFunc(&slice[i], params))
 	}
 
-	return result, nil
+	return result
 }

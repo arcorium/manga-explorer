@@ -2,27 +2,43 @@ package service
 
 import (
 	"fmt"
+	"github.com/gin-gonic/gin"
 	"io"
 	"io/fs"
+	"manga-explorer/internal/app/common"
 	"manga-explorer/internal/app/common/status"
 	"manga-explorer/internal/infrastructure/file"
 	"manga-explorer/internal/util"
 	"mime/multipart"
 	"os"
 	"path/filepath"
+	"strings"
 )
 
-func NewLocalFileService(dir string, localhost string) IFile {
-	_ = os.MkdirAll(filepath.Dir(dir), fs.ModeDir)
+func NewLocalFileService(config *common.Config, endpoint, dir string, routes gin.IRouter) IFile {
+	dir = filepath.Dir(dir + "/") // Append '/' so /file would do
+	err := os.MkdirAll(dir, fs.ModeDir)
+	util.DoNothing(err)
+
+	for _, asset := range util.SliceWrap(file.MangaAsset, file.ProfileAsset, file.CoverAsset) {
+		path := filepath.Join(dir, asset.String())
+		err = os.MkdirAll(path, fs.ModeDir)
+		if err != nil {
+			panic(fmt.Sprintf("Failed to create directory: %s", err))
+		}
+	}
+	// Serve static
+	routes.Static(endpoint, dir)
+
 	return &serverFileService{
 		Directory: dir,
-		LocalHost: localhost,
+		endpoint:  fmt.Sprintf("%s/%s", config.Endpoint(), strings.TrimPrefix(endpoint, "/")),
 	}
 }
 
 type serverFileService struct {
+	endpoint  string
 	Directory string
-	LocalHost string
 }
 
 func (s serverFileService) getLocalPath(types file.AssetType, filename file.Name) string {
@@ -83,4 +99,14 @@ func (s serverFileService) Delete(types file.AssetType, filename file.Name) stat
 	}
 	return status.Success(status.DELETED)
 
+}
+
+func (s serverFileService) Endpoint(types file.AssetType) string {
+	return fmt.Sprintf("%s/%s", s.endpoint, types.String())
+}
+func (s serverFileService) GetFullpath(assetType file.AssetType, filename file.Name) string {
+	if len(filename) == 0 {
+		return ""
+	}
+	return fmt.Sprintf("%s/%s", s.Endpoint(assetType), filename)
 }

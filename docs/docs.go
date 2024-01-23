@@ -37,13 +37,13 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/common.Response"
+                            "$ref": "#/definitions/dto.SuccessResponse"
                         }
                     },
-                    "400": {
-                        "description": "Bad Request",
+                    "401": {
+                        "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/common.Response"
+                            "$ref": "#/definitions/dto.ErrorResponse"
                         }
                     }
                 }
@@ -51,31 +51,25 @@ const docTemplate = `{
         }
     },
     "definitions": {
-        "common.Response": {
+        "dto.ErrorResponse": {
             "type": "object",
             "properties": {
                 "code": {
                     "type": "integer"
                 },
-                "data": {},
+                "details": {},
                 "message": {
-                    "type": "string"
-                },
-                "page": {
-                    "$ref": "#/definitions/common.ResponsePage"
-                },
-                "status": {
                     "type": "string"
                 }
             }
         },
-        "common.ResponsePage": {
+        "dto.ResponsePage": {
             "type": "object",
             "properties": {
-                "current_page": {
+                "elements": {
                     "type": "integer"
                 },
-                "elements_page": {
+                "page": {
                     "type": "integer"
                 },
                 "total_elements": {
@@ -83,6 +77,18 @@ const docTemplate = `{
                 },
                 "total_page": {
                     "type": "integer"
+                }
+            }
+        },
+        "dto.SuccessResponse": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer"
+                },
+                "data": {},
+                "page": {
+                    "$ref": "#/definitions/dto.ResponsePage"
                 }
             }
         }

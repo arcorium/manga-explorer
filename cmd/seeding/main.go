@@ -13,9 +13,9 @@ func main() {
 		log.Fatalln(err)
 	}
 
-	db := database.Open(&config, true)
-	if db == nil {
-		log.Fatalln("Failed to open database connection")
+	db, err := database.Open(config, true)
+	if err != nil {
+		log.Fatalln("Failed to open database connection: ", err)
 	}
 	defer database.Close(db)
 	database.Drops(db)

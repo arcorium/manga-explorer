@@ -135,6 +135,20 @@ func (m MangaController) CreateManga(ctx *gin.Context) {
 	resp.Conditional(ctx, stat, nil, nil)
 }
 
+func (m MangaController) UpdateMangaCover(ctx *gin.Context) {
+	input := mangaDto.MangaCoverUpdateInput{}
+	input.ConstructURI(ctx)
+
+	stat, fieldsErr := httputil.BindMultipartForm(ctx, &input)
+	if stat.IsError() {
+		resp.ErrorDetailed(ctx, stat, fieldsErr)
+		return
+	}
+
+	stat = m.mangaService.UpdateMangaCover(&input)
+	resp.Conditional(ctx, stat, nil, nil)
+}
+
 func (m MangaController) CreateVolume(ctx *gin.Context) {
 	input := mangaDto.VolumeCreateInput{}
 	input.ConstructURI(ctx)
@@ -174,8 +188,21 @@ func (m MangaController) FindMangaTranslations(ctx *gin.Context) {
 		return
 	}
 
-	responses, stat := m.mangaService.FindMangaTranslations(mangaId)
-	resp.Conditional(ctx, stat, responses, nil)
+	language := ctx.Param("language")
+	if len(language) == 0 {
+		responses, stat := m.mangaService.FindMangaTranslations(mangaId)
+		resp.Conditional(ctx, stat, responses, nil)
+		return
+	}
+
+	lang := common.Language(language)
+	if !lang.Validate() {
+		resp.ErrorDetailed(ctx, status.Error(status.BAD_PARAMETER_ERROR), common.NewParameterError("language", "language isn't supported"))
+		return
+	}
+
+	translation, stat := m.mangaService.FindSpecificMangaTranslation(mangaId, lang)
+	resp.Conditional(ctx, stat, translation, nil)
 }
 
 func (m MangaController) DeleteMangaTranslations(ctx *gin.Context) {

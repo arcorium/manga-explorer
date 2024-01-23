@@ -1,15 +1,19 @@
 package service
 
 import (
+	"manga-explorer/internal/app/common"
 	"manga-explorer/internal/app/common/status"
 	"manga-explorer/internal/app/dto"
 	appMapper "manga-explorer/internal/app/mapper"
+	"manga-explorer/internal/domain/mangas"
 	mangaDto "manga-explorer/internal/domain/mangas/dto"
 	"manga-explorer/internal/domain/mangas/mapper"
 	"manga-explorer/internal/domain/mangas/repository"
 	"manga-explorer/internal/domain/mangas/service"
+	"manga-explorer/internal/infrastructure/file"
 	fileService "manga-explorer/internal/infrastructure/file/service"
 	"manga-explorer/internal/util/containers"
+	"time"
 )
 
 func NewMangaService(fileService fileService.IFile, mangaRepo repository.IManga, translation repository.ITranslation, commentRepo repository.IComment, rateRepo repository.IRate) service.IManga {
@@ -71,7 +75,7 @@ func (m mangaService) ListMangas(query *dto.PagedQueryInput) ([]mangaDto.MangaRe
 	if err != nil {
 		return nil, nil, status.RepositoryError(err)
 	}
-	mangaResponses := containers.CastSlicePtr(result.Data, mapper.ToMangaResponse)
+	mangaResponses := containers.CastSlicePtr1(result.Data, m.fileService, mapper.ToMangaResponse)
 	responsePage := appMapper.NewResponsePage(mangaResponses, result.Total, query)
 	return mangaResponses, &responsePage, status.Success()
 }
@@ -82,7 +86,7 @@ func (m mangaService) SearchMangas(query *mangaDto.MangaSearchQuery) ([]mangaDto
 	if err != nil {
 		return nil, nil, status.RepositoryError(err)
 	}
-	mangaResponses := containers.CastSlicePtr(res.Data, mapper.ToMangaResponse)
+	mangaResponses := containers.CastSlicePtr1(res.Data, m.fileService, mapper.ToMangaResponse)
 	responsePage := appMapper.NewResponsePage(mangaResponses, res.Total, &query.PagedQueryInput)
 	return mangaResponses, &responsePage, status.Success()
 }
@@ -92,7 +96,7 @@ func (m mangaService) FindMangaByIds(mangaIds ...string) ([]mangaDto.MangaRespon
 	if err != nil {
 		return nil, status.RepositoryError(err)
 	}
-	return containers.CastSlicePtr(manga, mapper.ToMangaResponse), status.Success()
+	return containers.CastSlicePtr1(manga, m.fileService, mapper.ToMangaResponse), status.Success()
 }
 
 func (m mangaService) FindRandomMangas(limit uint64) ([]mangaDto.MangaResponse, status.Object) {
@@ -100,7 +104,7 @@ func (m mangaService) FindRandomMangas(limit uint64) ([]mangaDto.MangaResponse, 
 	if err != nil {
 		return nil, status.RepositoryError(err)
 	}
-	mangaResponses := containers.CastSlicePtr(lisMangas, mapper.ToMangaResponse)
+	mangaResponses := containers.CastSlicePtr1(lisMangas, m.fileService, mapper.ToMangaResponse)
 	return mangaResponses, status.Success()
 }
 
@@ -132,6 +136,32 @@ func (m mangaService) CreateManga(input *mangaDto.MangaCreateInput) status.Objec
 	return status.ConditionalRepository(err, status.CREATED)
 }
 
+func (m mangaService) UpdateMangaCover(input *mangaDto.MangaCoverUpdateInput) status.Object {
+	manga, err := m.mangaRepo.FindMangaById(input.MangaId)
+	if err != nil {
+		return status.RepositoryError(err)
+	}
+
+	// Upload new cover image
+	filename, stat := m.fileService.Upload(file.CoverAsset, input.Image)
+	if stat.IsError() {
+		return stat
+	}
+
+	// Delete current cover image
+	if len(manga.CoverURL) != 0 {
+		stat = m.fileService.Delete(file.CoverAsset, manga.CoverURL)
+		if stat.IsError() {
+			return stat
+		}
+	}
+
+	// Update metadata
+	editedManga := mangas.Manga{Id: manga.Id, CoverURL: filename, UpdatedAt: time.Now()}
+	err = m.mangaRepo.EditManga(&editedManga)
+	return status.ConditionalRepository(err, status.UPDATED)
+}
+
 func (m mangaService) EditManga(input *mangaDto.MangaEditInput) status.Object {
 	model, err := mapper.MapMangaEditInput(input)
 	if err != nil {
@@ -157,6 +187,16 @@ func (m mangaService) FindMangaTranslations(mangaId string) ([]mangaDto.Translat
 	return containers.CastSlicePtr(translates, mapper.ToTranslationResponse), status.Success()
 }
 
+func (m mangaService) FindSpecificMangaTranslation(mangaId string, language common.Language) (mangaDto.TranslationResponse, status.Object) {
+	// Convert into 3 letter Country code
+	lang := common.NewLanguage(language.Code())
+	translate, err := m.translationRepo.FindMangaSpecific(mangaId, lang)
+	if err != nil {
+		return mangaDto.TranslationResponse{}, status.RepositoryError(err)
+	}
+	return mapper.ToTranslationResponse(translate), status.Success()
+}
+
 func (m mangaService) DeleteMangaTranslations(mangaId string) status.Object {
 	err := m.translationRepo.DeleteByMangaId(mangaId)
 	return status.ConditionalRepository(err, status.DELETED)
@@ -180,7 +220,7 @@ func (m mangaService) FindMangaHistories(userId string, query *dto.PagedQueryInp
 		return nil, nil, status.RepositoryError(err)
 	}
 
-	mangaResult := containers.CastSlicePtr(res.Data, mapper.ToMangaHistoryResponse)
+	mangaResult := containers.CastSlicePtr1(res.Data, m.fileService, mapper.ToMangaHistoryResponse)
 	pages := appMapper.NewResponsePage(mangaResult, res.Total, query)
 	return mangaResult, &pages, status.Success()
 }
@@ -191,7 +231,7 @@ func (m mangaService) FindMangaFavorites(userId string, query *dto.PagedQueryInp
 		return nil, nil, status.RepositoryError(err)
 	}
 
-	mangaResponses := containers.CastSlicePtr(res.Data, mapper.ToMangaFavoriteResponse)
+	mangaResponses := containers.CastSlicePtr1(res.Data, m.fileService, mapper.ToMangaFavoriteResponse)
 	pages := appMapper.NewResponsePage(mangaResponses, res.Total, query)
 	return mangaResponses, &pages, status.Success()
 }

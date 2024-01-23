@@ -13,6 +13,7 @@ import (
 	"manga-explorer/internal/infrastructure/mail"
 	mailService "manga-explorer/internal/infrastructure/mail/service"
 	"manga-explorer/internal/util/containers"
+	"time"
 )
 
 func NewUser(userRepo repository.IUser, verification service.IVerification, authentication service.IAuthentication, mail mailService.IMail) service.IUser {
@@ -41,13 +42,15 @@ func (u userService) UpdateProfileImage(input *dto.ProfileImageUpdateInput) stat
 	}
 
 	// Delete old image
-	stat = u.fileService.Delete(file.ProfileAsset, profiles.PhotoURL)
-	if stat.IsError() {
-		return stat
+	if len(profiles.PhotoURL) > 0 {
+		stat = u.fileService.Delete(file.ProfileAsset, profiles.PhotoURL)
+		if stat.IsError() {
+			return stat
+		}
 	}
 
 	// Set metadata
-	profile := users.Profile{Id: profiles.Id, PhotoURL: filename}
+	profile := users.Profile{Id: profiles.Id, PhotoURL: filename, UpdatedAt: time.Now()}
 	err = u.repo.UpdateProfile(&profile)
 	return status.ConditionalRepository(err, status.UPDATED)
 }
@@ -62,7 +65,7 @@ func (u userService) DeleteProfileImage(userId string) status.Object {
 		return stat
 	}
 
-	profile := users.Profile{Id: profiles.Id, PhotoURL: ""}
+	profile := users.Profile{Id: profiles.Id, PhotoURL: "", UpdatedAt: time.Now()}
 	err = u.repo.UpdateProfile(&profile)
 	return status.ConditionalRepository(err, status.DELETED)
 }
@@ -89,6 +92,7 @@ func (u userService) GetAllUsers() ([]dto.UserResponse, status.Object) {
 	result := containers.CastSlicePtr(allUsers, mapper.ToUserResponse)
 	return result, status.Success()
 }
+
 func (u userService) UpdateUser(input *dto.UpdateUserInput) status.Object {
 	usr := mapper.MapUserUpdateInput(input)
 	err := u.repo.UpdateUser(&usr)
@@ -159,7 +163,7 @@ func (u userService) FindUserProfileById(userId string) (dto.ProfileResponse, st
 	if err != nil {
 		return dto.ProfileResponse{}, status.RepositoryError(err)
 	}
-	return mapper.ToProfileResponse(profile), status.Success()
+	return mapper.ToProfileResponse(profile, u.fileService), status.Success()
 }
 func (u userService) ChangePassword(input *dto.ChangePasswordInput) status.Object {
 	// Get user

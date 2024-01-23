@@ -29,8 +29,8 @@ type AuthController struct {
 // @Tags auth, account
 // @Accept json
 // @Produce json
-// @Success 200 {object} common.SuccessResponse
-// @Failure 400 {object} common.ErrorResponse
+// @Success 200 {object} resp.SuccessWrapper[dto.SuccessResponse]
+// @Failure 401 {object} resp.ErrorWrapper[dto.ErrorResponse]{}
 // @Router /login [post]
 func (a AuthController) Login(ctx *gin.Context) {
 	input := dto.LoginInput{}

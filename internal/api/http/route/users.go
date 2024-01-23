@@ -13,7 +13,7 @@ type userRoute struct {
 
 func (u userRoute) V1Route(config *Config, router gin.IRouter) {
 	user := router.Group("/users")
-	admin := user.Group("/", config.Middleware.AdminRestrict.Handle)
+	admin := user.Group("/", config.Middleware.Authorization.Handle, config.Middleware.AdminRestrict.Handle)
 
 	userController := &config.Controller.User
 
@@ -35,5 +35,5 @@ func (u userRoute) V1Route(config *Config, router gin.IRouter) {
 	admin.PUT("/:id/profiles", userController.UpdateUserProfileExtended)
 	admin.POST("/", userController.AddUser)
 	admin.DELETE("/:id", userController.DeleteUser)
-	admin.GET("/", userController.GetUserProfiles)
+	admin.GET("/", userController.GetUsers)
 }

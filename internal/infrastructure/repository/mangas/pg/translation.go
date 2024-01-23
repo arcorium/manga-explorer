@@ -3,6 +3,7 @@ package pg
 import (
 	"context"
 	"github.com/uptrace/bun"
+	"manga-explorer/internal/app/common"
 	"manga-explorer/internal/domain/mangas"
 	"manga-explorer/internal/domain/mangas/repository"
 	"manga-explorer/internal/util"
@@ -40,6 +41,24 @@ func (t translationRepository) FindByMangaId(mangaId string) ([]mangas.Translati
 		Order("language").
 		Scan(ctx)
 	return util.CheckSliceResult(result, err).Unwrap()
+}
+
+func (t translationRepository) FindMangaSpecific(mangaId string, language common.Language) (*mangas.Translation, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second*5)
+	defer cancel()
+
+	result := new(mangas.Translation)
+	err := t.db.NewSelect().
+		Model(result).
+		Relation("Manga").
+		Where("manga_id = ? AND language = ?", mangaId, language).
+		Scan(ctx)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return result, nil
 }
 
 func (t translationRepository) FindById(id string) (*mangas.Translation, error) {

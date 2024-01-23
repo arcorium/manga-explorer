@@ -97,7 +97,7 @@ func TestSliceFilter(t *testing.T) {
 func TestConvertSlice(t *testing.T) {
 	type args[From any, To any] struct {
 		slice       []From
-		convertFunc ConvertFunc[*From, To]
+		convertFunc CastFunc[*From, To]
 	}
 	type testCase[From any, To any] struct {
 		name string

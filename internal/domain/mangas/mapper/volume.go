@@ -4,14 +4,15 @@ import (
 	"github.com/google/uuid"
 	"manga-explorer/internal/domain/mangas"
 	"manga-explorer/internal/domain/mangas/dto"
+	fileService "manga-explorer/internal/infrastructure/file/service"
 	"manga-explorer/internal/util/containers"
 )
 
-func ToVolumeResponse(volume *mangas.Volume) dto.VolumeResponse {
+func ToVolumeResponse(volume *mangas.Volume, fs fileService.IFile) dto.VolumeResponse {
 	return dto.VolumeResponse{
 		Title:    volume.Title,
 		Number:   volume.Number,
-		Chapters: containers.CastSlicePtr(volume.Chapters, ToChapterResponse),
+		Chapters: containers.CastSlicePtr1(volume.Chapters, fs, ToChapterResponse),
 	}
 }
 

@@ -29,7 +29,7 @@ func (m _mangaRoute) MangaRoute(config *Config, router gin.IRouter) {
 	mangaRoute.GET("/:manga_id", mangaController.FindMangaById)
 	mangaRoute.GET("/:manga_id/comments", mangaController.FindMangaComments)
 	mangaRoute.GET("/:manga_id/ratings", mangaController.FindMangaRatings)
-	mangaRoute.GET("/:manga_id/translates", mangaController.FindMangaTranslations)
+	mangaRoute.GET("/:manga_id/translates/*language", mangaController.FindMangaTranslations)
 	// Login user
 	mangaRoute.Use(config.Middleware.Authorization.Handle)
 	mangaRoute.POST("/:manga_id/comments", mangaController.CreateMangaComments)
@@ -50,6 +50,7 @@ func (m _mangaRoute) MangaRoute(config *Config, router gin.IRouter) {
 	mangaRoute.DELETE("/:manga_id/volumes/:volume", mangaController.DeleteVolume)
 	mangaRoute.POST("/:manga_id/chapters", chapterController.CreateChapter)
 
+	mangaRoute.PUT("/:manga_id/cover", mangaController.UpdateMangaCover)
 }
 func (m _mangaRoute) ChapterRoute(config *Config, router gin.IRouter) {
 	chapterController := &config.Controller.MangaChapter

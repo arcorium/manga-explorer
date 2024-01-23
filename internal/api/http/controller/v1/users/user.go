@@ -43,7 +43,7 @@ func (u *UserController) GetUserProfile(ctx *gin.Context) {
 	resp.Conditional(ctx, cerr, usr, nil)
 }
 
-func (u *UserController) GetUserProfiles(ctx *gin.Context) {
+func (u *UserController) GetUsers(ctx *gin.Context) {
 	res, stat := u.userService.GetAllUsers()
 	resp.Conditional(ctx, stat, res, nil)
 }

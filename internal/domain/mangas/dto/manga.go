@@ -4,6 +4,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"manga-explorer/internal/app/common"
 	"manga-explorer/internal/app/dto"
+	"mime/multipart"
 	"time"
 )
 
@@ -37,6 +38,15 @@ type MangaCreateInput struct {
 	Status          string         `json:"status" binding:"required,manga_status"`
 	Origin          common.Country `json:"origin" binding:"required,iso3166_1_alpha3|iso3166_1_alpha2"`
 	PublicationYear uint16         `json:"publication_year" binding:"required"`
+}
+
+type MangaCoverUpdateInput struct {
+	MangaId string                `uri:"-" binding:"required,uuid4"`
+	Image   *multipart.FileHeader `form:"image" binding:"required"`
+}
+
+func (c *MangaCoverUpdateInput) ConstructURI(ctx *gin.Context) {
+	c.MangaId = ctx.Param("manga_id")
 }
 
 type MangaEditInput struct {

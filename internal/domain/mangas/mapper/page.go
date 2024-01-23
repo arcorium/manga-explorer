@@ -4,12 +4,13 @@ import (
 	"manga-explorer/internal/domain/mangas"
 	"manga-explorer/internal/domain/mangas/dto"
 	"manga-explorer/internal/infrastructure/file"
+	fileService "manga-explorer/internal/infrastructure/file/service"
 )
 
-func ToPageResponse(page *mangas.Page) dto.PageResponse {
+func ToPageResponse(page *mangas.Page, fs fileService.IFile) dto.PageResponse {
 	return dto.PageResponse{
 		Page:     page.Number,
-		ImageURL: page.ImageURL.HostnameFullpath(file.MangaAsset),
+		ImageURL: fs.GetFullpath(file.MangaAsset, page.ImageURL),
 	}
 }
 

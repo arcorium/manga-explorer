@@ -1,27 +1,31 @@
 basePath: /api/v1
 definitions:
-  common.Response:
+  dto.ErrorResponse:
     properties:
       code:
         type: integer
-      data: {}
+      details: {}
       message:
         type: string
-      page:
-        $ref: '#/definitions/common.ResponsePage'
-      status:
-        type: string
     type: object
-  common.ResponsePage:
+  dto.ResponsePage:
     properties:
-      current_page:
+      elements:
         type: integer
-      elements_page:
+      page:
         type: integer
       total_elements:
         type: integer
       total_page:
         type: integer
+    type: object
+  dto.SuccessResponse:
+    properties:
+      code:
+        type: integer
+      data: {}
+      page:
+        $ref: '#/definitions/dto.ResponsePage'
     type: object
 info:
   contact:
@@ -43,11 +47,11 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/common.Response'
-        "400":
-          description: Bad Request
+            $ref: '#/definitions/dto.SuccessResponse'
+        "401":
+          description: Unauthorized
           schema:
-            $ref: '#/definitions/common.Response'
+            $ref: '#/definitions/dto.ErrorResponse'
       summary: login
       tags:
       - auth

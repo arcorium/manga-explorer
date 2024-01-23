@@ -1,6 +1,7 @@
 package service
 
 import (
+	"manga-explorer/internal/app/common"
 	"manga-explorer/internal/app/common/status"
 	appDto "manga-explorer/internal/app/dto"
 	"manga-explorer/internal/domain/mangas/dto"
@@ -9,6 +10,7 @@ import (
 type IManga interface {
 	// CreateManga create new manga
 	CreateManga(input *dto.MangaCreateInput) status.Object
+	UpdateMangaCover(input *dto.MangaCoverUpdateInput) status.Object
 	EditManga(input *dto.MangaEditInput) status.Object
 	// CreateVolume Create a new volume which should be belonged to manga with 0 chapters
 	CreateVolume(input *dto.VolumeCreateInput) status.Object
@@ -24,6 +26,7 @@ type IManga interface {
 	SearchMangas(query *dto.MangaSearchQuery) ([]dto.MangaResponse, *appDto.ResponsePage, status.Object)
 	InsertMangaTranslations(input *dto.MangaInsertTranslationInput) status.Object
 	FindMangaTranslations(mangaId string) ([]dto.TranslationResponse, status.Object)
+	FindSpecificMangaTranslation(mangaId string, language common.Language) (dto.TranslationResponse, status.Object)
 	DeleteMangaTranslations(mangaId string) status.Object
 	DeleteTranslations(input *dto.TranslationDeleteInput) status.Object
 	UpdateTranslation(input *dto.TranslationUpdateInput) status.Object

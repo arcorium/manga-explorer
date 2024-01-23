@@ -36,7 +36,7 @@ func (m mangaChapterService) FindChapterPages(chapterId string) ([]mangaDto.Page
 	if err != nil {
 		return nil, status.RepositoryError(err)
 	}
-	pageResponses := containers.CastSlicePtr(pages, mapper.ToPageResponse)
+	pageResponses := containers.CastSlicePtr1(pages, m.fileService, mapper.ToPageResponse)
 	return pageResponses, status.Success()
 }
 
@@ -114,7 +114,7 @@ func (m mangaChapterService) FindVolumeChapters(volumeId string) ([]mangaDto.Cha
 	if err != nil {
 		return nil, status.RepositoryError(err)
 	}
-	chapterResponses := containers.CastSlicePtr(chapters, mapper.ToChapterResponse)
+	chapterResponses := containers.CastSlicePtr1(chapters, m.fileService, mapper.ToChapterResponse)
 	return chapterResponses, status.Success()
 }
 

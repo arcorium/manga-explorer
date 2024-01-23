@@ -7,5 +7,4 @@ const (
 const TokenType = "Bearer"
 const ClaimsKey = "claims"
 const UserAgentKey = "user_agent"
-
 const IssuerName = "manga-explorer"
