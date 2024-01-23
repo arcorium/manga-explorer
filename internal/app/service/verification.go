@@ -21,22 +21,25 @@ type verificationService struct {
 func (v verificationService) Request(userId string, usage users.Usage) (dto.VerificationResponse, status.Object) {
 	verif := users.NewVerification(userId, usage)
 	err := v.repo.Create(&verif)
-	stat := status.FromRepository(err, status.CREATED)
-	if stat.IsError() {
-		return dto.VerificationResponse{}, stat
+	if err != nil {
+		return dto.VerificationResponse{}, status.RepositoryError(err)
 	}
 
-	return mapper.ToVerificationResponse(&verif), stat
+	return mapper.ToVerificationResponse(&verif), status.Success()
 }
 
 func (v verificationService) Find(token string) (dto.VerificationResponse, status.Object) {
 	verif, err := v.repo.Find(token)
-	return mapper.ToVerificationResponse(&verif), status.FromRepository(err)
+	if err != nil {
+		return dto.VerificationResponse{}, status.RepositoryError(err)
+	}
+	response := mapper.ToVerificationResponse(&verif)
+	return response, status.Success()
 }
 
 func (v verificationService) Remove(token string) status.Object {
 	err := v.repo.Remove(token)
-	return status.FromRepository(err)
+	return status.ConditionalRepository(err, status.DELETED)
 }
 
 func (v verificationService) Validate(response *dto.VerificationResponse) status.Object {

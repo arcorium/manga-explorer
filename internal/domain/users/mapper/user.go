@@ -50,8 +50,8 @@ func MapChangePasswordInput(input *dto.ChangePasswordInput) (users.User, error) 
 	return createUserForPasswordChange(input.UserId, input.NewPassword)
 }
 
-func MapResetPasswordInput(input *dto.ResetPasswordInput) (users.User, error) {
-	return createUserForPasswordChange(input.UserId, input.NewPassword)
+func MapResetPasswordInput(input *dto.ResetPasswordInput, userId string) (users.User, error) {
+	return createUserForPasswordChange(userId, input.NewPassword)
 }
 
 func MapAddUserInput(input *dto.AddUserInput) (users.User, error) {

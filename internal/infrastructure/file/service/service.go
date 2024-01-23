@@ -3,10 +3,11 @@ package service
 import (
 	"manga-explorer/internal/app/common/status"
 	"manga-explorer/internal/infrastructure/file"
+	"mime/multipart"
 )
 
 type IFile interface {
-	Upload(filepath string, bytes []byte) status.Object
-	Delete(filepath string) status.Object
-	GetURL(assetType file.AssetType, filename, format string) string
+	Upload(types file.AssetType, header *multipart.FileHeader) (file.Name, status.Object)
+	Uploads(types file.AssetType, header []multipart.FileHeader) ([]file.Name, status.Object) // TODO: Handle when there is an error in the middle of uploading
+	Delete(types file.AssetType, filepath file.Name) status.Object
 }

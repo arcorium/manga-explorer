@@ -1,6 +1,7 @@
 package dto
 
 import (
+	"github.com/gin-gonic/gin"
 	"manga-explorer/internal/app/common"
 	"manga-explorer/internal/domain/users/dto"
 	"time"
@@ -17,7 +18,7 @@ type ChapterResponse struct {
 }
 
 type ChapterCreateInput struct {
-	MangaId      string         `uri:"manga_id" binding:"required,uuid4"`
+	MangaId      string         `binding:"required,uuid4"`
 	VolumeId     string         `json:"volume_id" binding:"required,uuid4"`
 	Language     common.Country `json:"language" binding:"required,iso3166_1_alpha3|iso3166_1_alpha2"`
 	Title        string         `json:"title" binding:"required"`
@@ -25,10 +26,19 @@ type ChapterCreateInput struct {
 	TranslatorId string         `json:"-"`
 }
 
+func (c *ChapterCreateInput) ConstructURI(ctx *gin.Context) {
+	c.MangaId = ctx.Param("manga_id")
+}
+
 type ChapterEditInput struct {
-	ChapterId   string         `uri:"chapter_id" binding:"required,uuid4"`
+	ChapterId   string         `binding:"required,uuid4"`
 	VolumeId    string         `json:"volume_id" binding:"required,uuid4"`
 	Title       string         `json:"title"`
 	Language    common.Country `json:"language" binding:"iso3166_1_alpha3|iso3166_1_alpha2"`
 	PublishDate time.Time      `json:"publish_date"`
+}
+
+func (e *ChapterEditInput) ConstructURI(ctx *gin.Context) {
+	res := ctx.Param("chapter_id")
+	e.ChapterId = res
 }

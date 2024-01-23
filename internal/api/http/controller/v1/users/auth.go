@@ -33,7 +33,7 @@ type AuthController struct {
 // @Failure 400 {object} common.ErrorResponse
 // @Router /login [post]
 func (a AuthController) Login(ctx *gin.Context) {
-	var input dto.LoginInput
+	input := dto.LoginInput{}
 	stat, errFields := httputil.BindJson(ctx, &input)
 	if stat.IsError() {
 		resp.ErrorDetailed(ctx, stat, errFields)
@@ -86,7 +86,7 @@ func (a AuthController) LogoutAllDevice(ctx *gin.Context) {
 }
 
 func (a AuthController) RefreshToken(ctx *gin.Context) {
-	var input dto.RefreshTokenInput
+	input := dto.RefreshTokenInput{}
 	stat, fieldErrors := httputil.BindJson(ctx, &input)
 	if stat.IsError() {
 		resp.ErrorDetailed(ctx, status.Error(status.BAD_BODY_REQUEST_ERROR), fieldErrors)

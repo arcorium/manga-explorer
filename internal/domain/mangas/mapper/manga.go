@@ -1,23 +1,26 @@
 package mapper
 
 import (
-	"github.com/google/uuid"
+	"github.com/biter777/countries"
 	"manga-explorer/internal/domain/mangas"
 	"manga-explorer/internal/domain/mangas/dto"
+	"manga-explorer/internal/infrastructure/file"
 	"manga-explorer/internal/util/containers"
 	"time"
 )
 
 func ToMangaResponse(manga *mangas.Manga) dto.MangaResponse {
 	return dto.MangaResponse{
+		Id:              manga.Id,
 		Status:          manga.Status.Underlying(),
 		Origin:          manga.Origin,
 		PublicationYear: manga.PublicationYear,
+		CoverURL:        manga.CoverURL.HostnameFullpath(file.MangaAsset),
 		Comments:        containers.CastSlicePtr(manga.Comments, ToCommentResponse),
 		Ratings:         containers.CastSlicePtr(manga.Ratings, ToRatingResponse),
 		Translations:    containers.CastSlicePtr(manga.Translations, ToTranslationResponse),
 		Volumes:         containers.CastSlicePtr(manga.Volumes, ToVolumeResponse),
-		ViewedCount:     0,
+		ViewedCount:     0, // TODO: Implement it
 		FavoriteCount:   0,
 	}
 }
@@ -37,16 +40,10 @@ func ToMangaFavoriteResponse(favorite *mangas.MangaFavorite) dto.MangaFavoriteRe
 }
 
 func MapMangaCreateInput(input *dto.MangaCreateInput) (mangas.Manga, error) {
-	now := time.Now()
 	status, err := mangas.NewStatus(input.Status)
-	return mangas.Manga{
-		Id:              uuid.NewString(),
-		Status:          status,
-		Origin:          input.Origin,
-		PublicationYear: input.PublicationYear,
-		CreatedAt:       now,
-		UpdatedAt:       now,
-	}, err
+	manga := mangas.NewManga(input.Title, input.Description, "", input.PublicationYear,
+		status, countries.ByName(string(input.Origin)))
+	return manga, err
 }
 
 func MapMangaEditInput(input *dto.MangaEditInput) (mangas.Manga, error) {
@@ -58,7 +55,7 @@ func MapMangaEditInput(input *dto.MangaEditInput) (mangas.Manga, error) {
 		OriginalTitle:       input.Title,
 		OriginalDescription: input.Description,
 		PublicationYear:     input.PublicationYear,
-		CoverURL:            input.CoverUrl,
+		CoverURL:            file.Name(input.CoverUrl),
 		UpdatedAt:           time.Now(),
 	}, err
 }

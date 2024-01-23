@@ -1,6 +1,7 @@
 package dto
 
 import (
+	"github.com/gin-gonic/gin"
 	"manga-explorer/internal/app/common"
 	"manga-explorer/internal/app/dto"
 	"time"
@@ -11,6 +12,7 @@ type MangaResponse struct {
 	Status          uint8                 `json:"status"`
 	Origin          common.Country        `json:"origin"`
 	PublicationYear uint16                `json:"year"`
+	CoverURL        string                `json:"cover_url"`
 	Comments        []CommentResponse     `json:"comments"`
 	Ratings         []RateResponse        `json:"ratings"`
 	Translations    []TranslationResponse `json:"translations"`
@@ -30,10 +32,11 @@ type MangaFavoriteResponse struct {
 }
 
 type MangaCreateInput struct {
-	Descriptions    []TranslationCreateInput `json:"descriptions" binding:"required"`
-	Status          string                   `json:"status" binding:"required,manga_status"`
-	Origin          common.Country           `json:"origin" binding:"required,iso3166_1_alpha3|iso3166_1_alpha2"`
-	PublicationYear uint16                   `json:"publication_year" binding:"required"`
+	Title           string         `json:"title" binding:"required"`
+	Description     string         `json:"desc" binding:"required"`
+	Status          string         `json:"status" binding:"required,manga_status"`
+	Origin          common.Country `json:"origin" binding:"required,iso3166_1_alpha3|iso3166_1_alpha2"`
+	PublicationYear uint16         `json:"publication_year" binding:"required"`
 }
 
 type MangaEditInput struct {
@@ -44,6 +47,10 @@ type MangaEditInput struct {
 	Description     string         `json:"description"`
 	PublicationYear uint16         `json:"publication_year"`
 	CoverUrl        string         `json:"cover_url"`
+}
+
+func (e *MangaEditInput) ConstructURI(ctx *gin.Context) {
+	e.MangaId = ctx.Param("manga_id")
 }
 
 type MangaSearchQuery struct {

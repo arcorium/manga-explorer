@@ -18,8 +18,9 @@ func NewErrorResponse(stat status.Object, details any) ErrorResponse {
 	}
 }
 
-func NewSuccessResponse(data any, page *ResponsePage) SuccessResponse {
+func NewSuccessResponse(Code uint, data any, page *ResponsePage) SuccessResponse {
 	return SuccessResponse{
+		Code: Code,
 		Data: data,
 		Page: page,
 	}
@@ -32,6 +33,7 @@ type ErrorResponse struct {
 }
 
 type SuccessResponse struct {
+	Code uint          `json:"code"`
 	Data any           `json:"data,omitempty"`
 	Page *ResponsePage `json:"page,omitempty"`
 }

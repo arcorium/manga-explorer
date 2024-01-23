@@ -5,6 +5,7 @@ import (
 	"github.com/google/uuid"
 	"github.com/uptrace/bun"
 	"manga-explorer/internal/app/common"
+	"manga-explorer/internal/infrastructure/file"
 	"time"
 )
 
@@ -16,7 +17,7 @@ type Manga struct {
 	OriginalTitle       string         `bun:",notnull,nullzero,unique,type:text"`
 	OriginalDescription string         `bun:",nullzero,type:text"`
 	PublicationYear     uint16         `bun:",notnull,nullzero"`
-	CoverURL            string         `bun:",nullzero"`
+	CoverURL            file.Name      `bun:",nullzero"`
 	UpdatedAt           time.Time      `bun:",nullzero,notnull"`
 	CreatedAt           time.Time      `bun:",nullzero,notnull"`
 
@@ -36,7 +37,7 @@ func NewManga(title, desc, coverUrl string, year uint16, status Status, region c
 		OriginalTitle:       title,
 		OriginalDescription: desc,
 		PublicationYear:     year,
-		CoverURL:            coverUrl,
+		CoverURL:            file.Name(coverUrl),
 		UpdatedAt:           currentTime,
 		CreatedAt:           currentTime,
 	}

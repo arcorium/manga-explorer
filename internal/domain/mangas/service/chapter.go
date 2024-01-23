@@ -14,7 +14,7 @@ type IChapter interface {
 	EditChapter(input *dto.ChapterEditInput) status.Object
 	// FindChapterPages Get manga chapter pages
 	FindChapterPages(chapterId string) ([]dto.PageResponse, status.Object)
-	// InsertChapterPage Upload the image and set it as the page of manga chapter
+	// InsertChapterPage Uploads the image and set it as the page of manga chapter
 	InsertChapterPage(input *dto.PageCreateInput) status.Object
 	// CreateChapterComment Create new comment for manga chapter
 	CreateChapterComment(input *dto.ChapterCommentCreateInput) status.Object

@@ -24,7 +24,7 @@ func (m GenreController) ListGenre(ctx *gin.Context) {
 }
 
 func (m GenreController) CreateGenre(ctx *gin.Context) {
-	var genreInput dto.GenreCreateInput
+	genreInput := dto.GenreCreateInput{}
 	stat, fieldsErr := httputil.BindJson(ctx, &genreInput)
 	if stat.IsError() {
 		resp.ErrorDetailed(ctx, stat, fieldsErr)

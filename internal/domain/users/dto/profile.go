@@ -1,8 +1,6 @@
 package dto
 
-import (
-	"manga-explorer/internal/app/common"
-)
+import "mime/multipart"
 
 type ProfileResponse struct {
 	UserResponse UserResponse `json:"user"`
@@ -18,9 +16,9 @@ type ProfileUpdateInput struct {
 	FirstName string `json:"first_name"`
 	LastName  string `json:"last_name"`
 	Bio       string `json:"bio"`
-	PhotoURL  string `json:"photo_url"`
 }
 
-func (p *ProfileUpdateInput) SetUserId(claims *common.AccessTokenClaims) {
-	p.UserId = claims.UserId
+type ProfileImageUpdateInput struct {
+	UserId string                `json:"-"`
+	Image  *multipart.FileHeader `form:"image"` // When null, it is considered to be delete
 }

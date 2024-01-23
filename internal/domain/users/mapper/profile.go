@@ -3,6 +3,7 @@ package mapper
 import (
 	"manga-explorer/internal/domain/users"
 	"manga-explorer/internal/domain/users/dto"
+	"manga-explorer/internal/infrastructure/file"
 	"time"
 )
 
@@ -11,7 +12,7 @@ func ToProfileResponse(profile *users.Profile) dto.ProfileResponse {
 		UserResponse: ToUserResponse(profile.User),
 		FirstName:    profile.FirstName,
 		LastName:     profile.LastName,
-		PhotoURL:     profile.PhotoURL,
+		PhotoURL:     profile.PhotoURL.HostnameFullpath(file.ProfileAsset),
 		Bio:          profile.Bio,
 	}
 }
@@ -29,7 +30,7 @@ func MapAddProfileInput(user *users.User, input *dto.AddUserInput) users.Profile
 		UserId:    user.Id,
 		FirstName: input.FirstName,
 		LastName:  input.LastName,
-		PhotoURL:  input.PhotoURL,
+		PhotoURL:  file.Name(input.PhotoURL),
 		Bio:       input.Bio,
 		UpdatedAt: time.Now(),
 	}
@@ -40,7 +41,7 @@ func MapUpdateProfileExtendedInput(input *dto.UpdateProfileExtendedInput) users.
 		UserId:    input.UserId,
 		FirstName: input.FirstName,
 		LastName:  input.LastName,
-		PhotoURL:  input.PhotoURL,
+		PhotoURL:  file.Name(input.PhotoURL),
 		Bio:       input.Bio,
 		UpdatedAt: time.Now(),
 	}
@@ -51,7 +52,6 @@ func MapProfileUpdateInput(input *dto.ProfileUpdateInput) users.Profile {
 		UserId:    input.UserId,
 		FirstName: input.FirstName,
 		LastName:  input.LastName,
-		PhotoURL:  input.PhotoURL,
 		Bio:       input.Bio,
 		UpdatedAt: time.Now(),
 	}

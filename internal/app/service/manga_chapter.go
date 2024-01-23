@@ -2,15 +2,14 @@ package service
 
 import (
 	"manga-explorer/internal/app/common/status"
-	"manga-explorer/internal/domain/mangas"
 	mangaDto "manga-explorer/internal/domain/mangas/dto"
 	"manga-explorer/internal/domain/mangas/mapper"
 	"manga-explorer/internal/domain/mangas/repository"
 	"manga-explorer/internal/domain/mangas/service"
 	"manga-explorer/internal/infrastructure/file"
 	fileService "manga-explorer/internal/infrastructure/file/service"
-	"manga-explorer/internal/util"
 	"manga-explorer/internal/util/containers"
+	"mime/multipart"
 )
 
 func NewChapterService(chapterRepo repository.IChapter, commentRepo repository.IComment) service.IChapter {
@@ -29,64 +28,54 @@ type mangaChapterService struct {
 
 func (m mangaChapterService) DeleteChapter(chapterId string) status.Object {
 	err := m.chapterRepo.DeleteChapter(chapterId)
-	return status.FromRepository(err)
+	return status.ConditionalRepository(err, status.SUCCESS)
 }
 
 func (m mangaChapterService) FindChapterPages(chapterId string) ([]mangaDto.PageResponse, status.Object) {
 	pages, err := m.chapterRepo.FindChapterPages(chapterId)
-	stat := status.FromRepository(err)
-	if stat.IsError() {
-		return nil, stat
+	if err != nil {
+		return nil, status.RepositoryError(err)
 	}
 	pageResponses := containers.CastSlicePtr(pages, mapper.ToPageResponse)
-	return pageResponses, stat
+	return pageResponses, status.Success()
 }
 
 func (m mangaChapterService) CreateChapter(input *mangaDto.ChapterCreateInput) status.Object {
 	chapter := mapper.MapChapterCreateInput(input)
 	err := m.chapterRepo.CreateChapter(&chapter)
-	return status.FromRepository(err, status.CREATED)
+	return status.ConditionalRepository(err, status.CREATED)
 }
 
 func (m mangaChapterService) InsertChapterPage(input *mangaDto.PageCreateInput) status.Object {
-	page := mapper.MapPageCreateInput(input)
-	format, err := util.GetFileFormat(input.Image.Filename)
-	if err != nil {
-		return status.Error(status.INTERNAL_SERVER_ERROR)
-	}
-	page.ImageURL = m.fileService.GetURL(file.ImageAsset, page.Id, format)
-
-	// Read bytes
-	fl, err := input.Image.Open()
-	if err != nil {
-		return status.Error(status.INTERNAL_SERVER_ERROR)
+	fileHeaders := containers.CastSlicePtr(input.Pages, func(current *mangaDto.InternalPage) multipart.FileHeader {
+		return *current.Image
+	})
+	filenames, stat := m.fileService.Uploads(file.MangaAsset, fileHeaders)
+	if stat.IsError() {
+		return stat
 	}
 
-	var bytes []byte
-	_, err = fl.Read(bytes)
-	if err != nil {
-		return status.Error(status.INTERNAL_SERVER_ERROR)
+	pages := mapper.MapPageCreateInput(input, filenames)
+	if pages == nil {
+		return status.InternalError()
 	}
-	// Upload image
-	m.fileService.Upload(page.ImageURL, bytes)
 
-	err = m.chapterRepo.InsertChapterPages([]mangas.Page{page})
-	return status.FromRepository(err, status.UPDATED)
+	err := m.chapterRepo.InsertChapterPages(pages)
+	return status.ConditionalRepository(err, status.UPDATED)
 }
 
 func (m mangaChapterService) EditChapter(input *mangaDto.ChapterEditInput) status.Object {
 	chapter := mapper.MapChapterEditInput(input)
 	err := m.chapterRepo.EditChapter(&chapter)
-	return status.FromRepository(err, status.UPDATED)
+	return status.ConditionalRepository(err, status.UPDATED)
 }
 
 func (m mangaChapterService) CreateChapterComment(input *mangaDto.ChapterCommentCreateInput) status.Object {
 	comment := mapper.MapChapterCommentCreateInput(input)
 	if input.HasParent() {
 		parent, err := m.commentRepo.FindComment(input.ParentId)
-		stat := status.FromRepository(err)
-		if stat.IsError() {
-			return status.Error(status.INTERNAL_SERVER_ERROR)
+		if err != nil {
+			return status.RepositoryError(err)
 		}
 
 		// Validate
@@ -95,16 +84,15 @@ func (m mangaChapterService) CreateChapterComment(input *mangaDto.ChapterComment
 		}
 	}
 	err := m.commentRepo.CreateComment(&comment)
-	return status.FromRepository(err, status.CREATED)
+	return status.ConditionalRepository(err, status.CREATED)
 }
 
 func (m mangaChapterService) CreatePageComment(input *mangaDto.PageCommentCreateInput) status.Object {
 	comment := mapper.MapPageCommentCreateInput(input)
 	if input.HasParent() {
 		parent, err := m.commentRepo.FindComment(input.ParentId)
-		stat := status.FromRepository(err)
-		if stat.IsError() {
-			return status.Error(status.INTERNAL_SERVER_ERROR)
+		if err != nil {
+			return status.RepositoryError(err)
 		}
 
 		// Validate
@@ -113,40 +101,37 @@ func (m mangaChapterService) CreatePageComment(input *mangaDto.PageCommentCreate
 		}
 	}
 	err := m.commentRepo.CreateComment(&comment)
-	return status.FromRepository(err, status.CREATED)
+	return status.ConditionalRepository(err, status.CREATED)
 }
 
 func (m mangaChapterService) DeleteChapterPages(input *mangaDto.PageDeleteInput) status.Object {
 	err := m.chapterRepo.DeleteChapterPages(input.ChapterId, input.Pages)
-	return status.FromRepository(err, status.DELETED)
+	return status.ConditionalRepository(err, status.DELETED)
 }
 
 func (m mangaChapterService) FindVolumeChapters(volumeId string) ([]mangaDto.ChapterResponse, status.Object) {
 	chapters, err := m.chapterRepo.FindVolumeChapters(volumeId)
-	stat := status.FromRepository(err)
-	if stat.IsError() {
-		return nil, stat
+	if err != nil {
+		return nil, status.RepositoryError(err)
 	}
 	chapterResponses := containers.CastSlicePtr(chapters, mapper.ToChapterResponse)
-	return chapterResponses, stat
+	return chapterResponses, status.Success()
 }
 
 func (m mangaChapterService) FindChapterComments(chapterId string) ([]mangaDto.CommentResponse, status.Object) {
 	comments, err := m.commentRepo.FindChapterComments(chapterId)
-	stat := status.FromRepository(err)
-	if stat.IsError() {
-		return nil, stat
+	if err != nil {
+		return nil, status.RepositoryError(err)
 	}
 	commentResponses := containers.CastSlicePtr(comments, mapper.ToCommentResponse)
-	return commentResponses, stat
+	return commentResponses, status.Success()
 }
 
 func (m mangaChapterService) FindPageComments(pageId string) ([]mangaDto.CommentResponse, status.Object) {
 	comments, err := m.commentRepo.FindPageComments(pageId)
-	stat := status.FromRepository(err)
-	if stat.IsError() {
-		return nil, stat
+	if err != nil {
+		return nil, status.RepositoryError(err)
 	}
 	commentResponses := containers.CastSlicePtr(comments, mapper.ToCommentResponse)
-	return commentResponses, stat
+	return commentResponses, status.Success()
 }

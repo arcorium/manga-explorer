@@ -1,10 +1,20 @@
 package dto
 
-import "manga-explorer/internal/infrastructure/repository"
+import (
+	"github.com/gin-gonic/gin"
+	"manga-explorer/internal/infrastructure/repository"
+	"manga-explorer/internal/util"
+	"strconv"
+)
 
 type PagedQueryInput struct {
 	Element uint64 `form:"element"`
 	Page    uint64 `form:"page"`
+}
+
+func (p PagedQueryInput) ConstructQuery(ctx *gin.Context) {
+	p.Element = util.DropError(strconv.ParseUint(ctx.Query("element"), 10, 64))
+	p.Page = util.DropError(strconv.ParseUint(ctx.Query("page"), 10, 64))
 }
 
 func (p PagedQueryInput) Offset() uint64 {

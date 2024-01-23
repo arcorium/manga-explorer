@@ -12,40 +12,43 @@ import (
 	"manga-explorer/internal/util/containers"
 )
 
-func NewMangaService(fileService fileService.IFile, mangaRepo repository.IManga, commentRepo repository.IComment, rateRepo repository.IRate) service.IManga {
+func NewMangaService(fileService fileService.IFile, mangaRepo repository.IManga, translation repository.ITranslation, commentRepo repository.IComment, rateRepo repository.IRate) service.IManga {
 	return &mangaService{
-		fileService: fileService,
-		mangaRepo:   mangaRepo,
-		commentRepo: commentRepo,
-		rateRepo:    rateRepo,
+		fileService:     fileService,
+		mangaRepo:       mangaRepo,
+		commentRepo:     commentRepo,
+		rateRepo:        rateRepo,
+		translationRepo: translation,
 	}
 }
 
 type mangaService struct {
 	fileService fileService.IFile
 
-	mangaRepo   repository.IManga
-	commentRepo repository.IComment
-	rateRepo    repository.IRate
+	mangaRepo       repository.IManga
+	translationRepo repository.ITranslation
+	commentRepo     repository.IComment
+	rateRepo        repository.IRate
 }
 
 func (m mangaService) CreateVolume(input *mangaDto.VolumeCreateInput) status.Object {
 	volume := mapper.MapVolumeCreateInput(input)
 
 	err := m.mangaRepo.CreateVolume(&volume)
-	return status.FromRepository(err, status.CREATED)
+	return status.ConditionalRepository(err, status.CREATED)
 }
 
 func (m mangaService) DeleteVolume(input *mangaDto.VolumeDeleteInput) status.Object {
 	err := m.mangaRepo.DeleteVolume(input.MangaId, input.Volume)
-	return status.FromRepository(err, status.DELETED)
+	return status.ConditionalRepository(err, status.DELETED)
 }
+
 func (m mangaService) CreateComments(input *mangaDto.MangaCommentCreateInput) status.Object {
 	comment := mapper.MapMangaCommentCreateInput(input)
 	if input.HasParent() {
 		parent, err := m.commentRepo.FindComment(input.ParentId)
 		if err != nil {
-			return status.Error(status.INTERNAL_SERVER_ERROR)
+			return status.InternalError()
 		}
 
 		// Validate
@@ -54,75 +57,69 @@ func (m mangaService) CreateComments(input *mangaDto.MangaCommentCreateInput) st
 		}
 	}
 	err := m.commentRepo.CreateComment(&comment)
-	return status.FromRepository(err, status.CREATED)
+	return status.ConditionalRepository(err, status.CREATED)
 }
 
 func (m mangaService) UpsertMangaRating(input *mangaDto.RateUpsertInput) status.Object {
 	rate := mapper.MapRateUpsertInput(input)
 	err := m.rateRepo.Upsert(&rate)
-	return status.FromRepository(err)
+	return status.ConditionalRepository(err, status.SUCCESS)
 }
 
 func (m mangaService) ListMangas(query *dto.PagedQueryInput) ([]mangaDto.MangaResponse, *dto.ResponsePage, status.Object) {
 	result, err := m.mangaRepo.ListMangas(query.ToQueryParam())
-	stat := status.FromRepository(err)
-	if stat.IsError() {
-		return nil, nil, stat
+	if err != nil {
+		return nil, nil, status.RepositoryError(err)
 	}
 	mangaResponses := containers.CastSlicePtr(result.Data, mapper.ToMangaResponse)
 	responsePage := appMapper.NewResponsePage(mangaResponses, result.Total, query)
-	return mangaResponses, &responsePage, stat
+	return mangaResponses, &responsePage, status.Success()
 }
 
-func (m mangaService) SearchPagedMangas(query *mangaDto.MangaSearchQuery) ([]mangaDto.MangaResponse, *dto.ResponsePage, status.Object) {
+func (m mangaService) SearchMangas(query *mangaDto.MangaSearchQuery) ([]mangaDto.MangaResponse, *dto.ResponsePage, status.Object) {
 	filter := mapper.MapMangaSearchQuery(query)
 	res, err := m.mangaRepo.FindMangasByFilter(&filter, query.ToQueryParam())
-	stat := status.FromRepository(err)
-	if stat.IsError() {
-		return nil, nil, stat
+	if err != nil {
+		return nil, nil, status.RepositoryError(err)
 	}
 	mangaResponses := containers.CastSlicePtr(res.Data, mapper.ToMangaResponse)
 	responsePage := appMapper.NewResponsePage(mangaResponses, res.Total, &query.PagedQueryInput)
-	return mangaResponses, &responsePage, stat
+	return mangaResponses, &responsePage, status.Success()
 }
 
 func (m mangaService) FindMangaByIds(mangaIds ...string) ([]mangaDto.MangaResponse, status.Object) {
 	manga, err := m.mangaRepo.FindMangasById(mangaIds...)
-	stat := status.FromRepository(err)
 	if err != nil {
-		return nil, stat
+		return nil, status.RepositoryError(err)
 	}
-	return containers.CastSlicePtr(manga, mapper.ToMangaResponse), stat
+	return containers.CastSlicePtr(manga, mapper.ToMangaResponse), status.Success()
 }
 
 func (m mangaService) FindRandomMangas(limit uint64) ([]mangaDto.MangaResponse, status.Object) {
 	lisMangas, err := m.mangaRepo.FindRandomMangas(limit)
-	stat := status.FromRepository(err)
 	if err != nil {
-		return nil, stat
+		return nil, status.RepositoryError(err)
 	}
 	mangaResponses := containers.CastSlicePtr(lisMangas, mapper.ToMangaResponse)
-	return mangaResponses, stat
+	return mangaResponses, status.Success()
 }
 
 func (m mangaService) FindMangaComments(mangaId string) ([]mangaDto.CommentResponse, status.Object) {
 	comments, err := m.commentRepo.FindMangaComments(mangaId)
-	stat := status.FromRepository(err)
 	if err != nil {
-		return nil, stat
+		return nil, status.RepositoryError(err)
 	}
 	commentResponses := containers.CastSlicePtr(comments, mapper.ToCommentResponse)
-	return commentResponses, stat
+	return commentResponses, status.Success()
 }
 
 func (m mangaService) FindMangaRatings(mangaId string) ([]mangaDto.RateResponse, status.Object) {
 	ratings, err := m.rateRepo.FindMangaRatings(mangaId)
-	stat := status.FromRepository(err)
 	if err != nil {
-		return nil, stat
+		return nil, status.RepositoryError(err)
 	}
 	ratingResponses := containers.CastSlicePtr(ratings, mapper.ToRatingResponse)
-	return ratingResponses, stat
+	return ratingResponses, status.Success()
 }
 
 func (m mangaService) CreateManga(input *mangaDto.MangaCreateInput) status.Object {
@@ -132,7 +129,7 @@ func (m mangaService) CreateManga(input *mangaDto.MangaCreateInput) status.Objec
 	}
 
 	err = m.mangaRepo.CreateManga(&model)
-	return status.FromRepository(err, status.CREATED)
+	return status.ConditionalRepository(err, status.CREATED)
 }
 
 func (m mangaService) EditManga(input *mangaDto.MangaEditInput) status.Object {
@@ -142,29 +139,59 @@ func (m mangaService) EditManga(input *mangaDto.MangaEditInput) status.Object {
 	}
 
 	err = m.mangaRepo.EditManga(&model)
-	return status.FromRepository(err, status.UPDATED)
+	return status.ConditionalRepository(err, status.UPDATED)
+}
+
+func (m mangaService) InsertMangaTranslations(input *mangaDto.MangaInsertTranslationInput) status.Object {
+	translates := mapper.MapInsertTranslateInput(input)
+
+	err := m.translationRepo.Create(translates)
+	return status.ConditionalRepository(err, status.CREATED)
+}
+
+func (m mangaService) FindMangaTranslations(mangaId string) ([]mangaDto.TranslationResponse, status.Object) {
+	translates, err := m.translationRepo.FindByMangaId(mangaId)
+	if err != nil {
+		return nil, status.RepositoryError(err)
+	}
+	return containers.CastSlicePtr(translates, mapper.ToTranslationResponse), status.Success()
+}
+
+func (m mangaService) DeleteMangaTranslations(mangaId string) status.Object {
+	err := m.translationRepo.DeleteByMangaId(mangaId)
+	return status.ConditionalRepository(err, status.DELETED)
+}
+
+func (m mangaService) DeleteTranslations(input *mangaDto.TranslationDeleteInput) status.Object {
+	err := m.translationRepo.DeleteByIds(input.TranslationIds)
+	return status.ConditionalRepository(err, status.DELETED)
+}
+
+func (m mangaService) UpdateTranslation(input *mangaDto.TranslationUpdateInput) status.Object {
+	translate := mapper.MapTranslationUpdateInput(input)
+
+	err := m.translationRepo.Update(&translate)
+	return status.ConditionalRepository(err, status.UPDATED)
 }
 
 func (m mangaService) FindMangaHistories(userId string, query *dto.PagedQueryInput) ([]mangaDto.MangaHistoryResponse, *dto.ResponsePage, status.Object) {
 	res, err := m.mangaRepo.FindMangaHistories(userId, query.ToQueryParam())
-	stat := status.FromRepository(err, status.UPDATED)
-	if stat.IsError() {
-		return nil, nil, stat
+	if err != nil {
+		return nil, nil, status.RepositoryError(err)
 	}
 
 	mangaResult := containers.CastSlicePtr(res.Data, mapper.ToMangaHistoryResponse)
 	pages := appMapper.NewResponsePage(mangaResult, res.Total, query)
-	return mangaResult, &pages, stat
+	return mangaResult, &pages, status.Success()
 }
 
 func (m mangaService) FindMangaFavorites(userId string, query *dto.PagedQueryInput) ([]mangaDto.MangaFavoriteResponse, *dto.ResponsePage, status.Object) {
 	res, err := m.mangaRepo.FindMangaFavorites(userId, query.ToQueryParam())
-	cerr := status.FromRepository(err)
-	if cerr.IsError() {
-		return nil, nil, cerr
+	if err != nil {
+		return nil, nil, status.RepositoryError(err)
 	}
 
 	mangaResponses := containers.CastSlicePtr(res.Data, mapper.ToMangaFavoriteResponse)
 	pages := appMapper.NewResponsePage(mangaResponses, res.Total, query)
-	return mangaResponses, &pages, cerr
+	return mangaResponses, &pages, status.Success()
 }

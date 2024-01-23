@@ -20,20 +20,19 @@ type mangaGenreService struct {
 func (m mangaGenreService) CreateGenre(input dto.GenreCreateInput) status.Object {
 	genre := mapper.MapGenreCreateInput(input)
 	err := m.genreRepo.CreateGenre(&genre)
-	return status.FromRepository(err, status.CREATED)
+	return status.ConditionalRepository(err, status.CREATED)
 }
 
 func (m mangaGenreService) DeleteGenre(genreId string) status.Object {
 	err := m.genreRepo.DeleteGenreById(genreId)
-	return status.FromRepository(err, status.DELETED)
+	return status.ConditionalRepository(err, status.DELETED)
 }
 
 func (m mangaGenreService) ListGenre() ([]dto.GenreResponse, status.Object) {
 	genres, err := m.genreRepo.ListGenres()
-	stat := status.FromRepository(err)
-	if stat.IsError() {
-		return nil, stat
+	if err != nil {
+		return nil, status.RepositoryError(err)
 	}
 	genreResponses := containers.CastSlicePtr(genres, mapper.ToGenreResponse)
-	return genreResponses, stat
+	return genreResponses, status.Success()
 }

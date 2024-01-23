@@ -8,6 +8,8 @@ import (
 	"manga-explorer/internal/domain/users/mapper"
 	"manga-explorer/internal/domain/users/repository"
 	"manga-explorer/internal/domain/users/service"
+	"manga-explorer/internal/infrastructure/file"
+	fileService "manga-explorer/internal/infrastructure/file/service"
 	"manga-explorer/internal/infrastructure/mail"
 	mailService "manga-explorer/internal/infrastructure/mail/service"
 	"manga-explorer/internal/util/containers"
@@ -20,64 +22,106 @@ func NewUser(userRepo repository.IUser, verification service.IVerification, auth
 type userService struct {
 	repo         repository.IUser
 	verifService service.IVerification
-	mailService  mailService.IMail
 	authService  service.IAuthentication
+	mailService  mailService.IMail
+	fileService  fileService.IFile
+}
+
+func (u userService) UpdateProfileImage(input *dto.ProfileImageUpdateInput) status.Object {
+	// Get user profile
+	profiles, err := u.repo.FindUserProfiles(input.UserId)
+	if err != nil {
+		return status.RepositoryError(err)
+	}
+
+	// Upload new image
+	filename, stat := u.fileService.Upload(file.ProfileAsset, input.Image)
+	if stat.IsError() {
+		return stat
+	}
+
+	// Delete old image
+	stat = u.fileService.Delete(file.ProfileAsset, profiles.PhotoURL)
+	if stat.IsError() {
+		return stat
+	}
+
+	// Set metadata
+	profile := users.Profile{Id: profiles.Id, PhotoURL: filename}
+	err = u.repo.UpdateProfile(&profile)
+	return status.ConditionalRepository(err, status.UPDATED)
+}
+
+func (u userService) DeleteProfileImage(userId string) status.Object {
+	profiles, err := u.repo.FindUserProfiles(userId)
+	if err != nil {
+		return status.RepositoryError(err)
+	}
+	stat := u.fileService.Delete(file.ProfileAsset, profiles.PhotoURL)
+	if stat.IsError() {
+		return stat
+	}
+
+	profile := users.Profile{Id: profiles.Id, PhotoURL: ""}
+	err = u.repo.UpdateProfile(&profile)
+	return status.ConditionalRepository(err, status.DELETED)
 }
 
 func (u userService) AddUser(input *dto.AddUserInput) status.Object {
 	userInput, err := mapper.MapAddUserInput(input)
 	if err != nil {
-		return status.Error(status.INTERNAL_SERVER_ERROR)
+		return status.InternalError()
 	}
 	profileInput := mapper.MapAddProfileInput(&userInput, input)
 
-	return status.FromRepository(u.repo.CreateUser(&userInput, &profileInput), status.CREATED)
+	err = u.repo.CreateUser(&userInput, &profileInput)
+	return status.ConditionalRepository(err, status.CREATED)
 }
-
 func (u userService) DeleteUser(userId string) status.Object {
-	return status.FromRepository(u.repo.DeleteUser(userId), status.DELETED)
+	err := u.repo.DeleteUser(userId)
+	return status.ConditionalRepository(err, status.DELETED)
 }
-
 func (u userService) GetAllUsers() ([]dto.UserResponse, status.Object) {
 	allUsers, err := u.repo.GetAllUsers()
-	return containers.CastSlicePtr(allUsers, mapper.ToUserResponse), status.FromRepository(err, status.SUCCESS)
+	if err != nil {
+		return nil, status.RepositoryError(err)
+	}
+	result := containers.CastSlicePtr(allUsers, mapper.ToUserResponse)
+	return result, status.Success()
 }
-
 func (u userService) UpdateUser(input *dto.UpdateUserInput) status.Object {
 	usr := mapper.MapUserUpdateInput(input)
 	err := u.repo.UpdateUser(&usr)
-	return status.FromRepository(err, status.UPDATED)
+	return status.ConditionalRepository(err, status.UPDATED)
 }
-
 func (u userService) UpdateUserExtended(input *dto.UpdateUserExtendedInput) status.Object {
 	user, err := mapper.MapUpdateUserExtendedInput(input)
 	if err != nil {
-		return status.Error(status.INTERNAL_SERVER_ERROR)
+		return status.InternalError()
 	}
-	return status.FromRepository(u.repo.UpdateUser(&user), status.UPDATED)
+	err = u.repo.UpdateUser(&user)
+	return status.ConditionalRepository(err, status.UPDATED)
 }
-
 func (u userService) UpdateProfileExtended(input *dto.UpdateProfileExtendedInput) status.Object {
 	profile := mapper.MapUpdateProfileExtendedInput(input)
-	return status.FromRepository(u.repo.UpdateProfile(&profile), status.UPDATED)
+	err := u.repo.UpdateProfile(&profile)
+	return status.ConditionalRepository(err, status.UPDATED)
 }
-
 func (u userService) UpdateProfile(input *dto.ProfileUpdateInput) status.Object {
 	profile := mapper.MapProfileUpdateInput(input)
 	err := u.repo.UpdateProfile(&profile)
-	return status.FromRepository(err, status.UPDATED)
+	return status.ConditionalRepository(err, status.UPDATED)
 }
 func (u userService) RegisterUser(input *dto.UserRegisterInput) (dto.UserResponse, status.Object) {
 	usr, err := mapper.MapUserRegisterInput(input)
 	if err != nil {
-		return dto.UserResponse{}, status.Error(status.INTERNAL_SERVER_ERROR)
+		return dto.UserResponse{}, status.InternalError()
 	}
 
 	profile := mapper.MapProfileRegisterInput(&usr, input)
 	err = u.repo.CreateUser(&usr, &profile)
-	stat := status.FromRepository(err, status.CREATED)
-	if stat.IsError() {
-		return dto.UserResponse{}, stat
+	if err != nil {
+		return dto.UserResponse{}, status.RepositoryError(err)
 	}
 
 	// Send email Verification
@@ -98,34 +142,30 @@ func (u userService) RegisterUser(input *dto.UserRegisterInput) (dto.UserRespons
 }
 func (u userService) FindUserById(id string) (dto.UserResponse, status.Object) {
 	usr, err := u.repo.FindUserById(id)
-	stat := status.FromRepository(err)
-	if stat.IsError() {
-		return dto.UserResponse{}, stat
+	if err != nil {
+		return dto.UserResponse{}, status.RepositoryError(err)
 	}
-	return mapper.ToUserResponse(usr), stat
+	return mapper.ToUserResponse(usr), status.Success()
 }
 func (u userService) FindUserByEmail(email string) (dto.UserResponse, status.Object) {
 	usr, err := u.repo.FindUserByEmail(email)
-	stat := status.FromRepository(err)
-	if stat.IsError() {
-		return dto.UserResponse{}, stat
+	if err != nil {
+		return dto.UserResponse{}, status.RepositoryError(err)
 	}
-	return mapper.ToUserResponse(usr), stat
+	return mapper.ToUserResponse(usr), status.Success()
 }
 func (u userService) FindUserProfileById(userId string) (dto.ProfileResponse, status.Object) {
 	profile, err := u.repo.FindUserProfiles(userId)
-	stat := status.FromRepository(err)
-	if stat.IsError() {
-		return dto.ProfileResponse{}, stat
+	if err != nil {
+		return dto.ProfileResponse{}, status.RepositoryError(err)
 	}
-	return mapper.ToProfileResponse(profile), stat
+	return mapper.ToProfileResponse(profile), status.Success()
 }
-
 func (u userService) ChangePassword(input *dto.ChangePasswordInput) status.Object {
 	// Get user
 	usr, err := u.repo.FindUserById(input.UserId)
 	if err != nil {
-		return status.Error(status.USER_NOT_FOUND)
+		return status.RepositoryError(err)
 	}
 
 	// Check last password
@@ -136,17 +176,15 @@ func (u userService) ChangePassword(input *dto.ChangePasswordInput) status.Objec
 	// Set new password
 	updateUser, err := mapper.MapChangePasswordInput(input)
 	if err != nil {
-		return status.Error(status.INTERNAL_SERVER_ERROR)
+		return status.InternalError()
 	}
 	err = u.repo.UpdateUser(&updateUser)
-	return status.FromRepository(err, status.UPDATED)
+	return status.ConditionalRepository(err, status.UPDATED)
 }
-
 func (u userService) RequestResetPassword(input *dto.ResetPasswordRequestInput) status.Object {
 	userResponse, err := u.repo.FindUserByEmail(input.Email)
-	stat := status.FromRepository(err)
-	if stat.IsError() {
-		return stat
+	if err != nil {
+		return status.RepositoryError(err)
 	}
 
 	verifResponse, stat := u.verifService.Request(userResponse.Id, users.UsageResetPassword)
@@ -163,14 +201,12 @@ func (u userService) RequestResetPassword(input *dto.ResetPasswordRequestInput) 
 	go u.mailService.SendEmail(ml)
 	return status.Success()
 }
-
 func (u userService) ResetPassword(input *dto.ResetPasswordInput) status.Object {
 	// Find token
 	verifResponse, stat := u.verifService.Find(input.Token)
 	if stat.IsError() {
 		return stat
 	}
-	input.UserId = verifResponse.UserId
 
 	// Validate token
 	stat = u.verifService.Validate(&verifResponse)
@@ -188,10 +224,10 @@ func (u userService) ResetPassword(input *dto.ResetPasswordInput) status.Object 
 	u.authService.LogoutDevices(verifResponse.UserId)
 
 	// Set new password
-	updateUser, err := mapper.MapResetPasswordInput(input)
+	updateUser, err := mapper.MapResetPasswordInput(input, verifResponse.UserId)
 	if err != nil {
-		return status.Error(status.INTERNAL_SERVER_ERROR)
+		return status.InternalError()
 	}
 	err = u.repo.UpdateUser(&updateUser)
-	return status.FromRepository(err, status.UPDATED)
+	return status.ConditionalRepository(err, status.SUCCESS)
 }

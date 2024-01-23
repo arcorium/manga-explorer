@@ -1,7 +1,7 @@
 package dto
 
 import (
-	"manga-explorer/internal/app/common"
+	"github.com/gin-gonic/gin"
 )
 
 type UserResponse struct {
@@ -30,24 +30,19 @@ type UpdateUserInput struct {
 	Password string `json:"password"`
 }
 
-func (u *UpdateUserInput) SetUserId(claims *common.AccessTokenClaims) {
-	u.UserId = claims.UserId
-}
-
 type ChangePasswordInput struct {
 	UserId       string `json:"-"`
 	LastPassword string `json:"last_password"`
 	NewPassword  string `json:"new_password"`
 }
 
-func (c *ChangePasswordInput) SetUserId(claims *common.AccessTokenClaims) {
-	c.UserId = claims.UserId
-}
-
 type ResetPasswordInput struct {
 	Token       string `uri:"token" binding:"required"`
-	UserId      string `json:"-"`
 	NewPassword string `json:"new_password" binding:"required"`
+}
+
+func (r *ResetPasswordInput) ConstructURI(ctx *gin.Context) {
+	r.Token = ctx.Param("token")
 }
 
 type UpdateUserExtendedInput struct {
@@ -57,12 +52,20 @@ type UpdateUserExtendedInput struct {
 	Password string `json:"password"`
 }
 
+func (u *UpdateUserExtendedInput) ConstructURI(ctx *gin.Context) {
+	u.UserId = ctx.Param("id")
+}
+
 type UpdateProfileExtendedInput struct {
 	UserId    string `uri:"id" binding:"required"`
 	FirstName string `json:"first_name"`
 	LastName  string `json:"last_name"`
 	Bio       string `json:"bio"`
 	PhotoURL  string `json:"photo_url"`
+}
+
+func (p *UpdateProfileExtendedInput) ConstructURI(ctx *gin.Context) {
+	p.UserId = ctx.Param("id")
 }
 
 type AddUserInput struct {

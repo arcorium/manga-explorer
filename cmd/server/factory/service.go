@@ -5,6 +5,7 @@ import (
 	service3 "manga-explorer/internal/app/service"
 	service2 "manga-explorer/internal/domain/mangas/service"
 	"manga-explorer/internal/domain/users/service"
+	"manga-explorer/internal/infrastructure/file"
 	service5 "manga-explorer/internal/infrastructure/file/service"
 	service4 "manga-explorer/internal/infrastructure/mail/service"
 )
@@ -25,7 +26,7 @@ type Service struct {
 func CreateServices(config *common.Config, repository *Repository) Service {
 	result := Service{
 		Mail:           service4.NewSMTPMailService(config),
-		File:           service5.NewLocalFileService("./file"),
+		File:           service5.NewLocalFileService(file.GetHostName(), "./file"),
 		Authentication: service3.NewCredential(config, repository.Credential, repository.User),
 		Verification:   service3.NewVerification(repository.Verification),
 		Chapter:        service3.NewChapterService(repository.Chapter, repository.Comment),
@@ -33,6 +34,6 @@ func CreateServices(config *common.Config, repository *Repository) Service {
 	}
 
 	result.User = service3.NewUser(repository.User, result.Verification, result.Authentication, result.Mail)
-	result.Manga = service3.NewMangaService(result.File, repository.Manga, repository.Comment, repository.Rate)
+	result.Manga = service3.NewMangaService(result.File, repository.Manga, repository.Translation, repository.Comment, repository.Rate)
 	return result
 }

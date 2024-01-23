@@ -2,6 +2,7 @@ package users
 
 import (
 	"github.com/uptrace/bun"
+	"manga-explorer/internal/infrastructure/file"
 	"time"
 )
 
@@ -16,12 +17,12 @@ func NewProfile(user *User, firstName, lastName string) Profile {
 type Profile struct {
 	bun.BaseModel `bun:"table:profiles"`
 
-	Id        uint64 `bun:",pk,autoincrement"`
-	UserId    string `bun:",notnull,unique,type:uuid"`
-	FirstName string `bun:",notnull,nullzero"`
-	LastName  string `bun:",nullzero"`
-	PhotoURL  string `bun:",nullzero,type:text"`
-	Bio       string `bun:",nullzero,type:text"`
+	Id        uint64    `bun:",pk,autoincrement"`
+	UserId    string    `bun:",notnull,unique,type:uuid"`
+	FirstName string    `bun:",notnull,nullzero"`
+	LastName  string    `bun:",nullzero"`
+	PhotoURL  file.Name `bun:",nullzero,type:text"`
+	Bio       string    `bun:",nullzero,type:text"`
 
 	UpdatedAt time.Time `bun:",notnull"`
 

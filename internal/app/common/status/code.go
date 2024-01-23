@@ -39,7 +39,7 @@ const (
 	TOKEN_MALTYPE
 	TOKEN_NOT_VALID
 
-	// File Upload
+	// File Uploads
 	FILE_UPLOAD_FAILED
 )
 
@@ -73,6 +73,6 @@ var Messages = map[int]string{
 	TOKEN_NOT_VALID:        "Token you provide is not valid",
 	CREDENTIALS_NOT_FOUND:  "Credentials is empty",
 
-	// File Upload
+	// File Uploads
 	FILE_UPLOAD_FAILED: "Failed to upload an image",
 }

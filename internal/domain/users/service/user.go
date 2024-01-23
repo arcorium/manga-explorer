@@ -26,6 +26,8 @@ type IUser interface {
 	UpdateUserExtended(input *dto.UpdateUserExtendedInput) status.Object
 	// UpdateProfile update user profile based on user id (not profile id) and the input
 	UpdateProfile(input *dto.ProfileUpdateInput) status.Object
+	UpdateProfileImage(input *dto.ProfileImageUpdateInput) status.Object
+	DeleteProfileImage(userId string) status.Object
 	// UpdateProfileExtended update all possible field on user profile
 	UpdateProfileExtended(input *dto.UpdateProfileExtendedInput) status.Object
 	// ChangePassword works like UpdateUser but it specific for password

@@ -28,6 +28,8 @@ func (u userRoute) V1Route(config *Config, router gin.IRouter) {
 	user.GET("/:id/profiles", userController.GetUserProfile)
 	user.GET("/profiles", userController.GetUserProfile)
 	user.PUT("/profiles", userController.EditUserProfile)
+	user.PUT("/profiles/image", userController.UpdateProfileImage)
+	user.DELETE("/profiles/image", userController.UpdateProfileImage)
 	// Admin
 	admin.PUT("/:id", userController.UpdateUserExtended)
 	admin.PUT("/:id/profiles", userController.UpdateUserProfileExtended)

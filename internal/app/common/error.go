@@ -27,7 +27,7 @@ func GetFieldsError(err validator.ValidationErrors) []FieldError {
 		if verr.Tag() == "required" {
 			errMessage = fmt.Sprintf("%s field is required", strings.ToLower(verr.Field()))
 		} else {
-			errMessage = fmt.Sprintf("%s field should satisfy %s constraint", strings.ToLower(verr.Field()), verr.Tag())
+			errMessage = fmt.Sprintf("%s field should satisfy %s constraint", strings.ToLower(verr.Field()), strings.ReplaceAll(verr.Tag(), "|", " or "))
 		}
 		res = append(res, FieldError{
 			Field: verr.Field(),

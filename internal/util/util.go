@@ -119,3 +119,17 @@ func GenerateJWTToken(claims jwt.Claims, method jwt.SigningMethod, secretKey []b
 func IsUUID(str string) bool {
 	return obj.Wrap(uuid.Parse(str)).Err() == nil
 }
+
+func IsOneOf[T comparable](original T, expecteds ...T) bool {
+	for i := 0; i < len(expecteds); i++ {
+		if expecteds[i] == original {
+			return true
+		}
+	}
+	return false
+}
+
+func SliceWrap[T any](datas ...T) []T {
+	t := []T{}
+	return append(t, datas...)
+}

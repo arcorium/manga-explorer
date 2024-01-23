@@ -23,15 +23,13 @@ type credentialService struct {
 	config *common.Config
 
 	authRepo userRepo.IAuthentication
-	userRepo userRepo.IUser // TODO: Use service and handle on controller instead
+	userRepo userRepo.IUser
 }
 
 func (c credentialService) Authenticate(input *dto.LoginInput) (dto.LoginResponse, status.Object) {
-
 	usr, err := c.userRepo.FindUserByEmail(input.Email)
-	stat := status.FromRepository(err)
-	if stat.IsError() {
-		return dto.NoLoginResponse, status.Error(status.USER_NOT_FOUND)
+	if err != nil {
+		return dto.NoLoginResponse, status.RepositoryError(err)
 	}
 
 	if !usr.ValidatePassword(input.Password) {
@@ -41,25 +39,24 @@ func (c credentialService) Authenticate(input *dto.LoginInput) (dto.LoginRespons
 	// Refresh Token Creation
 	refreshToken, err := util.GenerateJWTToken(users.DefaultClaims(c.config.RefreshTokenDuration, constant.IssuerName), c.config.SigningMethod(), []byte(c.config.JWTSecretKey))
 	if err != nil {
-		return dto.NoLoginResponse, status.Error(status.INTERNAL_SERVER_ERROR)
+		return dto.NoLoginResponse, status.InternalError()
 	}
 
 	// Access Token Creation
 	accessTokenClaims := usr.GenerateAccessTokenClaims(c.config.AccessTokenDuration)
 	accessToken, err := util.GenerateJWTToken(accessTokenClaims, c.config.SigningMethod(), []byte(c.config.JWTSecretKey))
 	if err != nil {
-		return dto.NoLoginResponse, status.Error(status.INTERNAL_SERVER_ERROR)
+		return dto.NoLoginResponse, status.InternalError()
 	}
 
 	// Save Credential
 	cred := users.NewCredential(usr, input.DeviceName, accessTokenClaims["id"].(string), refreshToken)
 	err = c.authRepo.Create(&cred)
-	stat = status.FromRepository(err)
 	if err != nil {
-		return dto.NoLoginResponse, stat
+		return dto.NoLoginResponse, status.RepositoryError(err)
 	}
 
-	return dto.NewLoginResponse(accessToken), stat
+	return dto.NewLoginResponse(accessToken), status.Success()
 }
 
 func (c credentialService) RefreshToken(request *dto.RefreshTokenInput) (dto.RefreshTokenResponse, status.Object) {
@@ -86,8 +83,7 @@ func (c credentialService) RefreshToken(request *dto.RefreshTokenInput) (dto.Ref
 
 	// Find credential
 	cred, err := c.authRepo.FindByAccessTokenId(accessTokenClaims.Id)
-	stat := status.FromRepository(err)
-	if stat.IsError() {
+	if err != nil {
 		return dto.NoRefreshTokenResponse, status.Error(status.ACCESS_TOKEN_WITHOUT_REFRESH_TOKEN)
 	}
 
@@ -121,41 +117,39 @@ func (c credentialService) RefreshToken(request *dto.RefreshTokenInput) (dto.Ref
 	newAccessTokenClaims := usr.GenerateAccessTokenClaims(c.config.AccessTokenDuration)
 	newAccessToken, err := util.GenerateJWTToken(newAccessTokenClaims, c.config.SigningMethod(), []byte(c.config.JWTSecretKey))
 	if err != nil {
-		return dto.NoRefreshTokenResponse, status.Error(status.USER_NOT_FOUND)
+		return dto.NoRefreshTokenResponse, status.InternalError()
 	}
 
 	// Prevent creating many access token from old access token
 	err = c.authRepo.UpdateAccessTokenId(cred.Id, newAccessTokenClaims["id"].(string))
-	stat = status.FromRepository(err, status.UPDATED)
 	if err != nil {
-		return dto.NoRefreshTokenResponse, stat
+		return dto.NoRefreshTokenResponse, status.RepositoryError(err)
 	}
 
-	return dto.NewRefreshTokenResponse(newAccessToken), stat
+	return dto.NewRefreshTokenResponse(newAccessToken), status.Updated()
 }
 
 func (c credentialService) GetCredentials(userId string) ([]dto.CredentialResponse, status.Object) {
 	creds, err := c.authRepo.FindUserCredentials(userId)
-	stat := status.FromRepository(err)
-	if stat.IsError() {
-		return nil, stat
+	if err != nil {
+		return nil, status.RepositoryError(err)
 	}
 
 	responses := containers.CastSlicePtr(creds, authMapper.ToCredentialResponse)
-	return responses, stat
+	return responses, status.Success()
 }
 
 func (c credentialService) SelfLogout(userId, accessTokenId string) status.Object {
 	err := c.authRepo.RemoveByAccessTokenId(userId, accessTokenId)
-	return status.FromRepository(err)
+	return status.ConditionalRepository(err, status.DELETED)
 }
 
 func (c credentialService) Logout(userId, credId string) status.Object {
 	err := c.authRepo.Remove(userId, credId)
-	return status.FromRepository(err)
+	return status.ConditionalRepository(err, status.DELETED)
 }
 
 func (c credentialService) LogoutDevices(userId string) status.Object {
 	err := c.authRepo.RemoveUserCredentials(userId)
-	return status.FromRepository(err)
+	return status.ConditionalRepository(err, status.DELETED)
 }

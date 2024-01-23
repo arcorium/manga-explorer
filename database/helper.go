@@ -128,7 +128,7 @@ func Open(config *common.Config, log bool) (*bun.DB, error) {
 
 func Close(db *bun.DB) {
 	if err := db.Close(); err != nil {
-		log.Println(err)
+		log.Fatalln(err)
 	}
 }
 

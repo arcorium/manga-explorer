@@ -21,38 +21,40 @@ type MangaController struct {
 }
 
 func (m MangaController) ListManga(ctx *gin.Context) {
-	var pagedQuery dto.PagedQueryInput
-	stat, fieldsErr := httputil.BindQuery(ctx, &pagedQuery)
+	input := dto.PagedQueryInput{}
+	stat, fieldsErr := httputil.BindQuery(ctx, &input)
 	if stat.IsError() {
 		resp.ErrorDetailed(ctx, stat, fieldsErr)
 		return
 	}
 
-	mangas, pages, stat := m.mangaService.ListMangas(&pagedQuery)
+	mangas, pages, stat := m.mangaService.ListMangas(&input)
 	resp.Conditional(ctx, stat, mangas, pages)
 }
 
 func (m MangaController) Search(ctx *gin.Context) {
-	var searchQuery mangaDto.MangaSearchQuery
-	stat, fieldsErr := httputil.BindQueryJson(ctx, &searchQuery)
+	input := mangaDto.MangaSearchQuery{}
+	input.ConstructQuery(ctx)
+	stat, fieldsErr := httputil.BindJson(ctx, &input)
 	if stat.IsError() {
 		resp.ErrorDetailed(ctx, stat, fieldsErr)
 		return
 	}
 
-	mangas, page, stat := m.mangaService.SearchPagedMangas(&searchQuery)
+	mangas, page, stat := m.mangaService.SearchMangas(&input)
 	resp.Conditional(ctx, stat, mangas, page)
 }
 
 func (m MangaController) EditManga(ctx *gin.Context) {
-	var updateManga mangaDto.MangaEditInput
-	stat, fieldsErr := httputil.BindUriJson(ctx, &updateManga)
+	input := mangaDto.MangaEditInput{}
+	input.ConstructURI(ctx)
+	stat, fieldsErr := httputil.BindJson(ctx, &input)
 	if stat.IsError() {
 		resp.ErrorDetailed(ctx, stat, fieldsErr)
 		return
 	}
 
-	stat = m.mangaService.EditManga(&updateManga)
+	stat = m.mangaService.EditManga(&input)
 	resp.Conditional(ctx, stat, nil, nil)
 }
 
@@ -96,31 +98,33 @@ func (m MangaController) FindMangaRatings(ctx *gin.Context) {
 }
 
 func (m MangaController) CreateMangaComments(ctx *gin.Context) {
-	var commentInput mangaDto.MangaCommentCreateInput
-	stat, fieldsErr := httputil.BindUriJson(ctx, &commentInput)
+	input := mangaDto.MangaCommentCreateInput{}
+	input.ConstructURI(ctx)
+	stat, fieldsErr := httputil.BindJson(ctx, &input)
 	if stat.IsError() {
 		resp.ErrorDetailed(ctx, stat, fieldsErr)
 		return
 	}
 
-	stat = m.mangaService.CreateComments(&commentInput)
+	stat = m.mangaService.CreateComments(&input)
 	resp.Conditional(ctx, stat, nil, nil)
 }
 
 func (m MangaController) CreateMangaRatings(ctx *gin.Context) {
-	var rateInput mangaDto.RateUpsertInput
-	stat, fieldsErr := httputil.BindUriJson(ctx, &rateInput)
+	input := mangaDto.RateUpsertInput{}
+	input.ConstructURI(ctx)
+	stat, fieldsErr := httputil.BindJson(ctx, &input)
 	if stat.IsError() {
 		resp.ErrorDetailed(ctx, stat, fieldsErr)
 		return
 	}
 
-	stat = m.mangaService.UpsertMangaRating(&rateInput)
+	stat = m.mangaService.UpsertMangaRating(&input)
 	resp.Conditional(ctx, stat, nil, nil)
 }
 
 func (m MangaController) CreateManga(ctx *gin.Context) {
-	var mangaInput mangaDto.MangaCreateInput
+	mangaInput := mangaDto.MangaCreateInput{}
 	stat, fieldsErr := httputil.BindJson(ctx, &mangaInput)
 	if stat.IsError() {
 		resp.ErrorDetailed(ctx, stat, fieldsErr)
@@ -132,19 +136,91 @@ func (m MangaController) CreateManga(ctx *gin.Context) {
 }
 
 func (m MangaController) CreateVolume(ctx *gin.Context) {
-	var volumeInput mangaDto.VolumeCreateInput
-	stat, fieldsErr := httputil.BindUriJson(ctx, &volumeInput)
+	input := mangaDto.VolumeCreateInput{}
+	input.ConstructURI(ctx)
+	stat, fieldsErr := httputil.BindJson(ctx, &input)
 	if stat.IsError() {
 		resp.ErrorDetailed(ctx, stat, fieldsErr)
 		return
 	}
 
-	stat = m.mangaService.CreateVolume(&volumeInput)
+	stat = m.mangaService.CreateVolume(&input)
+	resp.Conditional(ctx, stat, nil, nil)
+}
+
+func (m MangaController) InsertMangaTranslate(ctx *gin.Context) {
+	input := mangaDto.MangaInsertTranslationInput{}
+	input.ConstructURI(ctx)
+	stat, fieldErrors := httputil.BindJson(ctx, &input)
+	if stat.IsError() {
+		resp.ErrorDetailed(ctx, stat, fieldErrors)
+		return
+	}
+
+	stat = m.mangaService.InsertMangaTranslations(&input)
+	resp.Conditional(ctx, stat, nil, nil)
+}
+
+func (m MangaController) FindMangaTranslations(ctx *gin.Context) {
+	mangaId := ctx.Param("manga_id")
+	if len(mangaId) == 0 {
+		resp.ErrorDetailed(ctx, status.Error(status.BAD_PARAMETER_ERROR), common.NewNotPresentParameter("manga_id"))
+		return
+	}
+
+	if !util.IsUUID(mangaId) {
+		resp.ErrorDetailed(ctx, status.Error(status.BAD_PARAMETER_ERROR),
+			common.NewParameterError("manga_id", " should be uuid type"))
+		return
+	}
+
+	responses, stat := m.mangaService.FindMangaTranslations(mangaId)
+	resp.Conditional(ctx, stat, responses, nil)
+}
+
+func (m MangaController) DeleteMangaTranslations(ctx *gin.Context) {
+	mangaId := ctx.Param("manga_id")
+	if len(mangaId) == 0 {
+		resp.ErrorDetailed(ctx, status.Error(status.BAD_PARAMETER_ERROR), common.NewNotPresentParameter("manga_id"))
+		return
+	}
+
+	if !util.IsUUID(mangaId) {
+		resp.ErrorDetailed(ctx, status.Error(status.BAD_PARAMETER_ERROR),
+			common.NewParameterError("manga_id", " should be uuid type"))
+		return
+	}
+
+	stat := m.mangaService.DeleteMangaTranslations(mangaId)
+	resp.Conditional(ctx, stat, nil, nil)
+}
+
+func (m MangaController) DeleteTranslations(ctx *gin.Context) {
+	input := mangaDto.TranslationDeleteInput{}
+	stat, fieldErrors := httputil.BindJson(ctx, &input)
+	if stat.IsError() {
+		resp.ErrorDetailed(ctx, stat, fieldErrors)
+		return
+	}
+
+	stat = m.mangaService.DeleteTranslations(&input)
+	resp.Conditional(ctx, stat, nil, nil)
+}
+
+func (m MangaController) UpdateTranslation(ctx *gin.Context) {
+	input := mangaDto.TranslationUpdateInput{}
+	stat, fieldErrors := httputil.BindJson(ctx, &input)
+	if stat.IsError() {
+		resp.ErrorDetailed(ctx, stat, fieldErrors)
+		return
+	}
+
+	stat = m.mangaService.UpdateTranslation(&input)
 	resp.Conditional(ctx, stat, nil, nil)
 }
 
 func (m MangaController) DeleteVolume(ctx *gin.Context) {
-	var volumeInput mangaDto.VolumeDeleteInput
+	volumeInput := mangaDto.VolumeDeleteInput{}
 	stat, fieldsErr := httputil.BindUri(ctx, &volumeInput)
 	if stat.IsError() {
 		resp.ErrorDetailed(ctx, stat, fieldsErr)
@@ -156,8 +232,8 @@ func (m MangaController) DeleteVolume(ctx *gin.Context) {
 }
 
 func (m MangaController) GetMangaHistories(ctx *gin.Context) {
-	var pagedQuery dto.PagedQueryInput
-	stat, fieldsErr := httputil.BindQuery(ctx, &pagedQuery)
+	query := dto.PagedQueryInput{}
+	stat, fieldsErr := httputil.BindQuery(ctx, &query)
 	if stat.IsError() {
 		resp.ErrorDetailed(ctx, stat, fieldsErr)
 		return
@@ -169,13 +245,13 @@ func (m MangaController) GetMangaHistories(ctx *gin.Context) {
 		return
 	}
 
-	mangas, pages, cerr := m.mangaService.FindMangaHistories(claims.UserId, &pagedQuery)
+	mangas, pages, cerr := m.mangaService.FindMangaHistories(claims.UserId, &query)
 	resp.Conditional(ctx, cerr, mangas, pages)
 }
 
 func (m MangaController) GetMangaFavorites(ctx *gin.Context) {
-	var pagedQuery dto.PagedQueryInput
-	stat, fieldsErr := httputil.BindQuery(ctx, &pagedQuery)
+	query := dto.PagedQueryInput{}
+	stat, fieldsErr := httputil.BindQuery(ctx, &query)
 	if stat.IsError() {
 		resp.ErrorDetailed(ctx, stat, fieldsErr)
 		return
@@ -187,6 +263,6 @@ func (m MangaController) GetMangaFavorites(ctx *gin.Context) {
 		return
 	}
 
-	mangas, pages, cerr := m.mangaService.FindMangaFavorites(claims.UserId, &pagedQuery)
+	mangas, pages, cerr := m.mangaService.FindMangaFavorites(claims.UserId, &query)
 	resp.Conditional(ctx, cerr, mangas, pages)
 }

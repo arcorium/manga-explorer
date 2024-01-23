@@ -17,6 +17,7 @@ type Repository struct {
 	Comment      mangaRepo.IComment
 	Genre        mangaRepo.IGenre
 	Rate         mangaRepo.IRate
+	Translation  mangaRepo.ITranslation
 }
 
 func CreateRepositories(db bun.IDB) Repository {
@@ -29,5 +30,6 @@ func CreateRepositories(db bun.IDB) Repository {
 		Comment:      mangaPg.NewComment(db),
 		Genre:        mangaPg.NewMangaGenre(db),
 		Rate:         mangaPg.NewMangaRate(db),
+		Translation:  mangaPg.NewTranslationRepository(db),
 	}
 }

@@ -6,9 +6,9 @@ import (
 	"manga-explorer/internal/app/dto"
 )
 
-//type SuccessWrapper[T any] struct {
-//	Internal T `json:"success"`
-//}
+type SuccessWrapper[T any] struct {
+	Internal T `json:"success"`
+}
 
 type ErrorWrapper[T any] struct {
 	Internal T `json:"error"`
@@ -16,17 +16,15 @@ type ErrorWrapper[T any] struct {
 
 // Success Used to set common.Response as response for success response
 func Success(ctx *gin.Context, status status.Object, data any, page *dto.ResponsePage) {
-	//res := SuccessWrapper[dto.Success]{Internal: dto.NewSuccessResponse(data, page)}
-	ctx.JSON(HttpCodeFromError(status), dto.NewSuccessResponse(data, page))
+	res := SuccessWrapper[dto.SuccessResponse]{Internal: dto.NewSuccessResponse(status.Code, data, page)}
+	ctx.JSON(HttpCodeFromError(status), res)
 }
 
 func SuccessMessage(ctx *gin.Context, status status.Object, message string) {
-	//res := SuccessWrapper[dto.Success]{Internal: dto.NewSuccessResponse(struct {
-	//	Message string `json:"message"`
-	//}{message}, nil)}
-	ctx.JSON(HttpCodeFromError(status), dto.NewSuccessResponse(struct {
+	res := SuccessWrapper[dto.SuccessResponse]{Internal: dto.NewSuccessResponse(status.Code, struct {
 		Message string `json:"message"`
-	}{message}, nil))
+	}{message}, nil)}
+	ctx.JSON(HttpCodeFromError(status), res)
 }
 
 // ErrorDetailed Used to set common.Response as response for bad response

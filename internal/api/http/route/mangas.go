@@ -13,6 +13,8 @@ type _mangaRoute struct {
 
 func (m _mangaRoute) V1Route(config *Config, router gin.IRouter) {
 	m.MangaRoute(config, router)
+	m.ChapterRoute(config, router)
+	m.GenreRoute(config, router)
 }
 
 func (m _mangaRoute) MangaRoute(config *Config, router gin.IRouter) {
@@ -27,6 +29,7 @@ func (m _mangaRoute) MangaRoute(config *Config, router gin.IRouter) {
 	mangaRoute.GET("/:manga_id", mangaController.FindMangaById)
 	mangaRoute.GET("/:manga_id/comments", mangaController.FindMangaComments)
 	mangaRoute.GET("/:manga_id/ratings", mangaController.FindMangaRatings)
+	mangaRoute.GET("/:manga_id/translates", mangaController.FindMangaTranslations)
 	// Login user
 	mangaRoute.Use(config.Middleware.Authorization.Handle)
 	mangaRoute.POST("/:manga_id/comments", mangaController.CreateMangaComments)
@@ -35,14 +38,18 @@ func (m _mangaRoute) MangaRoute(config *Config, router gin.IRouter) {
 	mangaRoute.GET("/history", mangaController.GetMangaHistories)
 	// Admin
 	mangaRoute.Use(config.Middleware.AdminRestrict.Handle)
+
+	mangaRoute.POST("/:manga_id/translates", mangaController.InsertMangaTranslate)
+	mangaRoute.DELETE("/:manga_id/translates", mangaController.DeleteMangaTranslations)
+	mangaRoute.PUT("/translates", mangaController.UpdateTranslation)
+	mangaRoute.DELETE("/translates", mangaController.DeleteTranslations)
+
 	mangaRoute.POST("/", mangaController.CreateManga)
 	mangaRoute.POST("/:manga_id", mangaController.EditManga)
 	mangaRoute.POST("/:manga_id/volumes", mangaController.CreateVolume)
 	mangaRoute.DELETE("/:manga_id/volumes/:volume", mangaController.DeleteVolume)
 	mangaRoute.POST("/:manga_id/chapters", chapterController.CreateChapter)
 
-	m.ChapterRoute(config, mangaRoute)
-	m.GenreRoute(config, mangaRoute)
 }
 func (m _mangaRoute) ChapterRoute(config *Config, router gin.IRouter) {
 	chapterController := &config.Controller.MangaChapter
@@ -70,7 +77,6 @@ func (m _mangaRoute) ChapterRoute(config *Config, router gin.IRouter) {
 	volumeRoute := router.Group("/volumes")
 	volumeRoute.GET("/:volume_id", chapterController.FindVolumeChapters)
 }
-
 func (m _mangaRoute) GenreRoute(config *Config, router gin.IRouter) {
 	genreController := &config.Controller.MangaGenre
 	genreRoute := router.Group("/genres", config.Middleware.Authorization.Handle, config.Middleware.AdminRestrict.Handle)

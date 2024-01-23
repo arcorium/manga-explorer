@@ -21,8 +21,9 @@ type ChapterController struct {
 }
 
 func (m ChapterController) InsertChapterPage(ctx *gin.Context) {
-	var input dto.PageCreateInput
-	stat, fieldsErr := httputil.BindUriMultipartForm(ctx, &input)
+	input := dto.PageCreateInput{}
+	input.ConstructURI(ctx)
+	stat, fieldsErr := httputil.BindMultipartForm(ctx, &input)
 	if stat.IsError() {
 		resp.ErrorDetailed(ctx, stat, fieldsErr)
 		return
@@ -31,8 +32,9 @@ func (m ChapterController) InsertChapterPage(ctx *gin.Context) {
 	resp.Conditional(ctx, stat, nil, nil)
 }
 func (m ChapterController) DeleteChapterPage(ctx *gin.Context) {
-	var pageInput dto.PageDeleteInput
-	stat, fieldsErr := httputil.BindUriJson(ctx, &pageInput)
+	pageInput := dto.PageDeleteInput{}
+	pageInput.ConstructURI(ctx)
+	stat, fieldsErr := httputil.BindJson(ctx, &pageInput)
 	if stat.IsError() {
 		resp.ErrorDetailed(ctx, stat, fieldsErr)
 	}
@@ -41,8 +43,9 @@ func (m ChapterController) DeleteChapterPage(ctx *gin.Context) {
 	resp.Conditional(ctx, stat, nil, nil)
 }
 func (m ChapterController) EditChapter(ctx *gin.Context) {
-	var editInput dto.ChapterEditInput
-	stat, fieldsErr := httputil.BindUriJson(ctx, &editInput)
+	editInput := dto.ChapterEditInput{}
+	editInput.ConstructURI(ctx)
+	stat, fieldsErr := httputil.BindJson(ctx, &editInput)
 	if stat.IsError() {
 		resp.ErrorDetailed(ctx, stat, fieldsErr)
 		return
@@ -52,8 +55,9 @@ func (m ChapterController) EditChapter(ctx *gin.Context) {
 	resp.Conditional(ctx, stat, nil, nil)
 }
 func (m ChapterController) CreateChapterComments(ctx *gin.Context) {
-	var input dto.ChapterCommentCreateInput
-	stat, fieldsErr := httputil.BindUriJson(ctx, &input)
+	input := dto.ChapterCommentCreateInput{}
+	input.ConstructURI(ctx)
+	stat, fieldsErr := httputil.BindJson(ctx, &input)
 	if stat.IsError() {
 		resp.ErrorDetailed(ctx, stat, fieldsErr)
 		return
@@ -63,8 +67,9 @@ func (m ChapterController) CreateChapterComments(ctx *gin.Context) {
 	resp.Conditional(ctx, stat, nil, nil)
 }
 func (m ChapterController) CreatePageComments(ctx *gin.Context) {
-	var input dto.PageCommentCreateInput
-	stat, fieldsErr := httputil.BindUriJson(ctx, &input)
+	input := dto.PageCommentCreateInput{}
+	input.ConstructURI(ctx)
+	stat, fieldsErr := httputil.BindJson(ctx, &input)
 	if stat.IsError() {
 		resp.ErrorDetailed(ctx, stat, fieldsErr)
 		return
@@ -93,8 +98,9 @@ func (m ChapterController) FindPageComments(ctx *gin.Context) {
 }
 func (m ChapterController) CreateChapter(ctx *gin.Context) {
 	// TODO: Add support for creating chapter and inserting pages so each chapter should not have empty pages
-	var input dto.ChapterCreateInput
-	stat, fieldsErr := httputil.BindUriJson(ctx, &input)
+	input := dto.ChapterCreateInput{}
+	input.ConstructURI(ctx)
+	stat, fieldsErr := httputil.BindJson(ctx, &input)
 	if stat.IsError() {
 		resp.ErrorDetailed(ctx, stat, fieldsErr)
 		return
