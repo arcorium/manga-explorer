@@ -3,13 +3,11 @@ package database
 import (
 	"context"
 	"database/sql"
-	"github.com/google/uuid"
 	"github.com/uptrace/bun/dbfixture"
 	"log"
 	"manga-explorer/database/fixtures"
 	"manga-explorer/internal/domain/mangas"
 	"manga-explorer/internal/domain/users"
-	"manga-explorer/internal/domain/users/repository"
 	"manga-explorer/internal/util"
 	"os"
 	"slices"
@@ -64,25 +62,6 @@ func Migrate(db *bun.DB) error {
 	return nil
 }
 
-func InsertSpecialRecords(db *bun.DB) error {
-	// Used for user that commented or translated anime, but the account is deleted or banned
-	// TODO: Add deleted or banned on user table to check either the user is deleted or banned
-	user := users.User{
-		Id:        "afcd4ab0-3190-4d35-885a-1d20eb909bd9",
-		Username:  "deleted account",
-		Email:     "deleted@account.com",
-		Password:  util.DropError(util.Hash(uuid.NewString())),
-		Verified:  false,
-		Role:      users.RoleUser,
-		UpdatedAt: time.Time{},
-		CreatedAt: time.Time{},
-	}
-	_, err := db.NewInsert().
-		Model(&user).
-		Exec(context.Background())
-	return err
-}
-
 func RegisterModels(db *bun.DB) {
 	db.RegisterModel(util.Nil[mangas.MangaGenre]())
 	for _, model := range tables {
@@ -130,13 +109,6 @@ func Close(db *bun.DB) {
 	if err := db.Close(); err != nil {
 		log.Fatalln(err)
 	}
-}
-
-func AddAdminUser(repository repository.IUser) {
-	usr, _ := users.NewUser("admin", "admin@gmail.com", "123", users.RoleAdmin)
-	profile := users.NewProfile(&usr, "admin", "admin")
-
-	_ = repository.CreateUser(&usr, &profile)
 }
 
 var fixtureMaps = map[fixtures.Type]string{

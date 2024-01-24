@@ -45,6 +45,10 @@ func InternalError() Object {
 	return Error(INTERNAL_SERVER_ERROR)
 }
 
+func NotFoundError() Object {
+	return Error(OBJECT_NOT_FOUND)
+}
+
 func RepositoryError(err error) Object {
 
 	if err == sql.ErrNoRows {

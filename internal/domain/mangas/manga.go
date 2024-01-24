@@ -12,14 +12,14 @@ import (
 type Manga struct {
 	bun.BaseModel       `bun:"table:mangas"`
 	Id                  string         `bun:",pk,type:uuid"`
-	Status              Status         `bun:",nullzero,notnull"`
+	Status              Status         `bun:",notnull"`
 	Origin              common.Country `bun:",nullzero,notnull,type:varchar(2)"`
 	OriginalTitle       string         `bun:",notnull,nullzero,unique,type:text"`
 	OriginalDescription string         `bun:",nullzero,type:text"`
 	PublicationYear     uint16         `bun:",notnull,nullzero"`
 	CoverURL            file.Name      `bun:",nullzero"`
-	UpdatedAt           time.Time      `bun:",nullzero,notnull"`
-	CreatedAt           time.Time      `bun:",nullzero,notnull"`
+	UpdatedAt           time.Time      `bun:",nullzero,notnull,default:current_timestamp"`
+	CreatedAt           time.Time      `bun:",nullzero,notnull,default:current_timestamp"`
 
 	Comments     []Comment     `bun:"rel:has-many,join:id=object_id,join:type=object_type,polymorphic"`
 	Ratings      []Rate        `bun:"rel:has-many,join:id=manga_id"`

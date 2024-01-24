@@ -26,15 +26,15 @@ func newMangaForTest(id opt.Optional[string], title, desc, coverUrl string, year
 	return &temp // Expected object to be allocated on heap
 }
 
-func newVolumeForTest(id opt.Optional[string], mangaId string, number uint32, title, desc, coverImageURL string) *mangas.Volume {
-	temp := mangas.NewVolume(mangaId, number, title, desc, coverImageURL)
+func newVolumeForTest(id opt.Optional[string], mangaId string, number uint32, title, desc string) *mangas.Volume {
+	temp := mangas.NewVolume(mangaId, number, title, desc)
 	if id.HasValue() {
 		temp.Id = *id.Value()
 	}
 	return &temp
 }
 
-func newMangaFavoriteForTest(userId, mangaId string, manga *mangas.Manga, user *users.users) mangas.MangaFavorite {
+func newMangaFavoriteForTest(userId, mangaId string, manga *mangas.Manga, user *users.User) mangas.MangaFavorite {
 	temp := mangas.NewFavorite(userId, mangaId)
 	temp.Manga = manga
 	temp.User = user
@@ -109,28 +109,28 @@ func Test_mangaRepository_CreateVolume(t *testing.T) {
 		{
 			name: "Normal",
 			args: args{
-				volume: newVolumeForTest(opt.Null[string](), "2aa478df-9f0f-4e67-b652-f9b01023eefb", 24, "title", "desc", ""),
+				volume: newVolumeForTest(opt.Null[string](), "2aa478df-9f0f-4e67-b652-f9b01023eefb", 24, "title", "desc"),
 			},
 			wantErr: false,
 		},
 		{
 			name: "Duplicate Id",
 			args: args{
-				volume: newVolumeForTest(opt.New("412be2a3-bd05-49cb-97ba-2748fa3fce7e"), "2aa478df-9f0f-4e67-b652-f9b01023eefb", 1024, "title", "desc", ""),
+				volume: newVolumeForTest(opt.New("412be2a3-bd05-49cb-97ba-2748fa3fce7e"), "2aa478df-9f0f-4e67-b652-f9b01023eefb", 1024, "title", "desc"),
 			},
 			wantErr: true,
 		},
 		{
 			name: "Non-exist Manga",
 			args: args{
-				volume: newVolumeForTest(opt.Null[string](), uuid.NewString(), 1, "title", "desc", ""),
+				volume: newVolumeForTest(opt.Null[string](), uuid.NewString(), 1, "title", "desc"),
 			},
 			wantErr: true,
 		},
 		{
 			name: "Duplicate Volume Number on Manga",
 			args: args{
-				volume: newVolumeForTest(opt.Null[string](), "2aa478df-9f0f-4e67-b652-f9b01023eefb", 1, "title", "desc", ""),
+				volume: newVolumeForTest(opt.Null[string](), "2aa478df-9f0f-4e67-b652-f9b01023eefb", 1, "title", "desc"),
 			},
 			wantErr: true,
 		},

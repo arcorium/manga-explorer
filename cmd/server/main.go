@@ -34,7 +34,6 @@ func main() {
 	defer database.Close(db)
 
 	repositories := factory.CreateRepositories(db)
-	database.AddAdminUser(repositories.User)
 
 	engine := gin.Default()
 	services := factory.CreateServices(config, &repositories, engine)

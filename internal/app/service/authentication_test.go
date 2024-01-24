@@ -7,7 +7,6 @@ import (
 	"github.com/stretchr/testify/mock"
 	"manga-explorer/internal/app/common"
 	"manga-explorer/internal/app/common/status"
-	"manga-explorer/internal/domain/auth"
 	"manga-explorer/internal/domain/users"
 	"manga-explorer/internal/domain/users/dto"
 	"manga-explorer/internal/domain/users/mapper"
@@ -31,12 +30,12 @@ func config() *common.Config {
 		if err != nil {
 			panic(err) // Should not handle
 		}
-		conf = &tmp
+		conf = tmp
 	}
 	return conf
 }
 
-func newCredentialService(authRepos userRepo.IAuthentication, userRepos userRepo.IUser) credentialService {
+func newCredentialServiceForTest(authRepos userRepo.IAuthentication, userRepos userRepo.IUser) credentialService {
 	return credentialService{
 		config:   config(),
 		authRepo: authRepos,
@@ -75,7 +74,7 @@ func Test_credentialService_Authenticate(t *testing.T) {
 					Password: "arcorium",
 				},
 			},
-			want1: common.StatusSuccess(),
+			want1: status.Success(),
 		},
 		{
 			name: "Bad email",
@@ -85,7 +84,7 @@ func Test_credentialService_Authenticate(t *testing.T) {
 					Password: "arcorium",
 				},
 			},
-			want1: common.StatusError(status.BAD_BODY_REQUEST_ERROR),
+			want1: status.Error(status.BAD_BODY_REQUEST_ERROR),
 		},
 		{
 			name: "User not found",
@@ -95,7 +94,7 @@ func Test_credentialService_Authenticate(t *testing.T) {
 					Password: "arcorium",
 				},
 			},
-			want1: common.StatusError(status.USER_NOT_FOUND),
+			want1: status.Error(status.USER_NOT_FOUND),
 		},
 		{
 			name: "Wrong password",
@@ -105,11 +104,11 @@ func Test_credentialService_Authenticate(t *testing.T) {
 					Password: util.GenerateRandomString(10),
 				},
 			},
-			want1: common.StatusError(status.USER_LOGIN_ERROR),
+			want1: status.Error(status.USER_LOGIN_ERROR),
 		},
 	}
 
-	c := newCredentialService(authMock, userMock)
+	c := newCredentialServiceForTest(authMock, userMock)
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			got, got1 := c.Authenticate(&tt.args.request)
@@ -135,7 +134,7 @@ func Test_credentialService_GetCredentials(t *testing.T) {
 			Id:            uuid.NewString(),
 			UserId:        userId,
 			AccessTokenId: uuid.NewString(),
-			Device: auth.Device{
+			Device: users.Device{
 				Name: "Test",
 			},
 			Token:     util.GenerateRandomString(20),
@@ -146,7 +145,7 @@ func Test_credentialService_GetCredentials(t *testing.T) {
 			Id:            uuid.NewString(),
 			UserId:        userId,
 			AccessTokenId: uuid.NewString(),
-			Device: auth.Device{
+			Device: users.Device{
 				Name: "Test",
 			},
 			Token:     util.GenerateRandomString(20),
@@ -173,7 +172,7 @@ func Test_credentialService_GetCredentials(t *testing.T) {
 				userId: userId,
 			},
 			want:  containers.CastSlicePtr(creds, mapper.ToCredentialResponse),
-			want1: common.StatusSuccess(),
+			want1: status.Success(),
 		},
 		{
 			name: "Empty user id",
@@ -181,7 +180,7 @@ func Test_credentialService_GetCredentials(t *testing.T) {
 				userId: "",
 			},
 			want:  nil,
-			want1: common.StatusError(status.OBJECT_NOT_FOUND),
+			want1: status.Error(status.OBJECT_NOT_FOUND),
 		},
 		{
 			name: "User doesn't found or doesn't have credentials",
@@ -189,10 +188,10 @@ func Test_credentialService_GetCredentials(t *testing.T) {
 				userId: uuid.NewString(),
 			},
 			want:  nil,
-			want1: common.StatusError(status.OBJECT_NOT_FOUND),
+			want1: status.Error(status.OBJECT_NOT_FOUND),
 		},
 	}
-	c := newCredentialService(authMock, userMock)
+	c := newCredentialServiceForTest(authMock, userMock)
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 
@@ -233,7 +232,7 @@ func Test_credentialService_Logout(t *testing.T) {
 				userId: userId,
 				credId: credId,
 			},
-			want: common.StatusSuccess(),
+			want: status.Success(),
 		},
 		{
 			name: "User doesn't exists",
@@ -241,7 +240,7 @@ func Test_credentialService_Logout(t *testing.T) {
 				userId: uuid.NewString(),
 				credId: credId,
 			},
-			want: common.StatusError(status.OBJECT_NOT_FOUND),
+			want: status.NotFoundError(),
 		},
 		{
 			name: "Credential doesn't exists",
@@ -249,7 +248,7 @@ func Test_credentialService_Logout(t *testing.T) {
 				userId: userId,
 				credId: uuid.NewString(),
 			},
-			want: common.StatusError(status.OBJECT_NOT_FOUND),
+			want: status.Error(status.OBJECT_NOT_FOUND),
 		},
 		{
 			name: "Both user and credential doesn't exists",
@@ -257,10 +256,10 @@ func Test_credentialService_Logout(t *testing.T) {
 				userId: uuid.NewString(),
 				credId: uuid.NewString(),
 			},
-			want: common.StatusError(status.OBJECT_NOT_FOUND),
+			want: status.Error(status.OBJECT_NOT_FOUND),
 		},
 	}
-	c := newCredentialService(authMock, userMock)
+	c := newCredentialServiceForTest(authMock, userMock)
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			if got := c.Logout(tt.args.userId, tt.args.credId); !reflect.DeepEqual(got, tt.want) {
@@ -290,17 +289,17 @@ func Test_credentialService_LogoutDevices(t *testing.T) {
 			args: args{
 				userId: userId,
 			},
-			want: common.StatusSuccess(),
+			want: status.Success(),
 		},
 		{
 			name: "User doesn't exists",
 			args: args{
 				userId: uuid.NewString(),
 			},
-			want: common.StatusError(status.OBJECT_NOT_FOUND),
+			want: status.Error(status.OBJECT_NOT_FOUND),
 		},
 	}
-	c := newCredentialService(authMock, userMock)
+	c := newCredentialServiceForTest(authMock, userMock)
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			if got := c.LogoutDevices(tt.args.userId); !reflect.DeepEqual(got, tt.want) {
@@ -326,7 +325,7 @@ func Test_credentialService_RefreshToken(t *testing.T) {
 		want  dto.RefreshTokenResponse
 		want1 status.Object
 	}{}
-	c := newCredentialService(authMock, userMock)
+	c := newCredentialServiceForTest(authMock, userMock)
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			got, got1 := c.RefreshToken(&tt.args.request)

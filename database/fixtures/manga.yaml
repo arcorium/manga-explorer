@@ -998,1801 +998,1801 @@
     number: 1
     title: "I Am Ali"
     description: "quisque id justo sit amet sapien dignissim vestibulum vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae nulla dapibus"
-    cover_image_url: "http://dummyimage.com/129x100.png/ff4444/ffffff"
+    
   - id: 61cc258a-324a-4237-8dc1-28d5a82f7a98
     manga_id: fc1bea74-5fde-4cf0-a332-c957c914d121
     number: 1
     title: "Trou, Le (Hole, The) (Night Watch, The)"
     description: "odio curabitur convallis duis consequat dui nec nisi volutpat eleifend donec ut dolor morbi vel lectus in"
-    cover_image_url: "http://dummyimage.com/100x100.png/5fa2dd/ffffff"
+    
   - id: 196d314d-5a33-4537-a400-80d2c7b744d8
     manga_id: fc1bea74-5fde-4cf0-a332-c957c914d121
     number: 2
     title: "Animal House"
     description: "dolor vel est donec odio justo sollicitudin ut suscipit a feugiat et eros vestibulum ac est"
-    cover_image_url: "http://dummyimage.com/155x100.png/cc0000/ffffff"
+    
   - id: 8e06159e-4933-4bd5-a0aa-846e1026a59e
     manga_id: 1bd31e88-0a22-4db2-a894-06a947b4a311
     number: 1
     title: "Inception"
     description: "aliquet maecenas leo odio condimentum id luctus nec molestie sed justo pellentesque viverra pede ac diam cras pellentesque volutpat dui maecenas tristique est et tempus semper est quam"
-    cover_image_url: "http://dummyimage.com/152x100.png/cc0000/ffffff"
+    
   - id: 412be2a3-bd05-49cb-97ba-2748fa3fce7e
     manga_id: 2aa478df-9f0f-4e67-b652-f9b01023eefb
     number: 1
     title: "For Pete's Sake"
     description: "integer tincidunt ante vel ipsum praesent blandit lacinia erat vestibulum sed magna at nunc commodo placerat"
-    cover_image_url: "http://dummyimage.com/178x100.png/dddddd/000000"
+    
   - id: f2093bb0-bcac-4c10-87a5-aa805b0e2f62
     manga_id: 62c950be-858b-42f2-8799-a09e49bc8589
     number: 2
     title: "Beyond the Fear"
     description: "faucibus orci luctus et ultrices posuere cubilia curae nulla dapibus dolor vel est donec odio justo sollicitudin ut"
-    cover_image_url: "http://dummyimage.com/189x100.png/5fa2dd/ffffff"
+    
   - id: dc139e1c-36de-4253-9c3c-ee4f952d438e
     manga_id: 35d1bea2-1a13-45e7-a08c-5d35db26444d
     number: 1
     title: "Oily Maniac, The (You gui zi)"
     description: "porttitor lacus at turpis donec posuere metus vitae ipsum aliquam non mauris morbi non lectus aliquam sit amet diam in magna bibendum"
-    cover_image_url: "http://dummyimage.com/244x100.png/ff4444/ffffff"
+    
   - id: 40f7fb36-1b84-4e87-b00e-14053058f151
     manga_id: e1674245-bb91-4382-adca-4b2c38878a89
     number: 1
     title: "Loulou"
     description: "massa id nisl venenatis lacinia aenean sit amet justo morbi ut odio cras mi pede malesuada in imperdiet et commodo vulputate justo in"
-    cover_image_url: "http://dummyimage.com/132x100.png/dddddd/000000"
+    
   - id: d2b047b6-e9ca-44da-93ec-e4af7ae56c8e
     manga_id: df3be3a1-f02f-4d2e-afe8-83dc61f46839
     number: 1
     title: "My Sons (Musuko)"
     description: "aliquam quis turpis eget elit sodales scelerisque mauris sit amet eros suspendisse accumsan tortor quis turpis sed ante vivamus tortor duis mattis egestas metus aenean fermentum donec ut"
-    cover_image_url: "http://dummyimage.com/232x100.png/5fa2dd/ffffff"
+    
   - id: 695133d7-4387-4585-bd4f-847328aa9de6
     manga_id: b8bd3f1e-36e3-4033-8290-c5e0caaeab6d
     number: 1
     title: "Michael"
     description: "eleifend pede libero quis orci nullam molestie nibh in lectus pellentesque at nulla suspendisse potenti cras in"
-    cover_image_url: "http://dummyimage.com/241x100.png/ff4444/ffffff"
+    
   - id: bb4d6b75-369a-4b28-81b7-c1a6dd2e5781
     manga_id: fc1bea74-5fde-4cf0-a332-c957c914d121
     number: 3
     title: "Cigarette Girl of Mosselprom, The (Papirosnitsa ot Mosselproma)"
     description: "ultrices posuere cubilia curae duis faucibus accumsan odio curabitur convallis duis"
-    cover_image_url: "http://dummyimage.com/200x100.png/cc0000/ffffff"
+    
   - id: 7c5f8807-4b47-4915-9282-713dc540c2f1
     manga_id: fc1bea74-5fde-4cf0-a332-c957c914d121
     number: 4
     title: "Breath (Soom)"
     description: "volutpat in congue etiam justo etiam pretium iaculis justo in"
-    cover_image_url: "http://dummyimage.com/178x100.png/dddddd/000000"
+    
   - id: 3a83f7bf-d348-41c5-aa1f-fbab2820fb8e
     manga_id: 35d1bea2-1a13-45e7-a08c-5d35db26444d
     number: 2
     title: "Paranoia Agent"
     description: "velit vivamus vel nulla eget eros elementum pellentesque quisque porta volutpat erat quisque"
-    cover_image_url: "http://dummyimage.com/148x100.png/dddddd/000000"
+    
   - id: c65d2a0e-63cd-40d6-bb4e-ff1baa8db118
     manga_id: 1bd31e88-0a22-4db2-a894-06a947b4a311
     number: 2
     title: "Rat Pfink a Boo Boo"
     description: "dis parturient montes nascetur ridiculus mus vivamus vestibulum sagittis sapien cum sociis natoque penatibus et magnis dis parturient montes"
-    cover_image_url: "http://dummyimage.com/154x100.png/5fa2dd/ffffff"
+    
   - id: fe390f36-4605-493a-b3e5-618a526a3d68
     manga_id: 1bd31e88-0a22-4db2-a894-06a947b4a311
     number: 3
     title: "Alexandra's Project"
     description: "odio porttitor id consequat in consequat ut nulla sed accumsan felis ut at dolor"
-    cover_image_url: "http://dummyimage.com/220x100.png/dddddd/000000"
+    
   - id: e9f7c36d-e5fb-4036-aca0-2c656863635a
     manga_id: df3be3a1-f02f-4d2e-afe8-83dc61f46839
     number: 2
     title: "Trancers II"
     description: "volutpat dui maecenas tristique est et tempus semper est quam pharetra magna ac consequat metus sapien ut nunc vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia"
-    cover_image_url: "http://dummyimage.com/219x100.png/5fa2dd/ffffff"
+    
   - id: 850ae067-ec38-43f2-bfb0-7b4dedb6d1b0
     manga_id: 19382f54-1da7-4cb7-807d-9f6030bb121e
     number: 1
     title: "Yumeji"
     description: "egestas metus aenean fermentum donec ut mauris eget massa tempor convallis nulla neque libero convallis eget eleifend luctus ultricies eu"
-    cover_image_url: "http://dummyimage.com/194x100.png/ff4444/ffffff"
+    
   - id: c4006c26-531f-4596-98bb-1e915c363094
     manga_id: df3be3a1-f02f-4d2e-afe8-83dc61f46839
     number: 3
     title: "On the Job"
     description: "in eleifend quam a odio in hac habitasse platea dictumst maecenas ut massa quis"
-    cover_image_url: "http://dummyimage.com/220x100.png/ff4444/ffffff"
+    
   - id: 969851b4-21de-4df2-9abe-b058352375b5
     manga_id: 19382f54-1da7-4cb7-807d-9f6030bb121e
     number: 2
     title: "Wake Up, Ron Burgundy"
     description: "sollicitudin ut suscipit a feugiat et eros vestibulum ac est lacinia nisi venenatis tristique fusce congue diam id ornare imperdiet sapien urna pretium nisl ut volutpat sapien"
-    cover_image_url: "http://dummyimage.com/208x100.png/dddddd/000000"
+    
   - id: 136a79e8-5eed-4017-bf75-77c23b0a612a
     manga_id: 1bd31e88-0a22-4db2-a894-06a947b4a311
     number: 4
     title: "Liv & Ingmar"
     description: "nunc rhoncus dui vel sem sed sagittis nam congue risus semper porta volutpat quam pede lobortis ligula sit amet eleifend pede libero"
-    cover_image_url: "http://dummyimage.com/248x100.png/5fa2dd/ffffff"
+    
   - id: b2468537-ebae-4f0e-9cd0-425a8c7b0c1e
     manga_id: b8bd3f1e-36e3-4033-8290-c5e0caaeab6d
     number: 2
     title: "G.B.F."
     description: "enim sit amet nunc viverra dapibus nulla suscipit ligula in lacus curabitur"
-    cover_image_url: "http://dummyimage.com/127x100.png/cc0000/ffffff"
+    
   - id: 8178a559-7565-46b0-a4ff-8c9f2162a7c7
     manga_id: 1bd31e88-0a22-4db2-a894-06a947b4a311
     number: 5
     title: "Tyler Perry's For Colored Girls"
     description: "vestibulum rutrum rutrum neque aenean auctor gravida sem praesent id massa id nisl venenatis lacinia aenean sit amet justo morbi ut odio cras mi pede"
-    cover_image_url: "http://dummyimage.com/132x100.png/ff4444/ffffff"
+    
   - id: 9e8a8dca-ecaf-4735-92da-737f2ff55a4c
     manga_id: 6dd52489-0ba2-4e84-9c0d-1666a63e1699
     number: 1
     title: "End of Days"
     description: "fringilla rhoncus mauris enim leo rhoncus sed vestibulum sit amet cursus id"
-    cover_image_url: "http://dummyimage.com/157x100.png/5fa2dd/ffffff"
+    
   - id: 42121964-ee93-4726-bdee-62eeb3645844
     manga_id: 7c634319-937d-4447-9808-3417474309c1
     number: 1
     title: "Lovely Bones, The"
     description: "vitae nisi nam ultrices libero non mattis pulvinar nulla pede"
-    cover_image_url: "http://dummyimage.com/249x100.png/dddddd/000000"
+    
   - id: e82e4362-f41d-4a4a-99d7-da81d85a1e73
     manga_id: 4ab94eda-46ae-4de8-bd3a-734b388e06fc
     number: 1
     title: "Fans"
     description: "tempor convallis nulla neque libero convallis eget eleifend luctus ultricies eu nibh quisque id justo sit amet sapien dignissim vestibulum vestibulum ante"
-    cover_image_url: "http://dummyimage.com/173x100.png/5fa2dd/ffffff"
+    
   - id: 53f4a9b0-48a3-42b1-8ad9-e49b43aac593
     manga_id: 19382f54-1da7-4cb7-807d-9f6030bb121e
     number: 3
     title: "Beneath the Darkness"
     description: "justo sollicitudin ut suscipit a feugiat et eros vestibulum ac est lacinia nisi venenatis tristique fusce congue diam id ornare imperdiet sapien urna pretium nisl ut volutpat"
-    cover_image_url: "http://dummyimage.com/168x100.png/dddddd/000000"
+    
   - id: 07d35d62-d79e-42c8-b1bb-b97ef0fad3cf
     manga_id: 62c950be-858b-42f2-8799-a09e49bc8589
     number: 3
     title: "Tai Chi Zero"
     description: "blandit nam nulla integer pede justo lacinia eget tincidunt eget tempus vel pede morbi porttitor lorem id ligula suspendisse ornare consequat lectus in est risus auctor sed tristique in tempus"
-    cover_image_url: "http://dummyimage.com/155x100.png/ff4444/ffffff"
+    
   - id: 799c450d-68ff-4eb5-9cd1-a29afac8aa77
     manga_id: 19382f54-1da7-4cb7-807d-9f6030bb121e
     number: 4
     title: "Kevin Hart: Let Me Explain"
     description: "libero quis orci nullam molestie nibh in lectus pellentesque at nulla suspendisse potenti cras in purus eu magna vulputate luctus cum sociis natoque penatibus et magnis dis parturient montes"
-    cover_image_url: "http://dummyimage.com/148x100.png/5fa2dd/ffffff"
+    
   - id: a8231c25-c7a2-4410-bbfa-3077e902ba20
     manga_id: e1674245-bb91-4382-adca-4b2c38878a89
     number: 2
     title: "Killing of America, The"
     description: "eget rutrum at lorem integer tincidunt ante vel ipsum praesent blandit lacinia erat vestibulum sed magna at nunc commodo placerat praesent blandit nam nulla integer"
-    cover_image_url: "http://dummyimage.com/169x100.png/cc0000/ffffff"
+    
   - id: d9623ca9-9e4f-4611-b0d1-a7b844cc4031
     manga_id: 19382f54-1da7-4cb7-807d-9f6030bb121e
     number: 5
     title: "Weight of the Nation"
     description: "volutpat sapien arcu sed augue aliquam erat volutpat in congue etiam justo etiam pretium iaculis justo in hac habitasse platea dictumst etiam faucibus cursus urna ut tellus"
-    cover_image_url: "http://dummyimage.com/236x100.png/5fa2dd/ffffff"
+    
   - id: c89538a9-e71d-4f7b-b1bf-4cd1cc69d4a1
     manga_id: 7c634319-937d-4447-9808-3417474309c1
     number: 2
     title: "Suddenly, Last Winter (Improvvisamente l'inverno scorso)"
     description: "eu felis fusce posuere felis sed lacus morbi sem mauris laoreet ut rhoncus aliquet pulvinar sed nisl nunc rhoncus dui vel sem sed sagittis nam congue risus semper porta"
-    cover_image_url: "http://dummyimage.com/234x100.png/ff4444/ffffff"
+    
   - id: e41c3960-4a84-491d-85c2-c8025fb52b39
     manga_id: 0952a563-671c-4a1a-93db-09d6bf64a82b
     number: 1
     title: "The Great Scout & Cathouse Thursday"
     description: "vehicula consequat morbi a ipsum integer a nibh in quis justo maecenas rhoncus aliquam"
-    cover_image_url: "http://dummyimage.com/250x100.png/cc0000/ffffff"
+    
   - id: 735052ae-2056-4acf-9f0d-3b4beab65f53
     manga_id: df3be3a1-f02f-4d2e-afe8-83dc61f46839
     number: 4
     title: "Dragon Age: Blood mage no seisen (a.k.a. Dragon Age: Dawn of the Seeker)"
     description: "at nulla suspendisse potenti cras in purus eu magna vulputate luctus cum sociis"
-    cover_image_url: "http://dummyimage.com/131x100.png/dddddd/000000"
+    
   - id: b466c3b3-aa9a-4eb6-9dd7-e82c5169c9d8
     manga_id: 19382f54-1da7-4cb7-807d-9f6030bb121e
     number: 6
     title: "Were the World Mine"
     description: "mattis odio donec vitae nisi nam ultrices libero non mattis pulvinar nulla pede ullamcorper augue a suscipit nulla elit ac nulla sed vel enim sit amet"
-    cover_image_url: "http://dummyimage.com/222x100.png/5fa2dd/ffffff"
+    
   - id: 68d664a4-ba7d-4272-877a-83a51e5686ae
     manga_id: 35d1bea2-1a13-45e7-a08c-5d35db26444d
     number: 3
     title: "Marriage Retreat"
     description: "rhoncus mauris enim leo rhoncus sed vestibulum sit amet cursus id turpis integer aliquet massa id lobortis convallis tortor risus dapibus"
-    cover_image_url: "http://dummyimage.com/222x100.png/ff4444/ffffff"
+    
   - id: c41d910e-cb38-41f4-8d5f-799eaca8d16e
     manga_id: 7c634319-937d-4447-9808-3417474309c1
     number: 3
     title: "Birders: The Central Park Effect (Central Park Effect, The)"
     description: "auctor gravida sem praesent id massa id nisl venenatis lacinia aenean sit amet justo morbi ut odio cras mi pede malesuada in imperdiet et"
-    cover_image_url: "http://dummyimage.com/204x100.png/5fa2dd/ffffff"
+    
   - id: 68dc946f-c711-4405-8424-ca8efbcff44c
     manga_id: 19382f54-1da7-4cb7-807d-9f6030bb121e
     number: 7
     title: "Merry Gentleman, The"
     description: "duis faucibus accumsan odio curabitur convallis duis consequat dui nec nisi volutpat eleifend donec ut dolor morbi vel lectus in quam fringilla rhoncus mauris enim leo rhoncus"
-    cover_image_url: "http://dummyimage.com/119x100.png/dddddd/000000"
+    
   - id: 70ca0a61-1ecb-4b16-bfcb-60ea0a56a8db
     manga_id: 6dd52489-0ba2-4e84-9c0d-1666a63e1699
     number: 2
     title: "Citizen Kane"
     description: "maecenas leo odio condimentum id luctus nec molestie sed justo pellentesque"
-    cover_image_url: "http://dummyimage.com/131x100.png/ff4444/ffffff"
+    
   - id: 3e312142-7aa8-4eaa-962e-5bb84ca9ac6d
     manga_id: 6dd52489-0ba2-4e84-9c0d-1666a63e1699
     number: 3
     title: "Riddick"
     description: "vel pede morbi porttitor lorem id ligula suspendisse ornare consequat lectus in est risus auctor sed tristique in tempus sit amet sem fusce consequat nulla nisl nunc"
-    cover_image_url: "http://dummyimage.com/245x100.png/ff4444/ffffff"
+    
   - id: 52f5ad73-b6e7-4656-bc96-bab2d3b007e6
     manga_id: e1674245-bb91-4382-adca-4b2c38878a89
     number: 3
     title: "Sitter, The"
     description: "erat vestibulum sed magna at nunc commodo placerat praesent blandit nam nulla integer"
-    cover_image_url: "http://dummyimage.com/222x100.png/cc0000/ffffff"
+    
   - id: 6f4ce255-728c-47c8-908b-5f4e90da5f57
     manga_id: 0952a563-671c-4a1a-93db-09d6bf64a82b
     number: 2
     title: "Dhobi Ghat"
     description: "nunc vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae mauris viverra diam vitae quam suspendisse potenti nullam porttitor lacus at"
-    cover_image_url: "http://dummyimage.com/228x100.png/5fa2dd/ffffff"
+    
   - id: 1f389683-3962-4cf0-86ee-06e8f1e97c73
     manga_id: 19382f54-1da7-4cb7-807d-9f6030bb121e
     number: 8
     title: "Suriyothai (a.k.a. Legend of Suriyothai, The)"
     description: "sit amet erat nulla tempus vivamus in felis eu sapien cursus vestibulum"
-    cover_image_url: "http://dummyimage.com/107x100.png/cc0000/ffffff"
+    
   - id: 41b1112e-0cb4-481f-8ee3-d1ce2315ef94
     manga_id: df3be3a1-f02f-4d2e-afe8-83dc61f46839
     number: 5
     title: "King of Texas, The"
     description: "condimentum neque sapien placerat ante nulla justo aliquam quis turpis"
-    cover_image_url: "http://dummyimage.com/154x100.png/5fa2dd/ffffff"
+    
   - id: f9015c8e-f521-46a9-8933-5b10abd6089c
     manga_id: 1bd31e88-0a22-4db2-a894-06a947b4a311
     number: 6
     title: "These Are the Damned (a.k.a. The Damned)"
     description: "magna bibendum imperdiet nullam orci pede venenatis non sodales sed tincidunt eu felis fusce posuere felis sed lacus morbi sem mauris"
-    cover_image_url: "http://dummyimage.com/142x100.png/cc0000/ffffff"
+    
   - id: bedbd2e9-2dff-4710-8205-2af39caf1892
     manga_id: 1bd31e88-0a22-4db2-a894-06a947b4a311
     number: 7
     title: "Another You"
     description: "non ligula pellentesque ultrices phasellus id sapien in sapien iaculis congue vivamus metus arcu adipiscing molestie hendrerit at vulputate vitae nisl aenean lectus pellentesque eget nunc"
-    cover_image_url: "http://dummyimage.com/100x100.png/cc0000/ffffff"
+    
   - id: 30ea20c0-ac7e-4aa3-9ebd-8b0a81c0e914
     manga_id: 2aa478df-9f0f-4e67-b652-f9b01023eefb
     number: 2
     title: "Best of Ernie and Bert, The"
     description: "est donec odio justo sollicitudin ut suscipit a feugiat et eros vestibulum ac est lacinia nisi venenatis tristique"
-    cover_image_url: "http://dummyimage.com/172x100.png/dddddd/000000"
+    
   - id: bffdc5a8-a08b-4d8a-a881-ee9103130bc3
     manga_id: 1bd31e88-0a22-4db2-a894-06a947b4a311
     number: 8
     title: "Cinderella"
     description: "posuere metus vitae ipsum aliquam non mauris morbi non lectus aliquam sit amet diam in magna bibendum imperdiet nullam orci pede venenatis non sodales"
-    cover_image_url: "http://dummyimage.com/139x100.png/cc0000/ffffff"
+    
   - id: 68f2407b-43ac-4843-8f8e-772eea6ffeee
     manga_id: 19382f54-1da7-4cb7-807d-9f6030bb121e
     number: 9
     title: "Silent Fall"
     description: "at velit eu est congue elementum in hac habitasse platea dictumst morbi vestibulum velit id pretium iaculis diam erat fermentum justo nec condimentum neque sapien placerat ante nulla"
-    cover_image_url: "http://dummyimage.com/247x100.png/cc0000/ffffff"
+    
   - id: d746618c-b546-4e66-a078-f44c8ee45c24
     manga_id: df3be3a1-f02f-4d2e-afe8-83dc61f46839
     number: 6
     title: "Little Princess, The"
     description: "volutpat eleifend donec ut dolor morbi vel lectus in quam"
-    cover_image_url: "http://dummyimage.com/108x100.png/cc0000/ffffff"
+    
   - id: 04dee5a4-e942-4e3b-bf29-2631fd1d7b55
     manga_id: b8bd3f1e-36e3-4033-8290-c5e0caaeab6d
     number: 3
     title: "Abbott and Costello Meet the Invisible Man"
     description: "nam dui proin leo odio porttitor id consequat in consequat ut nulla sed accumsan felis ut at dolor quis odio consequat"
-    cover_image_url: "http://dummyimage.com/169x100.png/cc0000/ffffff"
+    
   - id: 21f65cb3-5551-4e40-82e1-d7f1317e32f8
     manga_id: b8bd3f1e-36e3-4033-8290-c5e0caaeab6d
     number: 4
     title: "The Overnight"
     description: "auctor gravida sem praesent id massa id nisl venenatis lacinia aenean sit amet justo"
-    cover_image_url: "http://dummyimage.com/159x100.png/dddddd/000000"
+    
   - id: 9c5839d7-e75f-4346-bb85-99978873a85f
     manga_id: 1bd31e88-0a22-4db2-a894-06a947b4a311
     number: 9
     title: "Tormented"
     description: "nulla eget eros elementum pellentesque quisque porta volutpat erat quisque erat eros viverra eget congue eget semper rutrum nulla nunc purus phasellus in"
-    cover_image_url: "http://dummyimage.com/151x100.png/5fa2dd/ffffff"
+    
   - id: b9a61b33-9240-4225-b6a0-eca6ea324f8d
     manga_id: 1bd31e88-0a22-4db2-a894-06a947b4a311
     number: 10
     title: "Sherman's March"
     description: "eget rutrum at lorem integer tincidunt ante vel ipsum praesent blandit"
-    cover_image_url: "http://dummyimage.com/104x100.png/cc0000/ffffff"
+    
   - id: b19e50f7-e7e7-424f-af09-b3620472d306
     manga_id: 6dd52489-0ba2-4e84-9c0d-1666a63e1699
     number: 4
     title: "Heatstroke"
     description: "phasellus sit amet erat nulla tempus vivamus in felis eu sapien cursus vestibulum proin eu mi nulla ac enim in tempor"
-    cover_image_url: "http://dummyimage.com/249x100.png/5fa2dd/ffffff"
+    
   - id: 4a0955fc-9a7a-4c0d-89be-7d19348a0a4f
     manga_id: 62c950be-858b-42f2-8799-a09e49bc8589
     number: 4
     title: "Lassie Come Home"
     description: "vulputate elementum nullam varius nulla facilisi cras non velit nec nisi vulputate"
-    cover_image_url: "http://dummyimage.com/115x100.png/ff4444/ffffff"
+    
   - id: a4a4a02e-fa73-4013-8c16-ce0688552cea
     manga_id: 19382f54-1da7-4cb7-807d-9f6030bb121e
     number: 10
     title: "All the Queen's Men"
     description: "erat curabitur gravida nisi at nibh in hac habitasse platea dictumst aliquam augue quam sollicitudin vitae consectetuer eget rutrum at lorem integer tincidunt ante vel ipsum praesent blandit"
-    cover_image_url: "http://dummyimage.com/185x100.png/5fa2dd/ffffff"
+    
   - id: 5be05b93-2ac3-4591-b87b-143caab62512
     manga_id: 4ab94eda-46ae-4de8-bd3a-734b388e06fc
     number: 2
     title: "Food Matters"
     description: "id luctus nec molestie sed justo pellentesque viverra pede ac diam cras pellentesque volutpat dui maecenas tristique est et tempus semper est"
-    cover_image_url: "http://dummyimage.com/166x100.png/5fa2dd/ffffff"
+    
   - id: f5b3b4a6-cb51-44a7-98c1-bada3a0d0677
     manga_id: 4ab94eda-46ae-4de8-bd3a-734b388e06fc
     number: 3
     title: "In Hell"
     description: "adipiscing molestie hendrerit at vulputate vitae nisl aenean lectus pellentesque eget nunc donec quis"
-    cover_image_url: "http://dummyimage.com/159x100.png/dddddd/000000"
+    
   - id: 50d98a8b-e88c-42ea-a436-a86f8034b7f7
     manga_id: 2aa478df-9f0f-4e67-b652-f9b01023eefb
     number: 3
     title: "Watch the Birdie"
     description: "justo lacinia eget tincidunt eget tempus vel pede morbi porttitor lorem id ligula suspendisse ornare consequat lectus in est risus auctor sed tristique in tempus sit amet sem fusce"
-    cover_image_url: "http://dummyimage.com/233x100.png/dddddd/000000"
+    
   - id: df3527d3-2083-4d74-9058-ce2bd0d5bc40
     manga_id: 62c950be-858b-42f2-8799-a09e49bc8589
     number: 5
     title: "Treacle Jr."
     description: "placerat ante nulla justo aliquam quis turpis eget elit sodales scelerisque mauris sit amet eros suspendisse accumsan tortor quis turpis sed ante vivamus tortor duis"
-    cover_image_url: "http://dummyimage.com/124x100.png/cc0000/ffffff"
+    
   - id: 1e689e6e-aace-40e7-9ad6-805f6607aabc
     manga_id: 19382f54-1da7-4cb7-807d-9f6030bb121e
     number: 11
     title: "Shake Hands with the Devil"
     description: "enim sit amet nunc viverra dapibus nulla suscipit ligula in lacus curabitur at ipsum ac tellus semper interdum"
-    cover_image_url: "http://dummyimage.com/155x100.png/ff4444/ffffff"
+    
   - id: d6869d81-89b1-4cee-bd27-4ee610c1f596
     manga_id: 2aa478df-9f0f-4e67-b652-f9b01023eefb
     number: 4
     title: "7 Days in Havana"
     description: "nec euismod scelerisque quam turpis adipiscing lorem vitae mattis nibh ligula nec"
-    cover_image_url: "http://dummyimage.com/119x100.png/ff4444/ffffff"
+    
   - id: 37f11edf-99bb-4ebd-aa93-d100bd68133d
     manga_id: 6dd52489-0ba2-4e84-9c0d-1666a63e1699
     number: 5
     title: "Sasayaki (a.k.a. Moonlight Whispers) (Gekkô no sasayaki)"
     description: "congue elementum in hac habitasse platea dictumst morbi vestibulum velit id"
-    cover_image_url: "http://dummyimage.com/225x100.png/5fa2dd/ffffff"
+    
   - id: c3da1929-3c89-4c7e-93f2-d53795f68582
     manga_id: 35d1bea2-1a13-45e7-a08c-5d35db26444d
     number: 4
     title: "Harvest (Stadt Land Fluss)"
     description: "quis libero nullam sit amet turpis elementum ligula vehicula consequat morbi a ipsum integer a nibh"
-    cover_image_url: "http://dummyimage.com/114x100.png/dddddd/000000"
+    
   - id: f566983c-d169-47e8-acca-d648486b7d5d
     manga_id: 1bd31e88-0a22-4db2-a894-06a947b4a311
     number: 11
     title: "Raging Phoenix (Deu suay doo)"
     description: "libero quis orci nullam molestie nibh in lectus pellentesque at nulla suspendisse potenti cras in purus eu magna vulputate luctus cum sociis"
-    cover_image_url: "http://dummyimage.com/243x100.png/5fa2dd/ffffff"
+    
   - id: 18edf1cc-e7d2-410a-ad17-7959e7b01f50
     manga_id: e1674245-bb91-4382-adca-4b2c38878a89
     number: 4
     title: "Way of the Dragon, The (a.k.a. Return of the Dragon) (Meng long guo jiang)"
     description: "imperdiet et commodo vulputate justo in blandit ultrices enim lorem"
-    cover_image_url: "http://dummyimage.com/189x100.png/dddddd/000000"
+    
   - id: 8ae2b59f-b663-4268-a7c2-c2f97a6112b0
     manga_id: 0952a563-671c-4a1a-93db-09d6bf64a82b
     number: 3
     title: "Forever Amber"
     description: "orci luctus et ultrices posuere cubilia curae donec pharetra magna vestibulum aliquet ultrices erat tortor sollicitudin mi sit amet lobortis sapien sapien non mi"
-    cover_image_url: "http://dummyimage.com/220x100.png/ff4444/ffffff"
+    
   - id: bffdb0dc-9e24-4966-860b-a1cc455849df
     manga_id: 4ab94eda-46ae-4de8-bd3a-734b388e06fc
     number: 4
     title: "Lost Missile, The"
     description: "tempus semper est quam pharetra magna ac consequat metus sapien ut nunc vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae"
-    cover_image_url: "http://dummyimage.com/160x100.png/5fa2dd/ffffff"
+    
   - id: 31bf9d3b-c9c4-4c43-b3ac-940a0d1f411e
     manga_id: 4ab94eda-46ae-4de8-bd3a-734b388e06fc
     number: 5
     title: "Evening with Kevin Smith, An"
     description: "ut blandit non interdum in ante vestibulum ante ipsum primis in faucibus orci luctus et ultrices"
-    cover_image_url: "http://dummyimage.com/242x100.png/ff4444/ffffff"
+    
   - id: 7b4f090c-b5f5-41a9-8b32-78b6aca7f812
     manga_id: 62c950be-858b-42f2-8799-a09e49bc8589
     number: 6
     title: "First Man Into Space"
     description: "integer non velit donec diam neque vestibulum eget vulputate ut ultrices vel augue vestibulum ante ipsum"
-    cover_image_url: "http://dummyimage.com/172x100.png/cc0000/ffffff"
+    
   - id: 5a1e1275-eedc-4038-a9d7-cbe50ccd80c8
     manga_id: 1bd31e88-0a22-4db2-a894-06a947b4a311
     number: 12
     title: "Lovers of Hate"
     description: "vel enim sit amet nunc viverra dapibus nulla suscipit ligula in lacus curabitur at ipsum ac tellus semper interdum mauris ullamcorper purus sit amet nulla"
-    cover_image_url: "http://dummyimage.com/187x100.png/5fa2dd/ffffff"
+    
   - id: eaaab5d2-bbe3-4ecc-8abf-40936070b439
     manga_id: e1674245-bb91-4382-adca-4b2c38878a89
     number: 5
     title: "Grand Hotel"
     description: "nisl duis bibendum felis sed interdum venenatis turpis enim blandit mi in porttitor pede justo eu massa donec dapibus duis at velit eu est congue"
-    cover_image_url: "http://dummyimage.com/172x100.png/dddddd/000000"
+    
   - id: 02dfb8b7-8b75-4201-86dc-908ec5801229
     manga_id: 19382f54-1da7-4cb7-807d-9f6030bb121e
     number: 12
     title: "Crystal Lake Memories: The Complete History of Friday the 13th"
     description: "mus vivamus vestibulum sagittis sapien cum sociis natoque penatibus et magnis dis parturient montes nascetur ridiculus mus etiam vel augue vestibulum rutrum rutrum neque"
-    cover_image_url: "http://dummyimage.com/245x100.png/dddddd/000000"
+    
   - id: f33f63db-c8ed-4ef9-92fe-5dfed31193c5
     manga_id: 62c950be-858b-42f2-8799-a09e49bc8589
     number: 7
     title: "Last Laugh, The (Letzte Mann, Der)"
     description: "turpis eget elit sodales scelerisque mauris sit amet eros suspendisse accumsan tortor quis turpis sed ante vivamus tortor duis mattis egestas metus aenean fermentum donec"
-    cover_image_url: "http://dummyimage.com/108x100.png/cc0000/ffffff"
+    
   - id: d9aa99a2-a1b5-40bf-a36f-87245f6004dd
     manga_id: 2aa478df-9f0f-4e67-b652-f9b01023eefb
     number: 5
     title: "Long Good Friday, The"
     description: "cras mi pede malesuada in imperdiet et commodo vulputate justo in blandit ultrices enim lorem ipsum dolor"
-    cover_image_url: "http://dummyimage.com/141x100.png/ff4444/ffffff"
+    
   - id: 278135dc-a1a0-4495-a8fd-ad58578e6e53
     manga_id: 2aa478df-9f0f-4e67-b652-f9b01023eefb
     number: 6
     title: "Home Sweet Hell"
     description: "proin interdum mauris non ligula pellentesque ultrices phasellus id sapien in sapien iaculis congue vivamus metus arcu adipiscing molestie hendrerit"
-    cover_image_url: "http://dummyimage.com/179x100.png/dddddd/000000"
+    
   - id: b0971168-06f8-4c58-971d-b658774c1219
     manga_id: e1674245-bb91-4382-adca-4b2c38878a89
     number: 6
     title: "Das Leben ist nichts für Feiglinge"
     description: "nulla elit ac nulla sed vel enim sit amet nunc viverra dapibus nulla suscipit ligula in lacus curabitur at ipsum"
-    cover_image_url: "http://dummyimage.com/124x100.png/5fa2dd/ffffff"
+    
   - id: afa2c886-c808-4dab-9a25-c9ca793299d2
     manga_id: 7c634319-937d-4447-9808-3417474309c1
     number: 4
     title: "Scenesters, The"
     description: "quis lectus suspendisse potenti in eleifend quam a odio in hac habitasse platea dictumst maecenas ut massa quis augue luctus tincidunt nulla mollis molestie lorem quisque ut erat"
-    cover_image_url: "http://dummyimage.com/216x100.png/cc0000/ffffff"
+    
   - id: c4f5ec94-a2f3-451f-9fad-75346b8f32c4
     manga_id: 1bd31e88-0a22-4db2-a894-06a947b4a311
     number: 13
     title: "Forks Over Knives"
     description: "convallis nunc proin at turpis a pede posuere nonummy integer non velit donec diam neque vestibulum eget vulputate ut ultrices vel augue vestibulum ante ipsum primis"
-    cover_image_url: "http://dummyimage.com/197x100.png/5fa2dd/ffffff"
+    
   - id: e0d0f7b6-dc4f-4087-8f1d-b8ed39ed0ac3
     manga_id: e1674245-bb91-4382-adca-4b2c38878a89
     number: 7
     title: "Five Obstructions, The (Fem benspænd, De)"
     description: "nulla ultrices aliquet maecenas leo odio condimentum id luctus nec molestie sed justo pellentesque viverra pede ac diam cras pellentesque volutpat dui maecenas tristique est et tempus semper est"
-    cover_image_url: "http://dummyimage.com/115x100.png/ff4444/ffffff"
+    
   - id: f481d875-5132-4beb-9cd9-39b7441aa3d9
     manga_id: 1bd31e88-0a22-4db2-a894-06a947b4a311
     number: 14
     title: "Village Barbershop, The"
     description: "porta volutpat quam pede lobortis ligula sit amet eleifend pede libero quis orci nullam molestie nibh in lectus pellentesque at nulla suspendisse potenti"
-    cover_image_url: "http://dummyimage.com/245x100.png/5fa2dd/ffffff"
+    
   - id: ad4a5d7c-21f5-49e1-be5b-8fc3bf464352
     manga_id: e1674245-bb91-4382-adca-4b2c38878a89
     number: 8
     title: "Affair in Trinidad"
     description: "turpis donec posuere metus vitae ipsum aliquam non mauris morbi non lectus aliquam sit amet diam in magna bibendum imperdiet nullam"
-    cover_image_url: "http://dummyimage.com/156x100.png/ff4444/ffffff"
+    
   - id: 7c1575bf-eb6d-4fc0-beab-ce6321575894
     manga_id: 2aa478df-9f0f-4e67-b652-f9b01023eefb
     number: 7
     title: "My Joy (Schastye moe)"
     description: "ornare imperdiet sapien urna pretium nisl ut volutpat sapien arcu sed augue aliquam"
-    cover_image_url: "http://dummyimage.com/143x100.png/5fa2dd/ffffff"
+    
   - id: 88bb37c0-7b6a-42fa-b09c-b3d6df859d25
     manga_id: fc1bea74-5fde-4cf0-a332-c957c914d121
     number: 5
     title: "Swamp Thing"
     description: "nec euismod scelerisque quam turpis adipiscing lorem vitae mattis nibh ligula nec sem duis aliquam convallis nunc proin at turpis a pede posuere nonummy integer non velit"
-    cover_image_url: "http://dummyimage.com/124x100.png/ff4444/ffffff"
+    
   - id: a16cff92-ef37-40a7-9402-23b6d51e1013
     manga_id: 35d1bea2-1a13-45e7-a08c-5d35db26444d
     number: 5
     title: "Claim, The"
     description: "id lobortis convallis tortor risus dapibus augue vel accumsan tellus nisi eu"
-    cover_image_url: "http://dummyimage.com/112x100.png/5fa2dd/ffffff"
+    
   - id: 2382e410-095a-4b93-b550-58ef8212edc3
     manga_id: 2aa478df-9f0f-4e67-b652-f9b01023eefb
     number: 8
     title: "Coming Home (Gui lai)"
     description: "ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae duis faucibus accumsan"
-    cover_image_url: "http://dummyimage.com/246x100.png/dddddd/000000"
+    
   - id: 524d002f-d02e-46ce-86ae-32a7d9097252
     manga_id: 35d1bea2-1a13-45e7-a08c-5d35db26444d
     number: 6
     title: "X-Men: Days of Future Past"
     description: "etiam pretium iaculis justo in hac habitasse platea dictumst etiam faucibus cursus urna ut tellus nulla ut erat"
-    cover_image_url: "http://dummyimage.com/185x100.png/ff4444/ffffff"
+    
   - id: 6f771e16-4db3-425a-8840-0db9a56cbca8
     manga_id: 1bd31e88-0a22-4db2-a894-06a947b4a311
     number: 15
     title: "The Violent Enemy"
     description: "consectetuer eget rutrum at lorem integer tincidunt ante vel ipsum praesent blandit lacinia erat vestibulum sed magna at nunc commodo placerat"
-    cover_image_url: "http://dummyimage.com/171x100.png/5fa2dd/ffffff"
+    
   - id: 3a1b4305-1645-4286-9f27-ccb4ecdee362
     manga_id: 7c634319-937d-4447-9808-3417474309c1
     number: 5
     title: "Death Warrant"
     description: "ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae nulla dapibus dolor vel est donec odio justo sollicitudin ut suscipit a feugiat et eros vestibulum"
-    cover_image_url: "http://dummyimage.com/142x100.png/ff4444/ffffff"
+    
   - id: ddf6ad95-e293-4f15-a768-4ba28a1c7fa1
     manga_id: 4ab94eda-46ae-4de8-bd3a-734b388e06fc
     number: 6
     title: "Patriot Games"
     description: "in sapien iaculis congue vivamus metus arcu adipiscing molestie hendrerit at vulputate vitae nisl aenean lectus pellentesque eget nunc donec quis orci eget orci"
-    cover_image_url: "http://dummyimage.com/111x100.png/cc0000/ffffff"
+    
   - id: aafab3e2-e5c2-4be6-bcbd-ada6cd1e9e69
     manga_id: 0952a563-671c-4a1a-93db-09d6bf64a82b
     number: 4
     title: "Star Trek IV: The Voyage Home"
     description: "molestie nibh in lectus pellentesque at nulla suspendisse potenti cras in purus eu magna vulputate"
-    cover_image_url: "http://dummyimage.com/148x100.png/ff4444/ffffff"
+    
   - id: f10986d0-7692-406f-bb0c-ab3da4c53a19
     manga_id: df3be3a1-f02f-4d2e-afe8-83dc61f46839
     number: 7
     title: "Teen Spirit"
     description: "elementum ligula vehicula consequat morbi a ipsum integer a nibh in quis justo"
-    cover_image_url: "http://dummyimage.com/184x100.png/cc0000/ffffff"
+    
   - id: 39ea9ab8-46a8-4a83-9095-126e1df5b38b
     manga_id: b8bd3f1e-36e3-4033-8290-c5e0caaeab6d
     number: 5
     title: "Flesh for Frankenstein (a.k.a. Andy Warhol's Frankenstein)"
     description: "eros suspendisse accumsan tortor quis turpis sed ante vivamus tortor duis mattis egestas"
-    cover_image_url: "http://dummyimage.com/231x100.png/dddddd/000000"
+    
   - id: 4292c2ac-c413-47ff-a71e-c698c324a9e6
     manga_id: fc1bea74-5fde-4cf0-a332-c957c914d121
     number: 6
     title: "Paint Your Wagon"
     description: "vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere"
-    cover_image_url: "http://dummyimage.com/140x100.png/cc0000/ffffff"
+    
   - id: f769bdd1-3ba5-4994-9b17-a2b2d151f712
     manga_id: 0952a563-671c-4a1a-93db-09d6bf64a82b
     number: 5
     title: "Aashiqui 2"
     description: "rutrum at lorem integer tincidunt ante vel ipsum praesent blandit lacinia erat vestibulum sed magna at nunc commodo placerat praesent"
-    cover_image_url: "http://dummyimage.com/124x100.png/ff4444/ffffff"
+    
   - id: 7ac78e5c-f669-4c11-a54d-dfee4115ea0f
     manga_id: 2aa478df-9f0f-4e67-b652-f9b01023eefb
     number: 9
     title: "Alias Betty (Betty Fisher et autres histoires)"
     description: "consequat in consequat ut nulla sed accumsan felis ut at dolor quis odio consequat varius integer ac leo pellentesque ultrices mattis odio donec vitae nisi nam"
-    cover_image_url: "http://dummyimage.com/157x100.png/ff4444/ffffff"
+    
   - id: d9ac40e6-f6ea-4442-9da2-efe951ca6647
     manga_id: df3be3a1-f02f-4d2e-afe8-83dc61f46839
     number: 8
     title: "A Gathering of Eagles"
     description: "donec pharetra magna vestibulum aliquet ultrices erat tortor sollicitudin mi sit amet lobortis sapien sapien non mi integer ac neque duis bibendum morbi non quam nec"
-    cover_image_url: "http://dummyimage.com/158x100.png/ff4444/ffffff"
+    
   - id: d4fd9502-70e7-4828-9413-5c51ba025996
     manga_id: e1674245-bb91-4382-adca-4b2c38878a89
     number: 9
     title: "True Grit"
     description: "ut mauris eget massa tempor convallis nulla neque libero convallis eget eleifend luctus"
-    cover_image_url: "http://dummyimage.com/143x100.png/dddddd/000000"
+    
   - id: bb1d64f8-283c-40ad-b83a-d07489a860e1
     manga_id: 7c634319-937d-4447-9808-3417474309c1
     number: 6
     title: "Word Wars"
     description: "malesuada in imperdiet et commodo vulputate justo in blandit ultrices enim lorem ipsum dolor sit amet"
-    cover_image_url: "http://dummyimage.com/250x100.png/dddddd/000000"
+    
   - id: 3f06e510-c567-41dd-a3a5-b689614427de
     manga_id: 35d1bea2-1a13-45e7-a08c-5d35db26444d
     number: 7
     title: "The Man Who Wouldn't Die"
     description: "vestibulum vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae nulla dapibus dolor vel est donec odio"
-    cover_image_url: "http://dummyimage.com/212x100.png/5fa2dd/ffffff"
+    
   - id: 3ce26218-4308-4d5d-bff2-380a6ce2fb23
     manga_id: 7c634319-937d-4447-9808-3417474309c1
     number: 7
     title: "Number Seventeen (a.k.a. Number 17)"
     description: "libero nullam sit amet turpis elementum ligula vehicula consequat morbi a ipsum integer a nibh in quis justo maecenas rhoncus aliquam"
-    cover_image_url: "http://dummyimage.com/132x100.png/cc0000/ffffff"
+    
   - id: db5db829-6954-48b8-9361-612f68f6aaa9
     manga_id: 2aa478df-9f0f-4e67-b652-f9b01023eefb
     number: 10
     title: "Box, The"
     description: "molestie nibh in lectus pellentesque at nulla suspendisse potenti cras in purus eu magna vulputate luctus cum sociis"
-    cover_image_url: "http://dummyimage.com/218x100.png/5fa2dd/ffffff"
+    
   - id: 7e85cab5-92b8-4c55-a436-2f1861aed457
     manga_id: b8bd3f1e-36e3-4033-8290-c5e0caaeab6d
     number: 6
     title: "Tender Hook, The (Boxer and the Bombshell, The)"
     description: "interdum mauris non ligula pellentesque ultrices phasellus id sapien in sapien iaculis congue vivamus metus arcu adipiscing molestie hendrerit at vulputate vitae nisl aenean lectus pellentesque eget"
-    cover_image_url: "http://dummyimage.com/192x100.png/dddddd/000000"
+    
   - id: 9738d5c7-b398-4785-bf75-c9fc9a949ed0
     manga_id: 6dd52489-0ba2-4e84-9c0d-1666a63e1699
     number: 6
     title: "Bird of the Air, A (Loop, The)"
     description: "ante ipsum primis in faucibus orci luctus et ultrices posuere"
-    cover_image_url: "http://dummyimage.com/111x100.png/cc0000/ffffff"
+    
   - id: 2e35d180-91bc-4016-a2f0-675d680e93be
     manga_id: df3be3a1-f02f-4d2e-afe8-83dc61f46839
     number: 9
     title: "Life Stinks"
     description: "pede justo eu massa donec dapibus duis at velit eu est congue elementum in hac"
-    cover_image_url: "http://dummyimage.com/177x100.png/cc0000/ffffff"
+    
   - id: 2909bc06-534f-468c-801e-456004bc95a2
     manga_id: 2aa478df-9f0f-4e67-b652-f9b01023eefb
     number: 11
     title: "Farsan"
     description: "risus semper porta volutpat quam pede lobortis ligula sit amet eleifend pede libero quis orci"
-    cover_image_url: "http://dummyimage.com/243x100.png/dddddd/000000"
+    
   - id: 52325c1f-2986-4488-b755-9490a7f82828
     manga_id: b8bd3f1e-36e3-4033-8290-c5e0caaeab6d
     number: 7
     title: "Blood in the Mobile"
     description: "ultrices vel augue vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae donec pharetra magna vestibulum aliquet ultrices erat tortor sollicitudin mi sit amet"
-    cover_image_url: "http://dummyimage.com/167x100.png/ff4444/ffffff"
+    
   - id: 02052238-0b0a-466b-befc-72ee3a603cfb
     manga_id: 19382f54-1da7-4cb7-807d-9f6030bb121e
     number: 13
     title: "How to Beat the High Cost of Living"
     description: "tempus vivamus in felis eu sapien cursus vestibulum proin eu mi nulla ac enim in tempor turpis nec euismod scelerisque quam turpis adipiscing lorem"
-    cover_image_url: "http://dummyimage.com/153x100.png/cc0000/ffffff"
+    
   - id: 85b153a9-f45f-43d9-8791-7d6f84051da4
     manga_id: b8bd3f1e-36e3-4033-8290-c5e0caaeab6d
     number: 8
     title: "Mr. Moto Takes a Chance"
     description: "diam vitae quam suspendisse potenti nullam porttitor lacus at turpis donec posuere metus vitae"
-    cover_image_url: "http://dummyimage.com/134x100.png/cc0000/ffffff"
+    
   - id: 480b3a2f-6394-483c-9e99-ebc18c7a526a
     manga_id: 19382f54-1da7-4cb7-807d-9f6030bb121e
     number: 14
     title: "My Demon Lover"
     description: "in libero ut massa volutpat convallis morbi odio odio elementum eu interdum eu tincidunt in leo maecenas pulvinar lobortis est phasellus sit amet erat nulla tempus vivamus in felis eu"
-    cover_image_url: "http://dummyimage.com/100x100.png/ff4444/ffffff"
+    
   - id: 858a199a-8bb7-48a7-8f70-776bb2ac3ea4
     manga_id: 1bd31e88-0a22-4db2-a894-06a947b4a311
     number: 16
     title: "Fierce Creatures"
     description: "tristique fusce congue diam id ornare imperdiet sapien urna pretium nisl ut volutpat sapien arcu sed augue aliquam erat volutpat in congue etiam"
-    cover_image_url: "http://dummyimage.com/221x100.png/5fa2dd/ffffff"
+    
   - id: 546c93cb-86f6-48f8-a0de-34310fb90d51
     manga_id: fc1bea74-5fde-4cf0-a332-c957c914d121
     number: 7
     title: "Dinner Guest, The (L'invité)"
     description: "feugiat et eros vestibulum ac est lacinia nisi venenatis tristique fusce congue diam id ornare imperdiet"
-    cover_image_url: "http://dummyimage.com/144x100.png/5fa2dd/ffffff"
+    
   - id: 824bdfed-5e9c-4f2b-bc31-3e54c6b12991
     manga_id: df3be3a1-f02f-4d2e-afe8-83dc61f46839
     number: 10
     title: "Charlie Brown Christmas, A"
     description: "dapibus dolor vel est donec odio justo sollicitudin ut suscipit a feugiat et eros vestibulum ac est lacinia nisi venenatis tristique fusce congue diam id ornare imperdiet sapien urna"
-    cover_image_url: "http://dummyimage.com/245x100.png/dddddd/000000"
+    
   - id: 3565813c-f7e7-4200-aed4-2d5b4e399ba2
     manga_id: 1bd31e88-0a22-4db2-a894-06a947b4a311
     number: 17
     title: "Electroma"
     description: "eu massa donec dapibus duis at velit eu est congue elementum in hac habitasse platea dictumst morbi vestibulum"
-    cover_image_url: "http://dummyimage.com/228x100.png/cc0000/ffffff"
+    
   - id: 5dc7581a-9688-4ad2-8edd-dc8c5294099e
     manga_id: 2aa478df-9f0f-4e67-b652-f9b01023eefb
     number: 12
     title: "Roman Polanski: Wanted and Desired"
     description: "erat curabitur gravida nisi at nibh in hac habitasse platea dictumst aliquam augue quam sollicitudin vitae consectetuer eget rutrum at lorem integer tincidunt"
-    cover_image_url: "http://dummyimage.com/154x100.png/dddddd/000000"
+    
   - id: 595d05f5-d753-42ab-bfa0-518342cbc419
     manga_id: 6dd52489-0ba2-4e84-9c0d-1666a63e1699
     number: 7
     title: "External Affairs"
     description: "massa donec dapibus duis at velit eu est congue elementum in hac habitasse platea dictumst"
-    cover_image_url: "http://dummyimage.com/235x100.png/ff4444/ffffff"
+    
   - id: 9a6eca49-78c5-4954-87d9-dacb4e096651
     manga_id: e1674245-bb91-4382-adca-4b2c38878a89
     number: 10
     title: "Follow the Bitch"
     description: "convallis morbi odio odio elementum eu interdum eu tincidunt in leo maecenas pulvinar lobortis est phasellus sit amet"
-    cover_image_url: "http://dummyimage.com/121x100.png/cc0000/ffffff"
+    
   - id: de3522f1-06a8-4e4d-b246-c6884279cd15
     manga_id: 6dd52489-0ba2-4e84-9c0d-1666a63e1699
     number: 8
     title: "Bikini Spring Break (Revenge of the Nerds' Bikini Spring Break)"
     description: "in faucibus orci luctus et ultrices posuere cubilia curae donec pharetra magna vestibulum aliquet ultrices erat tortor sollicitudin mi sit amet lobortis sapien"
-    cover_image_url: "http://dummyimage.com/162x100.png/5fa2dd/ffffff"
+    
   - id: 488b2cb8-63b5-4d9a-9aac-cc515f0b9a7f
     manga_id: 6dd52489-0ba2-4e84-9c0d-1666a63e1699
     number: 9
     title: "Nicholas Nickleby"
     description: "id justo sit amet sapien dignissim vestibulum vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere"
-    cover_image_url: "http://dummyimage.com/151x100.png/5fa2dd/ffffff"
+    
   - id: d89eba6f-2758-45ad-88eb-fcff58773c54
     manga_id: 62c950be-858b-42f2-8799-a09e49bc8589
     number: 8
     title: "We Steal Secrets: The Story of WikiLeaks"
     description: "pulvinar lobortis est phasellus sit amet erat nulla tempus vivamus in felis eu sapien cursus vestibulum proin eu mi nulla ac enim in tempor turpis nec euismod scelerisque quam"
-    cover_image_url: "http://dummyimage.com/250x100.png/cc0000/ffffff"
+    
   - id: 3d1529e2-4494-4ec1-ad0c-3730a8bc4d8f
     manga_id: 2aa478df-9f0f-4e67-b652-f9b01023eefb
     number: 13
     title: "The Cat's Out"
     description: "luctus cum sociis natoque penatibus et magnis dis parturient montes nascetur ridiculus mus vivamus vestibulum sagittis sapien cum sociis natoque penatibus et magnis dis parturient montes nascetur ridiculus mus etiam"
-    cover_image_url: "http://dummyimage.com/142x100.png/dddddd/000000"
+    
   - id: 16212945-5d64-483f-931e-ab16188e778d
     manga_id: e1674245-bb91-4382-adca-4b2c38878a89
     number: 11
     title: "Good Night to Die, A"
     description: "id justo sit amet sapien dignissim vestibulum vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae nulla dapibus dolor vel"
-    cover_image_url: "http://dummyimage.com/218x100.png/5fa2dd/ffffff"
+    
   - id: ca5632a3-5b5d-416e-9223-3b11d76f9b68
     manga_id: fc1bea74-5fde-4cf0-a332-c957c914d121
     number: 8
     title: "Revenge of the Nerds"
     description: "consectetuer eget rutrum at lorem integer tincidunt ante vel ipsum praesent blandit lacinia erat vestibulum sed magna at nunc commodo"
-    cover_image_url: "http://dummyimage.com/126x100.png/5fa2dd/ffffff"
+    
   - id: 73fa9e04-9a5f-4ffc-9d56-a89300c4bf62
     manga_id: fc1bea74-5fde-4cf0-a332-c957c914d121
     number: 9
     title: "After the Rain (Ame agaru) "
     description: "interdum venenatis turpis enim blandit mi in porttitor pede justo eu massa donec dapibus duis at velit eu est congue"
-    cover_image_url: "http://dummyimage.com/143x100.png/cc0000/ffffff"
+    
   - id: 19b78a1d-605e-4f5f-81c7-251e65dd70ce
     manga_id: b8bd3f1e-36e3-4033-8290-c5e0caaeab6d
     number: 9
     title: "Alien Predator (Mutant II) (Falling, The)"
     description: "ac nulla sed vel enim sit amet nunc viverra dapibus nulla suscipit ligula in lacus curabitur at ipsum ac tellus semper"
-    cover_image_url: "http://dummyimage.com/157x100.png/5fa2dd/ffffff"
+    
   - id: dccc8b71-5333-43b4-b2ec-85247c9ae072
     manga_id: 7c634319-937d-4447-9808-3417474309c1
     number: 8
     title: "Sanctum"
     description: "non interdum in ante vestibulum ante ipsum primis in faucibus"
-    cover_image_url: "http://dummyimage.com/122x100.png/cc0000/ffffff"
+    
   - id: 6d0e942d-853f-4342-ab44-fac7d2fb7c07
     manga_id: 35d1bea2-1a13-45e7-a08c-5d35db26444d
     number: 8
     title: "Where in the World Is Osama Bin Laden?"
     description: "turpis adipiscing lorem vitae mattis nibh ligula nec sem duis aliquam convallis nunc proin at turpis a"
-    cover_image_url: "http://dummyimage.com/211x100.png/ff4444/ffffff"
+    
   - id: b1980681-98e1-4886-b6da-7fb82549d195
     manga_id: 6dd52489-0ba2-4e84-9c0d-1666a63e1699
     number: 10
     title: "D.A.R.Y.L."
     description: "lacus purus aliquet at feugiat non pretium quis lectus suspendisse potenti in eleifend quam a"
-    cover_image_url: "http://dummyimage.com/191x100.png/ff4444/ffffff"
+    
   - id: e2a3c0ff-ab29-4976-96b2-7b600728cb6e
     manga_id: 4ab94eda-46ae-4de8-bd3a-734b388e06fc
     number: 7
     title: "Lemony Snicket's A Series of Unfortunate Events"
     description: "morbi a ipsum integer a nibh in quis justo maecenas rhoncus aliquam lacus morbi quis tortor id nulla ultrices aliquet maecenas"
-    cover_image_url: "http://dummyimage.com/180x100.png/ff4444/ffffff"
+    
   - id: 0b012c59-2354-4f5d-bc4d-b62f175db639
     manga_id: 6dd52489-0ba2-4e84-9c0d-1666a63e1699
     number: 11
     title: "Swamp Thing"
     description: "convallis eget eleifend luctus ultricies eu nibh quisque id justo sit amet sapien dignissim vestibulum vestibulum ante ipsum primis in faucibus orci luctus"
-    cover_image_url: "http://dummyimage.com/143x100.png/dddddd/000000"
+    
   - id: 4d865271-1793-4845-a4ea-dfaa0f0f5dec
     manga_id: df3be3a1-f02f-4d2e-afe8-83dc61f46839
     number: 11
     title: "Like Mike 2: Streetball"
     description: "at ipsum ac tellus semper interdum mauris ullamcorper purus sit amet nulla quisque arcu libero"
-    cover_image_url: "http://dummyimage.com/114x100.png/cc0000/ffffff"
+    
   - id: 5d360dec-6341-4a93-b889-c41e8ee3f55a
     manga_id: 4ab94eda-46ae-4de8-bd3a-734b388e06fc
     number: 8
     title: "Unsaid, The"
     description: "at turpis a pede posuere nonummy integer non velit donec diam neque vestibulum eget vulputate"
-    cover_image_url: "http://dummyimage.com/161x100.png/dddddd/000000"
+    
   - id: 74f85866-fb3a-40a2-95de-404e356259ab
     manga_id: b8bd3f1e-36e3-4033-8290-c5e0caaeab6d
     number: 10
     title: "Barrens, The"
     description: "parturient montes nascetur ridiculus mus vivamus vestibulum sagittis sapien cum sociis natoque penatibus"
-    cover_image_url: "http://dummyimage.com/175x100.png/dddddd/000000"
+    
   - id: 71471092-dfc1-4aa5-8a8b-5d10a0629d74
     manga_id: df3be3a1-f02f-4d2e-afe8-83dc61f46839
     number: 12
     title: "Dream Catcher, The"
     description: "nulla facilisi cras non velit nec nisi vulputate nonummy maecenas tincidunt lacus at velit vivamus vel nulla eget eros elementum pellentesque quisque porta volutpat"
-    cover_image_url: "http://dummyimage.com/139x100.png/dddddd/000000"
+    
   - id: 1807e016-0a44-491c-82a3-34c1c4e8d00f
     manga_id: fc1bea74-5fde-4cf0-a332-c957c914d121
     number: 10
     title: "Caroline?"
     description: "lectus suspendisse potenti in eleifend quam a odio in hac habitasse platea dictumst maecenas ut massa quis augue luctus tincidunt nulla mollis molestie lorem"
-    cover_image_url: "http://dummyimage.com/103x100.png/ff4444/ffffff"
+    
   - id: 1ff6d139-eca0-4952-af82-e7d906ecdb14
     manga_id: 1bd31e88-0a22-4db2-a894-06a947b4a311
     number: 18
     title: "Call Me Madam"
     description: "mi nulla ac enim in tempor turpis nec euismod scelerisque quam turpis adipiscing lorem vitae mattis nibh ligula nec sem duis aliquam convallis nunc"
-    cover_image_url: "http://dummyimage.com/150x100.png/dddddd/000000"
+    
   - id: 75d35161-2a09-4ea3-a6cf-d787f041edac
     manga_id: 6dd52489-0ba2-4e84-9c0d-1666a63e1699
     number: 12
     title: "Boys' Night Out"
     description: "blandit lacinia erat vestibulum sed magna at nunc commodo placerat praesent blandit nam nulla integer pede"
-    cover_image_url: "http://dummyimage.com/247x100.png/cc0000/ffffff"
+    
   - id: 42291998-d645-43f0-9e70-717644774e23
     manga_id: e1674245-bb91-4382-adca-4b2c38878a89
     number: 12
     title: "Betrayed, The"
     description: "vulputate nonummy maecenas tincidunt lacus at velit vivamus vel nulla"
-    cover_image_url: "http://dummyimage.com/181x100.png/ff4444/ffffff"
+    
   - id: b8088e9a-447a-4628-a9f2-5afa848a7a52
     manga_id: 19382f54-1da7-4cb7-807d-9f6030bb121e
     number: 15
     title: "Prayer for the Dying, A"
     description: "convallis duis consequat dui nec nisi volutpat eleifend donec ut dolor morbi vel lectus in quam fringilla rhoncus mauris enim leo rhoncus sed vestibulum sit amet cursus id turpis"
-    cover_image_url: "http://dummyimage.com/193x100.png/dddddd/000000"
+    
   - id: 44346df7-5a6e-4977-bf8a-047136212ccf
     manga_id: fc1bea74-5fde-4cf0-a332-c957c914d121
     number: 11
     title: "Sound of Redemption: The Frank Morgan Story"
     description: "aenean lectus pellentesque eget nunc donec quis orci eget orci vehicula condimentum"
-    cover_image_url: "http://dummyimage.com/146x100.png/dddddd/000000"
+    
   - id: 12ab8090-81ba-4172-baff-4ec71b39526c
     manga_id: fc1bea74-5fde-4cf0-a332-c957c914d121
     number: 12
     title: "Yolanda and the Thief"
     description: "tempor turpis nec euismod scelerisque quam turpis adipiscing lorem vitae mattis nibh ligula nec sem duis aliquam convallis nunc proin at turpis a"
-    cover_image_url: "http://dummyimage.com/195x100.png/ff4444/ffffff"
+    
   - id: fccc47a6-1a16-4b76-ba53-2e5ccf683216
     manga_id: 7c634319-937d-4447-9808-3417474309c1
     number: 9
     title: "Jaws 3-D"
     description: "elementum nullam varius nulla facilisi cras non velit nec nisi vulputate nonummy maecenas"
-    cover_image_url: "http://dummyimage.com/203x100.png/cc0000/ffffff"
+    
   - id: eff2c374-6a41-4f74-82f2-095fdcb959b8
     manga_id: 0952a563-671c-4a1a-93db-09d6bf64a82b
     number: 6
     title: "The Punisher: Dirty Laundry"
     description: "ut at dolor quis odio consequat varius integer ac leo pellentesque ultrices mattis odio donec vitae nisi nam ultrices libero non mattis pulvinar nulla"
-    cover_image_url: "http://dummyimage.com/125x100.png/5fa2dd/ffffff"
+    
   - id: 3287c729-96c6-4ed3-b411-4cb4ae37dd57
     manga_id: 2aa478df-9f0f-4e67-b652-f9b01023eefb
     number: 14
     title: "Princess Mononoke (Mononoke-hime)"
     description: "lacus morbi quis tortor id nulla ultrices aliquet maecenas leo odio condimentum id luctus nec molestie sed justo pellentesque viverra pede ac diam cras pellentesque volutpat"
-    cover_image_url: "http://dummyimage.com/127x100.png/5fa2dd/ffffff"
+    
   - id: cf805fa4-4bf3-4e46-be04-924e4eb35541
     manga_id: fc1bea74-5fde-4cf0-a332-c957c914d121
     number: 13
     title: "Lemony Snicket's A Series of Unfortunate Events"
     description: "potenti cras in purus eu magna vulputate luctus cum sociis natoque penatibus et magnis dis parturient montes nascetur ridiculus mus vivamus vestibulum sagittis sapien cum sociis natoque penatibus"
-    cover_image_url: "http://dummyimage.com/147x100.png/dddddd/000000"
+    
   - id: 7216dd28-bda3-4bf5-a975-7cf131601573
     manga_id: b8bd3f1e-36e3-4033-8290-c5e0caaeab6d
     number: 11
     title: "Homeward Bound: The Incredible Journey"
     description: "ipsum integer a nibh in quis justo maecenas rhoncus aliquam lacus morbi quis tortor id nulla ultrices aliquet maecenas leo odio"
-    cover_image_url: "http://dummyimage.com/183x100.png/ff4444/ffffff"
+    
   - id: faafed67-fa91-4e3a-b729-dbb96cd3433f
     manga_id: 19382f54-1da7-4cb7-807d-9f6030bb121e
     number: 16
     title: "End of Watch"
     description: "aliquam sit amet diam in magna bibendum imperdiet nullam orci pede venenatis non sodales sed tincidunt eu felis fusce posuere felis sed lacus morbi sem mauris laoreet"
-    cover_image_url: "http://dummyimage.com/187x100.png/dddddd/000000"
+    
   - id: 34efe1e5-7311-4b0a-b79c-9b0d38d07a88
     manga_id: 0952a563-671c-4a1a-93db-09d6bf64a82b
     number: 7
     title: "Heartbeat Detector (Question humaine, La)"
     description: "primis in faucibus orci luctus et ultrices posuere cubilia curae duis faucibus accumsan odio curabitur convallis duis consequat dui nec nisi volutpat eleifend donec"
-    cover_image_url: "http://dummyimage.com/109x100.png/5fa2dd/ffffff"
+    
   - id: bf3fbaff-b8a4-498a-9583-bac13c19dcc5
     manga_id: 35d1bea2-1a13-45e7-a08c-5d35db26444d
     number: 9
     title: "Touch of Sin, A (Tian zhu ding)"
     description: "luctus ultricies eu nibh quisque id justo sit amet sapien dignissim vestibulum vestibulum"
-    cover_image_url: "http://dummyimage.com/114x100.png/cc0000/ffffff"
+    
   - id: 4d61a6e4-0441-4087-bb5f-f8465355cc9d
     manga_id: df3be3a1-f02f-4d2e-afe8-83dc61f46839
     number: 13
     title: "Festival in Cannes"
     description: "a feugiat et eros vestibulum ac est lacinia nisi venenatis"
-    cover_image_url: "http://dummyimage.com/121x100.png/cc0000/ffffff"
+    
   - id: e9cb7505-0425-4dde-abd0-03290c18785b
     manga_id: e1674245-bb91-4382-adca-4b2c38878a89
     number: 13
     title: "Goodbye, 20th Century"
     description: "curae nulla dapibus dolor vel est donec odio justo sollicitudin ut suscipit a feugiat et eros vestibulum ac est lacinia nisi venenatis tristique fusce congue diam id ornare imperdiet"
-    cover_image_url: "http://dummyimage.com/242x100.png/cc0000/ffffff"
+    
   - id: 3f5d15f0-3d0e-4603-b7be-78ba17d2afab
     manga_id: 6dd52489-0ba2-4e84-9c0d-1666a63e1699
     number: 13
     title: "Air Hawks"
     description: "est et tempus semper est quam pharetra magna ac consequat metus sapien ut nunc vestibulum ante ipsum primis in faucibus orci luctus"
-    cover_image_url: "http://dummyimage.com/206x100.png/ff4444/ffffff"
+    
   - id: 0b631bfb-ed2a-4601-a261-47d6630ca620
     manga_id: 1bd31e88-0a22-4db2-a894-06a947b4a311
     number: 19
     title: "The Cabin in the Cotton"
     description: "sed sagittis nam congue risus semper porta volutpat quam pede lobortis ligula sit amet eleifend pede libero quis orci nullam molestie nibh in lectus pellentesque at"
-    cover_image_url: "http://dummyimage.com/174x100.png/dddddd/000000"
+    
   - id: c99810d1-5867-45aa-b143-e4b256aef5cb
     manga_id: 0952a563-671c-4a1a-93db-09d6bf64a82b
     number: 8
     title: "Happy Christmas"
     description: "dui vel nisl duis ac nibh fusce lacus purus aliquet at feugiat non pretium quis lectus suspendisse potenti in"
-    cover_image_url: "http://dummyimage.com/184x100.png/5fa2dd/ffffff"
+    
   - id: b0e218dd-88d4-4c31-806a-34ae46c0e17c
     manga_id: 0952a563-671c-4a1a-93db-09d6bf64a82b
     number: 9
     title: "Inside Man"
     description: "tristique est et tempus semper est quam pharetra magna ac consequat metus sapien ut nunc vestibulum ante ipsum primis in faucibus orci luctus et"
-    cover_image_url: "http://dummyimage.com/223x100.png/5fa2dd/ffffff"
+    
   - id: b3c4a13a-a8c6-4f2c-9c9a-1fc3af18c4cf
     manga_id: fc1bea74-5fde-4cf0-a332-c957c914d121
     number: 14
     title: "Hotel"
     description: "vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia"
-    cover_image_url: "http://dummyimage.com/131x100.png/5fa2dd/ffffff"
+    
   - id: bc6de058-c8a9-4d7f-9fc3-22ae9cb76202
     manga_id: 2aa478df-9f0f-4e67-b652-f9b01023eefb
     number: 15
     title: "About a Boy"
     description: "mollis molestie lorem quisque ut erat curabitur gravida nisi at nibh in hac habitasse platea dictumst aliquam augue quam sollicitudin"
-    cover_image_url: "http://dummyimage.com/103x100.png/dddddd/000000"
+    
   - id: 9e10ef4c-8651-4053-91b9-b04966b3ca26
     manga_id: 2aa478df-9f0f-4e67-b652-f9b01023eefb
     number: 16
     title: "Unknown Soldier, The (Unbekannte Soldat, Der)"
     description: "lacus at velit vivamus vel nulla eget eros elementum pellentesque quisque"
-    cover_image_url: "http://dummyimage.com/105x100.png/ff4444/ffffff"
+    
   - id: fde0ac3e-50ac-4a99-a954-cabd06cea9b6
     manga_id: b8bd3f1e-36e3-4033-8290-c5e0caaeab6d
     number: 12
     title: "Ugly, The"
     description: "curabitur at ipsum ac tellus semper interdum mauris ullamcorper purus sit amet nulla quisque arcu libero rutrum ac lobortis vel"
-    cover_image_url: "http://dummyimage.com/132x100.png/ff4444/ffffff"
+    
   - id: d9fc9239-fd29-4ab8-a666-ac413b263329
     manga_id: e1674245-bb91-4382-adca-4b2c38878a89
     number: 14
     title: "That's Life"
     description: "hendrerit at vulputate vitae nisl aenean lectus pellentesque eget nunc"
-    cover_image_url: "http://dummyimage.com/150x100.png/dddddd/000000"
+    
   - id: 217fb7ef-e685-40d8-b538-b498d2483683
     manga_id: 19382f54-1da7-4cb7-807d-9f6030bb121e
     number: 17
     title: "Petits ruisseaux, Les"
     description: "vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae donec pharetra magna vestibulum aliquet ultrices erat tortor sollicitudin"
-    cover_image_url: "http://dummyimage.com/184x100.png/ff4444/ffffff"
+    
   - id: dd5fdff1-dff1-40ee-8abb-50993c919da0
     manga_id: 19382f54-1da7-4cb7-807d-9f6030bb121e
     number: 18
     title: "Flame and the Arrow, The"
     description: "est risus auctor sed tristique in tempus sit amet sem fusce consequat nulla nisl nunc nisl duis bibendum felis sed interdum venenatis turpis enim blandit"
-    cover_image_url: "http://dummyimage.com/136x100.png/dddddd/000000"
+    
   - id: aa7d3c3b-c25b-40a5-b55b-ac72bc85385b
     manga_id: 7c634319-937d-4447-9808-3417474309c1
     number: 10
     title: "Marshal of Finland, The (Suomen Marsalkka)"
     description: "sollicitudin ut suscipit a feugiat et eros vestibulum ac est lacinia nisi venenatis tristique fusce congue diam id ornare imperdiet sapien urna pretium"
-    cover_image_url: "http://dummyimage.com/107x100.png/cc0000/ffffff"
+    
   - id: 06cf1ad6-dadc-4ae1-a195-40f0134e9686
     manga_id: 0952a563-671c-4a1a-93db-09d6bf64a82b
     number: 10
     title: "Helen of Troy"
     description: "etiam faucibus cursus urna ut tellus nulla ut erat id mauris vulputate elementum nullam varius"
-    cover_image_url: "http://dummyimage.com/108x100.png/5fa2dd/ffffff"
+    
   - id: 9b52a1ec-f612-420c-9926-93f0a5560431
     manga_id: 7c634319-937d-4447-9808-3417474309c1
     number: 11
     title: "Appointment with Death"
     description: "dignissim vestibulum vestibulum ante ipsum primis in faucibus orci luctus"
-    cover_image_url: "http://dummyimage.com/126x100.png/dddddd/000000"
+    
   - id: 0abac965-4268-412a-985d-9bf004e725ad
     manga_id: 62c950be-858b-42f2-8799-a09e49bc8589
     number: 9
     title: "Crime and Punishment"
     description: "at dolor quis odio consequat varius integer ac leo pellentesque ultrices mattis odio donec vitae nisi"
-    cover_image_url: "http://dummyimage.com/183x100.png/cc0000/ffffff"
+    
   - id: 2f6b2958-e311-4001-9468-9cc3957df147
     manga_id: 19382f54-1da7-4cb7-807d-9f6030bb121e
     number: 19
     title: "The Last Station"
     description: "ultrices phasellus id sapien in sapien iaculis congue vivamus metus arcu adipiscing molestie hendrerit at vulputate vitae nisl aenean"
-    cover_image_url: "http://dummyimage.com/148x100.png/cc0000/ffffff"
+    
   - id: 767bbd44-1e94-4956-8b7a-7d8d8aa2225a
     manga_id: 35d1bea2-1a13-45e7-a08c-5d35db26444d
     number: 10
     title: "Monkey's Tale, A (Château des singes, Le)"
     description: "at turpis donec posuere metus vitae ipsum aliquam non mauris morbi non lectus aliquam sit amet"
-    cover_image_url: "http://dummyimage.com/200x100.png/cc0000/ffffff"
+    
   - id: 34fce567-555e-4322-b310-6e9a7d29d558
     manga_id: b8bd3f1e-36e3-4033-8290-c5e0caaeab6d
     number: 13
     title: "Superman"
     description: "volutpat erat quisque erat eros viverra eget congue eget semper rutrum nulla nunc purus phasellus"
-    cover_image_url: "http://dummyimage.com/171x100.png/ff4444/ffffff"
+    
   - id: 7b9f9526-1f12-497c-a655-1c259e9b8f11
     manga_id: 7c634319-937d-4447-9808-3417474309c1
     number: 12
     title: "Whatever"
     description: "nulla suscipit ligula in lacus curabitur at ipsum ac tellus semper interdum mauris ullamcorper purus sit amet nulla quisque arcu libero"
-    cover_image_url: "http://dummyimage.com/227x100.png/5fa2dd/ffffff"
+    
   - id: 04b378d7-36fe-4629-880d-89ec9b664a5a
     manga_id: 35d1bea2-1a13-45e7-a08c-5d35db26444d
     number: 11
     title: "Bear with Me"
     description: "at lorem integer tincidunt ante vel ipsum praesent blandit lacinia erat vestibulum sed magna at nunc commodo placerat"
-    cover_image_url: "http://dummyimage.com/243x100.png/cc0000/ffffff"
+    
   - id: ec0b3f1d-884a-404b-9a76-06440add57aa
     manga_id: 0952a563-671c-4a1a-93db-09d6bf64a82b
     number: 11
     title: "Party Girl"
     description: "molestie lorem quisque ut erat curabitur gravida nisi at nibh in hac habitasse platea dictumst aliquam augue quam sollicitudin vitae consectetuer eget rutrum at"
-    cover_image_url: "http://dummyimage.com/248x100.png/dddddd/000000"
+    
   - id: c69bf64f-cbaa-4cc3-98cb-077f7922b954
     manga_id: df3be3a1-f02f-4d2e-afe8-83dc61f46839
     number: 14
     title: "Gun Crazy (a.k.a. Deadly Is the Female)"
     description: "accumsan tortor quis turpis sed ante vivamus tortor duis mattis egestas metus aenean fermentum donec ut mauris eget massa tempor convallis nulla neque libero convallis eget"
-    cover_image_url: "http://dummyimage.com/105x100.png/dddddd/000000"
+    
   - id: 8301d2ab-a0f6-4420-b211-593c39464325
     manga_id: 0952a563-671c-4a1a-93db-09d6bf64a82b
     number: 12
     title: "Who Do I Gotta Kill?"
     description: "et ultrices posuere cubilia curae donec pharetra magna vestibulum aliquet ultrices erat tortor sollicitudin mi sit amet lobortis sapien sapien"
-    cover_image_url: "http://dummyimage.com/247x100.png/ff4444/ffffff"
+    
   - id: a7486b5e-8967-47a7-a417-acf1943a63e5
     manga_id: 19382f54-1da7-4cb7-807d-9f6030bb121e
     number: 20
     title: "Bachelor in Paradise"
     description: "faucibus orci luctus et ultrices posuere cubilia curae mauris viverra diam vitae quam suspendisse potenti nullam porttitor lacus at turpis donec posuere metus vitae ipsum aliquam non mauris morbi non"
-    cover_image_url: "http://dummyimage.com/129x100.png/ff4444/ffffff"
+    
   - id: 016ea515-32e6-425a-a483-075242a3bd8b
     manga_id: b8bd3f1e-36e3-4033-8290-c5e0caaeab6d
     number: 14
     title: "Judy Moody and the Not Bummer Summer"
     description: "consequat morbi a ipsum integer a nibh in quis justo maecenas rhoncus aliquam lacus morbi quis tortor id"
-    cover_image_url: "http://dummyimage.com/245x100.png/ff4444/ffffff"
+    
   - id: 96159d13-5d06-4312-9190-0584b859251b
     manga_id: 1bd31e88-0a22-4db2-a894-06a947b4a311
     number: 20
     title: "Bangkok Dangerous"
     description: "ante vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae duis faucibus accumsan odio curabitur convallis duis"
-    cover_image_url: "http://dummyimage.com/141x100.png/5fa2dd/ffffff"
+    
   - id: 72db2731-de3d-4727-871b-5de48da4db6d
     manga_id: 19382f54-1da7-4cb7-807d-9f6030bb121e
     number: 21
     title: "Nobody Knows Anything!"
     description: "sit amet consectetuer adipiscing elit proin risus praesent lectus vestibulum quam sapien varius ut"
-    cover_image_url: "http://dummyimage.com/226x100.png/5fa2dd/ffffff"
+    
   - id: ad4c6a05-193f-4e13-ba43-68552cbafeb3
     manga_id: 35d1bea2-1a13-45e7-a08c-5d35db26444d
     number: 12
     title: "Adrift in Tokyo (Tenten)"
     description: "ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae donec pharetra magna vestibulum aliquet ultrices erat tortor sollicitudin mi sit amet lobortis sapien sapien"
-    cover_image_url: "http://dummyimage.com/209x100.png/cc0000/ffffff"
+    
   - id: ecdcbfe8-9e27-4f3b-8347-db631875daf8
     manga_id: 35d1bea2-1a13-45e7-a08c-5d35db26444d
     number: 13
     title: "Vice Squad"
     description: "at turpis a pede posuere nonummy integer non velit donec diam neque vestibulum eget vulputate ut ultrices vel augue vestibulum ante ipsum primis in faucibus orci"
-    cover_image_url: "http://dummyimage.com/239x100.png/5fa2dd/ffffff"
+    
   - id: 8870c461-b83a-4daf-872c-92ccf67866df
     manga_id: 19382f54-1da7-4cb7-807d-9f6030bb121e
     number: 22
     title: "Hellhounds on My Trail"
     description: "ridiculus mus vivamus vestibulum sagittis sapien cum sociis natoque penatibus et magnis dis parturient montes nascetur ridiculus mus etiam vel"
-    cover_image_url: "http://dummyimage.com/126x100.png/5fa2dd/ffffff"
+    
   - id: 2bb5ea4a-f427-450f-a873-3fb47e1079c9
     manga_id: b8bd3f1e-36e3-4033-8290-c5e0caaeab6d
     number: 15
     title: "Prisoners of the Lost Universe"
     description: "in lacus curabitur at ipsum ac tellus semper interdum mauris ullamcorper purus sit amet nulla"
-    cover_image_url: "http://dummyimage.com/134x100.png/dddddd/000000"
+    
   - id: 56adabfa-0dbc-428a-9c09-75955e17ea74
     manga_id: 6dd52489-0ba2-4e84-9c0d-1666a63e1699
     number: 14
     title: "Dolls"
     description: "aliquet at feugiat non pretium quis lectus suspendisse potenti in eleifend quam a odio in"
-    cover_image_url: "http://dummyimage.com/178x100.png/dddddd/000000"
+    
   - id: cd886a45-fbee-4425-94b8-d1ae96142942
     manga_id: 35d1bea2-1a13-45e7-a08c-5d35db26444d
     number: 14
     title: "Marriage Retreat"
     description: "nonummy integer non velit donec diam neque vestibulum eget vulputate ut"
-    cover_image_url: "http://dummyimage.com/102x100.png/5fa2dd/ffffff"
+    
   - id: 9c4fe355-ae11-43cb-a116-cba50c7f3b2b
     manga_id: 6dd52489-0ba2-4e84-9c0d-1666a63e1699
     number: 15
     title: "Choking Man"
     description: "ut mauris eget massa tempor convallis nulla neque libero convallis eget eleifend luctus ultricies eu nibh quisque id justo sit amet sapien dignissim vestibulum vestibulum ante ipsum primis"
-    cover_image_url: "http://dummyimage.com/207x100.png/cc0000/ffffff"
+    
   - id: 38b3ba41-5cc1-4ccf-88a0-095d0fdeeeb3
     manga_id: fc1bea74-5fde-4cf0-a332-c957c914d121
     number: 15
     title: "Boat, The"
     description: "et magnis dis parturient montes nascetur ridiculus mus etiam vel augue vestibulum rutrum rutrum"
-    cover_image_url: "http://dummyimage.com/172x100.png/5fa2dd/ffffff"
+    
   - id: d6203731-c3cc-4fca-b2c7-aa6e32907c63
     manga_id: 6dd52489-0ba2-4e84-9c0d-1666a63e1699
     number: 16
     title: "97 Percent True"
     description: "diam id ornare imperdiet sapien urna pretium nisl ut volutpat sapien arcu sed augue aliquam erat volutpat in congue etiam justo etiam pretium iaculis justo in hac"
-    cover_image_url: "http://dummyimage.com/169x100.png/cc0000/ffffff"
+    
   - id: 6be6d3ce-2912-4595-b525-dd1ebd790f73
     manga_id: 6dd52489-0ba2-4e84-9c0d-1666a63e1699
     number: 17
     title: "Miracle"
     description: "est quam pharetra magna ac consequat metus sapien ut nunc vestibulum ante ipsum primis"
-    cover_image_url: "http://dummyimage.com/190x100.png/5fa2dd/ffffff"
+    
   - id: b15cab8c-996c-4702-ae02-d8d679868aae
     manga_id: e1674245-bb91-4382-adca-4b2c38878a89
     number: 15
     title: "Mr. Woodcock"
     description: "mauris vulputate elementum nullam varius nulla facilisi cras non velit nec nisi vulputate nonummy maecenas tincidunt lacus"
-    cover_image_url: "http://dummyimage.com/187x100.png/ff4444/ffffff"
+    
   - id: 53d25081-2e69-4395-b765-631833108729
     manga_id: b8bd3f1e-36e3-4033-8290-c5e0caaeab6d
     number: 16
     title: "How to Eat Your Watermelon in White Company (and Enjoy It)"
     description: "donec pharetra magna vestibulum aliquet ultrices erat tortor sollicitudin mi sit amet lobortis"
-    cover_image_url: "http://dummyimage.com/173x100.png/5fa2dd/ffffff"
+    
   - id: 245e5ae2-5a34-4e60-8a0d-a59621571a17
     manga_id: 2aa478df-9f0f-4e67-b652-f9b01023eefb
     number: 17
     title: "Downhill"
     description: "morbi vel lectus in quam fringilla rhoncus mauris enim leo rhoncus sed"
-    cover_image_url: "http://dummyimage.com/133x100.png/ff4444/ffffff"
+    
   - id: ccc6b193-04a9-46a9-b7ca-8ee4ba723bbe
     manga_id: 4ab94eda-46ae-4de8-bd3a-734b388e06fc
     number: 9
     title: "The Devil and the Holy Water"
     description: "enim leo rhoncus sed vestibulum sit amet cursus id turpis integer aliquet massa id lobortis convallis tortor risus dapibus augue vel accumsan tellus nisi eu orci mauris lacinia"
-    cover_image_url: "http://dummyimage.com/246x100.png/5fa2dd/ffffff"
+    
   - id: 2bde439e-e7da-4a9a-a2db-f446ceff79ec
     manga_id: 19382f54-1da7-4cb7-807d-9f6030bb121e
     number: 23
     title: "Adventures of Picasso, The (Picassos äventyr)"
     description: "turpis nec euismod scelerisque quam turpis adipiscing lorem vitae mattis nibh ligula nec sem duis aliquam convallis nunc proin at turpis a pede posuere nonummy integer"
-    cover_image_url: "http://dummyimage.com/190x100.png/5fa2dd/ffffff"
+    
   - id: 80bfe77a-2927-4403-b8b8-c92f1fdf9232
     manga_id: 19382f54-1da7-4cb7-807d-9f6030bb121e
     number: 24
     title: "Hour of the Gun"
     description: "justo etiam pretium iaculis justo in hac habitasse platea dictumst etiam faucibus cursus urna ut tellus nulla ut erat id mauris vulputate elementum nullam varius nulla facilisi"
-    cover_image_url: "http://dummyimage.com/179x100.png/5fa2dd/ffffff"
+    
   - id: aba0d6b9-1588-47b5-a33b-ccf88df4d381
     manga_id: e1674245-bb91-4382-adca-4b2c38878a89
     number: 16
     title: "Laura"
     description: "et tempus semper est quam pharetra magna ac consequat metus sapien ut nunc vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae mauris viverra"
-    cover_image_url: "http://dummyimage.com/194x100.png/dddddd/000000"
+    
   - id: d7fc1c12-f519-4b46-9be1-f1b55184c219
     manga_id: 0952a563-671c-4a1a-93db-09d6bf64a82b
     number: 13
     title: "Keys of the Kingdom, The"
     description: "phasellus sit amet erat nulla tempus vivamus in felis eu sapien cursus vestibulum proin eu mi nulla"
-    cover_image_url: "http://dummyimage.com/159x100.png/dddddd/000000"
+    
   - id: 242385be-faa1-4777-8cf2-1d63293ba89f
     manga_id: 6dd52489-0ba2-4e84-9c0d-1666a63e1699
     number: 18
     title: "City of Women, The (Città delle donne, La)"
     description: "tincidunt lacus at velit vivamus vel nulla eget eros elementum pellentesque quisque porta volutpat erat quisque erat eros viverra eget congue eget semper rutrum nulla nunc purus"
-    cover_image_url: "http://dummyimage.com/236x100.png/5fa2dd/ffffff"
+    
   - id: a36281a7-780e-48fb-9144-de05cf408a04
     manga_id: 35d1bea2-1a13-45e7-a08c-5d35db26444d
     number: 15
     title: "Island of the Burning Damned (Night of the Big Heat)"
     description: "ligula sit amet eleifend pede libero quis orci nullam molestie nibh in lectus pellentesque at nulla suspendisse potenti cras in purus"
-    cover_image_url: "http://dummyimage.com/162x100.png/5fa2dd/ffffff"
+    
   - id: 33807627-f8de-49e2-b841-88a4c27251c6
     manga_id: fc1bea74-5fde-4cf0-a332-c957c914d121
     number: 16
     title: "Beer League"
     description: "pellentesque volutpat dui maecenas tristique est et tempus semper est quam pharetra magna ac consequat metus sapien ut nunc vestibulum ante ipsum primis in faucibus orci luctus et ultrices"
-    cover_image_url: "http://dummyimage.com/171x100.png/ff4444/ffffff"
+    
   - id: eec4d444-d8e4-456e-a959-c56001c273ee
     manga_id: df3be3a1-f02f-4d2e-afe8-83dc61f46839
     number: 15
     title: "Entre nos (Between Us)"
     description: "et tempus semper est quam pharetra magna ac consequat metus sapien ut nunc vestibulum ante ipsum primis in faucibus orci luctus et ultrices"
-    cover_image_url: "http://dummyimage.com/103x100.png/ff4444/ffffff"
+    
   - id: c5d82f49-f4b9-468c-8679-4a400114e0ac
     manga_id: 7c634319-937d-4447-9808-3417474309c1
     number: 13
     title: "Up!"
     description: "et ultrices posuere cubilia curae duis faucibus accumsan odio curabitur convallis"
-    cover_image_url: "http://dummyimage.com/169x100.png/5fa2dd/ffffff"
+    
   - id: f97b838e-98b9-427e-a6c9-bb8d983ab666
     manga_id: 2aa478df-9f0f-4e67-b652-f9b01023eefb
     number: 18
     title: "Mystery Train"
     description: "donec ut mauris eget massa tempor convallis nulla neque libero convallis eget eleifend luctus ultricies"
-    cover_image_url: "http://dummyimage.com/240x100.png/cc0000/ffffff"
+    
   - id: 934ccca7-718c-48a4-9979-06e929e49851
     manga_id: 4ab94eda-46ae-4de8-bd3a-734b388e06fc
     number: 10
     title: "Profit, The"
     description: "quis augue luctus tincidunt nulla mollis molestie lorem quisque ut erat curabitur gravida nisi at nibh in hac habitasse platea dictumst aliquam augue quam sollicitudin vitae consectetuer eget rutrum"
-    cover_image_url: "http://dummyimage.com/193x100.png/dddddd/000000"
+    
   - id: ec1f486a-4119-4419-ace1-63c32bdb902a
     manga_id: 35d1bea2-1a13-45e7-a08c-5d35db26444d
     number: 16
     title: "Flash Gordon's Trip to Mars"
     description: "dui vel nisl duis ac nibh fusce lacus purus aliquet at feugiat non pretium quis lectus suspendisse potenti in eleifend quam a odio in hac habitasse platea"
-    cover_image_url: "http://dummyimage.com/169x100.png/cc0000/ffffff"
+    
   - id: 76242113-782f-4691-922d-543d78910c3d
     manga_id: 0952a563-671c-4a1a-93db-09d6bf64a82b
     number: 14
     title: "Alice in Wonderland"
     description: "justo morbi ut odio cras mi pede malesuada in imperdiet et commodo vulputate justo in blandit ultrices enim lorem ipsum dolor sit amet consectetuer adipiscing elit proin"
-    cover_image_url: "http://dummyimage.com/134x100.png/dddddd/000000"
+    
   - id: 07be5294-a0cb-45cb-9ad6-5ca9debb4e7d
     manga_id: fc1bea74-5fde-4cf0-a332-c957c914d121
     number: 17
     title: "Who Am I? (Wo shi shei)"
     description: "turpis eget elit sodales scelerisque mauris sit amet eros suspendisse"
-    cover_image_url: "http://dummyimage.com/245x100.png/5fa2dd/ffffff"
+    
   - id: c673bdee-bfde-4aec-b341-08e09c476acf
     manga_id: 0952a563-671c-4a1a-93db-09d6bf64a82b
     number: 15
     title: "Hi Tessa (Czesc Tereska)"
     description: "augue a suscipit nulla elit ac nulla sed vel enim sit amet nunc viverra dapibus nulla suscipit ligula in lacus"
-    cover_image_url: "http://dummyimage.com/121x100.png/ff4444/ffffff"
+    
   - id: 9f494486-9a1c-4e26-a6d5-2a6bf616516a
     manga_id: fc1bea74-5fde-4cf0-a332-c957c914d121
     number: 18
     title: "56 Up"
     description: "viverra pede ac diam cras pellentesque volutpat dui maecenas tristique est et tempus semper est"
-    cover_image_url: "http://dummyimage.com/146x100.png/5fa2dd/ffffff"
+    
   - id: 2e8f5863-4603-444d-902b-68dbe3827c57
     manga_id: 19382f54-1da7-4cb7-807d-9f6030bb121e
     number: 25
     title: "Top Banana"
     description: "natoque penatibus et magnis dis parturient montes nascetur ridiculus mus vivamus vestibulum sagittis sapien cum sociis natoque penatibus et magnis dis parturient montes nascetur ridiculus mus etiam vel"
-    cover_image_url: "http://dummyimage.com/166x100.png/5fa2dd/ffffff"
+    
   - id: 8de35fd4-f7ff-499b-ae49-a9e5db592e7e
     manga_id: 0952a563-671c-4a1a-93db-09d6bf64a82b
     number: 16
     title: "Neverwhere"
     description: "consequat dui nec nisi volutpat eleifend donec ut dolor morbi vel lectus in quam fringilla rhoncus mauris enim leo rhoncus sed vestibulum"
-    cover_image_url: "http://dummyimage.com/194x100.png/cc0000/ffffff"
+    
   - id: 05d61a90-a2a8-4a01-9b90-7c74daf8ea44
     manga_id: 7c634319-937d-4447-9808-3417474309c1
     number: 14
     title: "Bamako"
     description: "et commodo vulputate justo in blandit ultrices enim lorem ipsum dolor sit amet consectetuer adipiscing elit proin interdum mauris non ligula pellentesque ultrices phasellus id sapien in sapien"
-    cover_image_url: "http://dummyimage.com/110x100.png/cc0000/ffffff"
+    
   - id: 8eb3e4ce-1328-436c-87ab-dbd9464fbd03
     manga_id: 62c950be-858b-42f2-8799-a09e49bc8589
     number: 10
     title: "Moulin Rouge"
     description: "mus etiam vel augue vestibulum rutrum rutrum neque aenean auctor gravida sem praesent id massa id nisl"
-    cover_image_url: "http://dummyimage.com/246x100.png/cc0000/ffffff"
+    
   - id: 2e8da99f-3167-453e-8a12-27a88d0d9fdf
     manga_id: 2aa478df-9f0f-4e67-b652-f9b01023eefb
     number: 19
     title: "California Conquest"
     description: "pulvinar lobortis est phasellus sit amet erat nulla tempus vivamus in felis eu sapien cursus vestibulum proin eu mi nulla ac"
-    cover_image_url: "http://dummyimage.com/152x100.png/ff4444/ffffff"
+    
   - id: 8b4677c1-d0b4-466c-9049-bedb093066f9
     manga_id: b8bd3f1e-36e3-4033-8290-c5e0caaeab6d
     number: 17
     title: "Everything Put Together"
     description: "aliquam non mauris morbi non lectus aliquam sit amet diam in magna bibendum imperdiet nullam orci pede venenatis non sodales sed tincidunt eu felis fusce posuere"
-    cover_image_url: "http://dummyimage.com/114x100.png/5fa2dd/ffffff"
+    
   - id: 86a8a27a-79ac-4f4e-9f75-31278f2024f7
     manga_id: 62c950be-858b-42f2-8799-a09e49bc8589
     number: 11
     title: "Punks"
     description: "in hac habitasse platea dictumst morbi vestibulum velit id pretium iaculis diam erat fermentum justo nec condimentum"
-    cover_image_url: "http://dummyimage.com/224x100.png/ff4444/ffffff"
+    
   - id: b4489aa7-d5fc-46ef-b91b-92d37cc87d2f
     manga_id: fc1bea74-5fde-4cf0-a332-c957c914d121
     number: 19
     title: "Young Mr. Lincoln"
     description: "luctus et ultrices posuere cubilia curae duis faucibus accumsan odio curabitur convallis duis consequat dui nec nisi volutpat eleifend donec ut dolor morbi vel lectus in quam"
-    cover_image_url: "http://dummyimage.com/233x100.png/cc0000/ffffff"
+    
   - id: 10513782-72e4-46ed-832a-3795856542fa
     manga_id: fc1bea74-5fde-4cf0-a332-c957c914d121
     number: 20
     title: "Great Outdoors, The"
     description: "fusce congue diam id ornare imperdiet sapien urna pretium nisl ut volutpat sapien arcu sed"
-    cover_image_url: "http://dummyimage.com/132x100.png/ff4444/ffffff"
+    
   - id: 12d6d170-fec6-4e7a-bff2-c70f23458e87
     manga_id: 7c634319-937d-4447-9808-3417474309c1
     number: 15
     title: "Bear's Kiss"
     description: "sit amet sem fusce consequat nulla nisl nunc nisl duis bibendum felis sed interdum venenatis turpis"
-    cover_image_url: "http://dummyimage.com/142x100.png/5fa2dd/ffffff"
+    
   - id: 61fc5469-20af-48f0-b470-f50b4e83bb10
     manga_id: 6dd52489-0ba2-4e84-9c0d-1666a63e1699
     number: 19
     title: "Cat People"
     description: "pede libero quis orci nullam molestie nibh in lectus pellentesque at nulla suspendisse potenti cras in purus eu magna vulputate luctus cum"
-    cover_image_url: "http://dummyimage.com/106x100.png/dddddd/000000"
+    
   - id: 6d169a66-be90-4337-807a-7a3b74085fee
     manga_id: b8bd3f1e-36e3-4033-8290-c5e0caaeab6d
     number: 18
     title: "I Just Didn't Do It (Soredemo boku wa yattenai)"
     description: "sed tincidunt eu felis fusce posuere felis sed lacus morbi sem mauris laoreet ut rhoncus aliquet pulvinar sed nisl nunc rhoncus dui"
-    cover_image_url: "http://dummyimage.com/181x100.png/dddddd/000000"
+    
   - id: 62f4e1a2-51db-45ee-b072-687bea634395
     manga_id: 62c950be-858b-42f2-8799-a09e49bc8589
     number: 12
     title: "Dark Days"
     description: "odio curabitur convallis duis consequat dui nec nisi volutpat eleifend donec ut dolor morbi vel lectus in quam fringilla rhoncus"
-    cover_image_url: "http://dummyimage.com/231x100.png/ff4444/ffffff"
+    
   - id: 5ade05c7-ed04-4946-819a-e9a329cd90b1
     manga_id: 6dd52489-0ba2-4e84-9c0d-1666a63e1699
     number: 20
     title: "Outbreak"
     description: "lectus vestibulum quam sapien varius ut blandit non interdum in ante vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae duis faucibus accumsan odio"
-    cover_image_url: "http://dummyimage.com/112x100.png/cc0000/ffffff"
+    
   - id: 5cc2d383-6cd9-4161-bca0-6f5b8cf1983e
     manga_id: e1674245-bb91-4382-adca-4b2c38878a89
     number: 17
     title: "Soldier's Tale, A"
     description: "ac nulla sed vel enim sit amet nunc viverra dapibus nulla suscipit ligula in lacus curabitur at ipsum ac tellus semper interdum"
-    cover_image_url: "http://dummyimage.com/191x100.png/cc0000/ffffff"
+    
   - id: f35d93eb-eafe-4931-a65c-d3e9ae482217
     manga_id: 4ab94eda-46ae-4de8-bd3a-734b388e06fc
     number: 11
     title: "End of the Affair, The"
     description: "in consequat ut nulla sed accumsan felis ut at dolor quis odio consequat varius integer"
-    cover_image_url: "http://dummyimage.com/128x100.png/5fa2dd/ffffff"
+    
   - id: bb19cf67-f618-4ca7-b809-d3ddbb652211
     manga_id: e1674245-bb91-4382-adca-4b2c38878a89
     number: 18
     title: "I Love You Again"
     description: "sed vestibulum sit amet cursus id turpis integer aliquet massa id lobortis convallis tortor risus dapibus augue vel accumsan"
-    cover_image_url: "http://dummyimage.com/119x100.png/dddddd/000000"
+    
   - id: b75292da-9e77-4edb-96ac-6918ee197ef2
     manga_id: 7c634319-937d-4447-9808-3417474309c1
     number: 16
     title: "Point Blank (À bout portant)"
     description: "ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae nulla dapibus dolor vel est donec odio justo sollicitudin"
-    cover_image_url: "http://dummyimage.com/194x100.png/5fa2dd/ffffff"
+    
   - id: a5bba529-dca2-4e93-a1e2-ee7f9718e2d0
     manga_id: b8bd3f1e-36e3-4033-8290-c5e0caaeab6d
     number: 19
     title: "Internet's Own Boy: The Story of Aaron Swartz, The"
     description: "duis faucibus accumsan odio curabitur convallis duis consequat dui nec nisi volutpat eleifend donec ut dolor morbi vel lectus in quam fringilla rhoncus mauris"
-    cover_image_url: "http://dummyimage.com/130x100.png/ff4444/ffffff"
+    
   - id: 24684f43-cdc3-44e8-8814-6685d833050f
     manga_id: fc1bea74-5fde-4cf0-a332-c957c914d121
     number: 21
     title: "Neon Genesis Evangelion: Death & Rebirth (Shin seiki Evangelion Gekijô-ban: Shito shinsei)"
     description: "venenatis non sodales sed tincidunt eu felis fusce posuere felis sed lacus morbi sem mauris laoreet ut rhoncus aliquet pulvinar"
-    cover_image_url: "http://dummyimage.com/192x100.png/5fa2dd/ffffff"
+    
   - id: d642ecc6-5036-4179-9266-32c72a512ae2
     manga_id: 1bd31e88-0a22-4db2-a894-06a947b4a311
     number: 21
     title: "Flintstone Kids' Just Say No Special, The"
     description: "imperdiet nullam orci pede venenatis non sodales sed tincidunt eu felis fusce posuere felis sed lacus morbi sem mauris laoreet ut rhoncus aliquet pulvinar sed nisl nunc rhoncus"
-    cover_image_url: "http://dummyimage.com/137x100.png/ff4444/ffffff"
+    
   - id: 75b9baaa-c491-4866-bcd2-715a7f994d50
     manga_id: 35d1bea2-1a13-45e7-a08c-5d35db26444d
     number: 17
     title: "I See a Dark Stranger"
     description: "diam vitae quam suspendisse potenti nullam porttitor lacus at turpis donec posuere metus vitae ipsum"
-    cover_image_url: "http://dummyimage.com/189x100.png/dddddd/000000"
+    
   - id: 65034bc1-1e03-4d83-b49a-3e30beccdf44
     manga_id: 35d1bea2-1a13-45e7-a08c-5d35db26444d
     number: 18
     title: "Mulan II"
     description: "justo morbi ut odio cras mi pede malesuada in imperdiet et commodo vulputate justo in blandit ultrices enim lorem ipsum dolor sit amet"
-    cover_image_url: "http://dummyimage.com/147x100.png/dddddd/000000"
+    
   - id: ca2cebdd-4f76-49e8-b753-8f57f6bea9f2
     manga_id: 35d1bea2-1a13-45e7-a08c-5d35db26444d
     number: 19
     title: "Redbelt"
     description: "morbi vestibulum velit id pretium iaculis diam erat fermentum justo nec condimentum neque sapien placerat ante nulla justo aliquam quis turpis eget"
-    cover_image_url: "http://dummyimage.com/151x100.png/dddddd/000000"
+    
   - id: 8fe7f6b2-4736-4744-bcc0-a39e892a0f85
     manga_id: 2aa478df-9f0f-4e67-b652-f9b01023eefb
     number: 20
     title: "Bamboozled"
     description: "tempus sit amet sem fusce consequat nulla nisl nunc nisl duis bibendum felis sed"
-    cover_image_url: "http://dummyimage.com/184x100.png/dddddd/000000"
+    
   - id: 58e0b0a4-91fa-4d67-a28c-51f4437c56e0
     manga_id: 1bd31e88-0a22-4db2-a894-06a947b4a311
     number: 22
     title: "Tokyo-Ga"
     description: "neque sapien placerat ante nulla justo aliquam quis turpis eget elit sodales scelerisque mauris sit amet eros suspendisse accumsan tortor quis"
-    cover_image_url: "http://dummyimage.com/176x100.png/ff4444/ffffff"
+    
   - id: ce3afbca-7928-442a-bcc9-52b170408e11
     manga_id: 7c634319-937d-4447-9808-3417474309c1
     number: 17
     title: "Call Me Savage"
     description: "lectus pellentesque at nulla suspendisse potenti cras in purus eu magna vulputate luctus cum sociis natoque penatibus et magnis dis parturient montes nascetur ridiculus mus vivamus vestibulum sagittis"
-    cover_image_url: "http://dummyimage.com/218x100.png/ff4444/ffffff"
+    
   - id: 4fda885e-5f37-4087-931e-731d28fa37cb
     manga_id: 35d1bea2-1a13-45e7-a08c-5d35db26444d
     number: 20
     title: "Every Girl Should Be Married"
     description: "pede morbi porttitor lorem id ligula suspendisse ornare consequat lectus in est risus"
-    cover_image_url: "http://dummyimage.com/232x100.png/dddddd/000000"
+    
   - id: 9a01fee4-b1b0-40eb-a30c-f4c11a8f3ca7
     manga_id: 35d1bea2-1a13-45e7-a08c-5d35db26444d
     number: 21
     title: "Thomas and the Magic Railroad"
     description: "suspendisse ornare consequat lectus in est risus auctor sed tristique in tempus sit"
-    cover_image_url: "http://dummyimage.com/212x100.png/5fa2dd/ffffff"
+    
   - id: 33067c14-3f9f-4a39-9448-8548102a4774
     manga_id: 2aa478df-9f0f-4e67-b652-f9b01023eefb
     number: 21
     title: "Dream Catcher, The"
     description: "velit donec diam neque vestibulum eget vulputate ut ultrices vel augue vestibulum ante ipsum primis"
-    cover_image_url: "http://dummyimage.com/236x100.png/ff4444/ffffff"
+    
   - id: 1aa63fa2-6602-44f9-98ee-4917290ce0b1
     manga_id: e1674245-bb91-4382-adca-4b2c38878a89
     number: 19
     title: "Shanks"
     description: "sit amet diam in magna bibendum imperdiet nullam orci pede venenatis non sodales sed tincidunt eu felis fusce posuere felis sed lacus morbi sem"
-    cover_image_url: "http://dummyimage.com/175x100.png/cc0000/ffffff"
+    
   - id: 4873e070-9496-42b4-a363-eb366fd20f15
     manga_id: 35d1bea2-1a13-45e7-a08c-5d35db26444d
     number: 22
     title: "Romulus, My Father"
     description: "tellus semper interdum mauris ullamcorper purus sit amet nulla quisque arcu libero rutrum ac lobortis vel dapibus at"
-    cover_image_url: "http://dummyimage.com/233x100.png/ff4444/ffffff"
+    
   - id: 2f59eab8-91d0-4dec-a692-5108e0e2b1b1
     manga_id: 6dd52489-0ba2-4e84-9c0d-1666a63e1699
     number: 21
     title: "Millennium Mambo (Qian xi man po)"
     description: "justo pellentesque viverra pede ac diam cras pellentesque volutpat dui maecenas tristique est et tempus semper est quam pharetra magna ac consequat metus sapien"
-    cover_image_url: "http://dummyimage.com/168x100.png/dddddd/000000"
+    
   - id: a49aaf05-7654-4557-b592-bc761b88c12e
     manga_id: 62c950be-858b-42f2-8799-a09e49bc8589
     number: 13
     title: "Gambler, The (Játékos, A)"
     description: "vel augue vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae donec pharetra magna vestibulum aliquet ultrices erat tortor sollicitudin mi sit amet lobortis sapien"
-    cover_image_url: "http://dummyimage.com/228x100.png/ff4444/ffffff"
+    
   - id: 70e78797-99f8-4ddb-b5fd-7a26d1244046
     manga_id: 7c634319-937d-4447-9808-3417474309c1
     number: 18
     title: "One True Thing"
     description: "nulla ut erat id mauris vulputate elementum nullam varius nulla facilisi cras non"
-    cover_image_url: "http://dummyimage.com/185x100.png/dddddd/000000"
+    
   - id: f093c71a-0e9a-4553-be0e-58bcc56582d2
     manga_id: 4ab94eda-46ae-4de8-bd3a-734b388e06fc
     number: 12
     title: "Creepshow 2"
     description: "aliquam quis turpis eget elit sodales scelerisque mauris sit amet eros suspendisse accumsan tortor quis turpis sed ante"
-    cover_image_url: "http://dummyimage.com/209x100.png/5fa2dd/ffffff"
+    
   - id: f7b2c5f5-e33c-4da7-a74a-87de5e778cf0
     manga_id: 62c950be-858b-42f2-8799-a09e49bc8589
     number: 14
     title: "Kiki's Delivery Service (Majo no takkyûbin)"
     description: "at ipsum ac tellus semper interdum mauris ullamcorper purus sit amet nulla quisque arcu libero rutrum ac lobortis vel dapibus at"
-    cover_image_url: "http://dummyimage.com/190x100.png/5fa2dd/ffffff"
+    
   - id: 974b628a-72c0-43c2-a771-03e1780eef3f
     manga_id: 7c634319-937d-4447-9808-3417474309c1
     number: 19
     title: "Savannah"
     description: "adipiscing lorem vitae mattis nibh ligula nec sem duis aliquam"
-    cover_image_url: "http://dummyimage.com/197x100.png/cc0000/ffffff"
+    
   - id: 41daa1a6-e52b-45bc-aead-d1bc02fa4b2f
     manga_id: 6dd52489-0ba2-4e84-9c0d-1666a63e1699
     number: 22
     title: "Crime and Punishment"
     description: "ut at dolor quis odio consequat varius integer ac leo pellentesque ultrices mattis odio donec vitae nisi nam ultrices libero non mattis pulvinar nulla pede ullamcorper augue a"
-    cover_image_url: "http://dummyimage.com/222x100.png/ff4444/ffffff"
+    
   - id: 9a09a106-86c7-4f48-ad0f-dba555531033
     manga_id: 4ab94eda-46ae-4de8-bd3a-734b388e06fc
     number: 13
     title: "Protocols of Zion"
     description: "eros viverra eget congue eget semper rutrum nulla nunc purus phasellus in felis donec semper sapien a libero nam dui"
-    cover_image_url: "http://dummyimage.com/180x100.png/ff4444/ffffff"
+    
   - id: 4666e3ca-0011-4c15-8039-ed28dcacf37e
     manga_id: b8bd3f1e-36e3-4033-8290-c5e0caaeab6d
     number: 20
     title: "Weekend at Bernie's"
     description: "ante vel ipsum praesent blandit lacinia erat vestibulum sed magna at nunc commodo placerat"
-    cover_image_url: "http://dummyimage.com/153x100.png/5fa2dd/ffffff"
+    
   - id: c3c61ec4-b43e-4465-8155-71c3affbacc1
     manga_id: 1bd31e88-0a22-4db2-a894-06a947b4a311
     number: 23
     title: "D-War (Dragon Wars)"
     description: "pulvinar lobortis est phasellus sit amet erat nulla tempus vivamus in felis eu sapien cursus vestibulum proin eu mi nulla ac enim in tempor turpis nec euismod"
-    cover_image_url: "http://dummyimage.com/110x100.png/cc0000/ffffff"
+    
   - id: 769bd148-f413-42ee-addf-c6298d3af9f0
     manga_id: 4ab94eda-46ae-4de8-bd3a-734b388e06fc
     number: 14
     title: "The Youngest Profession"
     description: "congue diam id ornare imperdiet sapien urna pretium nisl ut volutpat"
-    cover_image_url: "http://dummyimage.com/226x100.png/5fa2dd/ffffff"
+    
   - id: a4f1133c-f1f4-4c27-b19e-bca069225424
     manga_id: 1bd31e88-0a22-4db2-a894-06a947b4a311
     number: 24
     title: "Evergreen"
     description: "nibh ligula nec sem duis aliquam convallis nunc proin at turpis a pede posuere nonummy integer non velit donec diam neque vestibulum eget vulputate ut ultrices vel augue"
-    cover_image_url: "http://dummyimage.com/222x100.png/ff4444/ffffff"
+    
   - id: 6018edd6-5e2c-4d59-9df5-c3a8087224c2
     manga_id: 0952a563-671c-4a1a-93db-09d6bf64a82b
     number: 17
     title: "Art School Confidential"
     description: "parturient montes nascetur ridiculus mus etiam vel augue vestibulum rutrum rutrum neque aenean"
-    cover_image_url: "http://dummyimage.com/102x100.png/cc0000/ffffff"
+    
   - id: 13b011ef-1be9-4ba0-b335-b0bf50e7bf06
     manga_id: 7c634319-937d-4447-9808-3417474309c1
     number: 20
     title: "Foodfight!"
     description: "eget massa tempor convallis nulla neque libero convallis eget eleifend luctus"
-    cover_image_url: "http://dummyimage.com/112x100.png/ff4444/ffffff"
+    
   - id: ac78b0d0-b91a-45cc-919a-2d7dec349132
     manga_id: 6dd52489-0ba2-4e84-9c0d-1666a63e1699
     number: 23
     title: "Korczak"
     description: "eget rutrum at lorem integer tincidunt ante vel ipsum praesent"
-    cover_image_url: "http://dummyimage.com/192x100.png/5fa2dd/ffffff"
+    
   - id: f67353fc-0bd4-4e9c-8b6c-690e3c54b08c
     manga_id: 6dd52489-0ba2-4e84-9c0d-1666a63e1699
     number: 24
     title: "Naughty Marietta"
     description: "ut erat id mauris vulputate elementum nullam varius nulla facilisi cras non velit nec nisi vulputate nonummy maecenas tincidunt lacus at"
-    cover_image_url: "http://dummyimage.com/120x100.png/5fa2dd/ffffff"
+    
   - id: 88d1ef30-b340-4a11-868b-b2158e448dbb
     manga_id: df3be3a1-f02f-4d2e-afe8-83dc61f46839
     number: 16
     title: "Botany of Desire, The"
     description: "hac habitasse platea dictumst morbi vestibulum velit id pretium iaculis diam erat fermentum justo nec condimentum neque sapien placerat ante nulla justo aliquam"
-    cover_image_url: "http://dummyimage.com/122x100.png/dddddd/000000"
+    
   - id: 83c4d877-7894-4344-a019-0fbc9283270c
     manga_id: 6dd52489-0ba2-4e84-9c0d-1666a63e1699
     number: 25
     title: "Bestiaire"
     description: "cubilia curae duis faucibus accumsan odio curabitur convallis duis consequat dui nec nisi volutpat eleifend"
-    cover_image_url: "http://dummyimage.com/219x100.png/5fa2dd/ffffff"
+    
   - id: 5e91bd0f-a7c2-4b66-afcb-edd0e4565b1c
     manga_id: fc1bea74-5fde-4cf0-a332-c957c914d121
     number: 22
     title: "Seance on a Wet Afternoon"
     description: "scelerisque mauris sit amet eros suspendisse accumsan tortor quis turpis sed ante vivamus tortor"
-    cover_image_url: "http://dummyimage.com/237x100.png/dddddd/000000"
+    
   - id: d8adfaaf-5473-46cf-9480-8f13b0590ac6
     manga_id: 2aa478df-9f0f-4e67-b652-f9b01023eefb
     number: 22
     title: "When the Wind Blows"
     description: "vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae nulla dapibus dolor vel est donec odio justo sollicitudin ut suscipit a"
-    cover_image_url: "http://dummyimage.com/134x100.png/ff4444/ffffff"
+    
   - id: 5d167c3d-2c4f-4168-b689-07dc36a3925b
     manga_id: 6dd52489-0ba2-4e84-9c0d-1666a63e1699
     number: 26
     title: "He Knows You're Alone (a.k.a. Blood Wedding)"
     description: "amet eros suspendisse accumsan tortor quis turpis sed ante vivamus tortor duis mattis egestas metus aenean fermentum donec ut mauris eget massa tempor convallis"
-    cover_image_url: "http://dummyimage.com/128x100.png/cc0000/ffffff"
+    
   - id: fa94227b-9a31-4345-8289-76eb9e726a08
     manga_id: 19382f54-1da7-4cb7-807d-9f6030bb121e
     number: 26
     title: "I Love You, Beth Cooper"
     description: "dapibus duis at velit eu est congue elementum in hac"
-    cover_image_url: "http://dummyimage.com/238x100.png/dddddd/000000"
+    
   - id: da4825f6-4a6d-42c7-824f-4cbd29aa8eca
     manga_id: fc1bea74-5fde-4cf0-a332-c957c914d121
     number: 23
     title: "Horsemen"
     description: "malesuada in imperdiet et commodo vulputate justo in blandit ultrices enim lorem ipsum dolor sit amet consectetuer"
-    cover_image_url: "http://dummyimage.com/141x100.png/5fa2dd/ffffff"
+    
   - id: bf021438-1043-4ba4-87eb-1889182156fa
     manga_id: df3be3a1-f02f-4d2e-afe8-83dc61f46839
     number: 17
     title: "One Week"
     description: "auctor gravida sem praesent id massa id nisl venenatis lacinia aenean sit amet justo morbi ut odio cras mi pede malesuada"
-    cover_image_url: "http://dummyimage.com/124x100.png/cc0000/ffffff"
+    
   - id: 61f2ff7b-3311-4711-9c6b-55acbd70aeff
     manga_id: 6dd52489-0ba2-4e84-9c0d-1666a63e1699
     number: 27
     title: "Executive Protection (Livvakterna)"
     description: "mauris morbi non lectus aliquam sit amet diam in magna bibendum imperdiet nullam orci pede venenatis non sodales sed tincidunt eu felis fusce posuere felis sed lacus morbi sem"
-    cover_image_url: "http://dummyimage.com/117x100.png/dddddd/000000"
+    
   - id: e82b2c44-7df0-49d6-a966-585efe096213
     manga_id: df3be3a1-f02f-4d2e-afe8-83dc61f46839
     number: 18
     title: "Tomorrow Night"
     description: "posuere felis sed lacus morbi sem mauris laoreet ut rhoncus aliquet pulvinar sed nisl nunc rhoncus dui vel sem sed sagittis nam congue risus semper porta volutpat quam"
-    cover_image_url: "http://dummyimage.com/176x100.png/5fa2dd/ffffff"
+    
   - id: 6e97a936-a55d-4ef4-95df-1a247d753f2c
     manga_id: 0952a563-671c-4a1a-93db-09d6bf64a82b
     number: 18
     title: "North and South, Book II"
     description: "ultrices posuere cubilia curae mauris viverra diam vitae quam suspendisse potenti nullam porttitor lacus at turpis donec posuere metus vitae ipsum aliquam non mauris morbi non lectus aliquam sit"
-    cover_image_url: "http://dummyimage.com/237x100.png/5fa2dd/ffffff"
+    
   - id: 7aab5538-52d8-4047-81c0-865bc48d8976
     manga_id: 7c634319-937d-4447-9808-3417474309c1
     number: 21
     title: "Marie Antoinette"
     description: "platea dictumst aliquam augue quam sollicitudin vitae consectetuer eget rutrum at"
-    cover_image_url: "http://dummyimage.com/200x100.png/5fa2dd/ffffff"
+    
   - id: c5e2eefa-d4ad-47ef-afaf-b4f1084d40f6
     manga_id: 4ab94eda-46ae-4de8-bd3a-734b388e06fc
     number: 15
     title: "Emmanuel's Gift"
     description: "suspendisse accumsan tortor quis turpis sed ante vivamus tortor duis mattis egestas metus aenean"
-    cover_image_url: "http://dummyimage.com/197x100.png/ff4444/ffffff"
+    
   - id: a01523e9-7529-4114-b705-76dcd6717722
     manga_id: 1bd31e88-0a22-4db2-a894-06a947b4a311
     number: 25
     title: "Whipped"
     description: "integer ac leo pellentesque ultrices mattis odio donec vitae nisi nam ultrices libero non mattis pulvinar nulla pede ullamcorper augue a suscipit nulla"
-    cover_image_url: "http://dummyimage.com/135x100.png/dddddd/000000"
+    
   - id: 4a2f24bd-c688-4fb5-b01e-04ec237f2b5b
     manga_id: fc1bea74-5fde-4cf0-a332-c957c914d121
     number: 24
     title: "Mike Tyson:  Undisputed Truth"
     description: "a feugiat et eros vestibulum ac est lacinia nisi venenatis tristique fusce"
-    cover_image_url: "http://dummyimage.com/217x100.png/cc0000/ffffff"
+    
   - id: bd04fa9e-b876-45c9-a5da-110d07f6ccf9
     manga_id: b8bd3f1e-36e3-4033-8290-c5e0caaeab6d
     number: 21
     title: "Naqoyqatsi"
     description: "maecenas leo odio condimentum id luctus nec molestie sed justo pellentesque viverra pede ac diam cras pellentesque volutpat"
-    cover_image_url: "http://dummyimage.com/187x100.png/ff4444/ffffff"
+    
   - id: 8f668e47-e4de-4c0e-8e6d-38d518f85bdb
     manga_id: 6dd52489-0ba2-4e84-9c0d-1666a63e1699
     number: 28
     title: "Phantom"
     description: "donec posuere metus vitae ipsum aliquam non mauris morbi non lectus aliquam sit amet diam in magna bibendum imperdiet nullam orci pede venenatis non sodales sed tincidunt eu"
-    cover_image_url: "http://dummyimage.com/100x100.png/cc0000/ffffff"
+    
   - id: daf72116-8514-48bf-9b9c-cccf688b6646
     manga_id: fc1bea74-5fde-4cf0-a332-c957c914d121
     number: 25
     title: "How to Eat Your Watermelon in White Company (and Enjoy It)"
     description: "sit amet consectetuer adipiscing elit proin risus praesent lectus vestibulum quam sapien varius ut blandit non interdum in ante vestibulum ante ipsum"
-    cover_image_url: "http://dummyimage.com/224x100.png/ff4444/ffffff"
+    
   - id: 05c07398-6203-4faa-96c9-989d320aec39
     manga_id: 0952a563-671c-4a1a-93db-09d6bf64a82b
     number: 19
     title: "Iron Eagle"
     description: "scelerisque quam turpis adipiscing lorem vitae mattis nibh ligula nec sem duis aliquam convallis nunc proin at turpis a pede posuere nonummy integer non"
-    cover_image_url: "http://dummyimage.com/145x100.png/cc0000/ffffff"
+    
   - id: 9a045eb8-b07d-455b-8ff2-907a9c8c90f1
     manga_id: b8bd3f1e-36e3-4033-8290-c5e0caaeab6d
     number: 22
     title: "Kiss, The"
     description: "enim in tempor turpis nec euismod scelerisque quam turpis adipiscing lorem vitae mattis nibh ligula nec"
-    cover_image_url: "http://dummyimage.com/198x100.png/ff4444/ffffff"
+    
   - id: 3e92d9e2-f9e8-4de1-84a2-7f5ea86b7398
     manga_id: 2aa478df-9f0f-4e67-b652-f9b01023eefb
     number: 23
     title: "Deluge, The (Potop)"
     description: "ornare consequat lectus in est risus auctor sed tristique in tempus sit amet sem fusce consequat nulla nisl nunc nisl duis bibendum"
-    cover_image_url: "http://dummyimage.com/166x100.png/ff4444/ffffff"
+    
   - id: 8a116357-f08c-4e89-82d4-04e099e0c799
     manga_id: 4ab94eda-46ae-4de8-bd3a-734b388e06fc
     number: 16
     title: "How to Irritate People"
     description: "proin interdum mauris non ligula pellentesque ultrices phasellus id sapien in sapien iaculis congue vivamus metus arcu adipiscing molestie hendrerit at vulputate vitae nisl aenean lectus pellentesque"
-    cover_image_url: "http://dummyimage.com/144x100.png/ff4444/ffffff"
+    
   - id: cc21864b-d583-4eb8-a11c-4e36284a061b
     manga_id: 6dd52489-0ba2-4e84-9c0d-1666a63e1699
     number: 29
     title: "Poetry (Shi)"
     description: "ut rhoncus aliquet pulvinar sed nisl nunc rhoncus dui vel sem sed sagittis nam congue risus semper porta volutpat quam pede lobortis ligula sit amet eleifend"
-    cover_image_url: "http://dummyimage.com/229x100.png/ff4444/ffffff"
+    
   - id: d753996b-01af-4775-97cb-38fe0e02bba2
     manga_id: b8bd3f1e-36e3-4033-8290-c5e0caaeab6d
     number: 23
     title: "In Their Sleep (Dans ton sommeil)"
     description: "ac enim in tempor turpis nec euismod scelerisque quam turpis adipiscing lorem vitae mattis nibh ligula nec sem duis aliquam convallis nunc proin at turpis"
-    cover_image_url: "http://dummyimage.com/171x100.png/ff4444/ffffff"
+    
   - id: 5ce95a70-cf49-44ef-ad41-a671e7d6e331
     manga_id: 0952a563-671c-4a1a-93db-09d6bf64a82b
     number: 20
     title: "Mockingbird Don't Sing"
     description: "elementum nullam varius nulla facilisi cras non velit nec nisi vulputate nonummy maecenas tincidunt lacus at velit vivamus vel nulla eget eros elementum pellentesque quisque porta volutpat erat quisque erat"
-    cover_image_url: "http://dummyimage.com/193x100.png/5fa2dd/ffffff"
+    
   - id: bb32e457-0096-4b95-a4b2-a07d737eb7a5
     manga_id: 35d1bea2-1a13-45e7-a08c-5d35db26444d
     number: 23
     title: "Take Me Home Tonight"
     description: "venenatis turpis enim blandit mi in porttitor pede justo eu massa donec dapibus duis at velit eu est congue elementum in hac habitasse platea dictumst morbi vestibulum velit id pretium"
-    cover_image_url: "http://dummyimage.com/182x100.png/ff4444/ffffff"
+    
   - id: 69b2609a-08f4-4c2d-a901-d5df5b09186d
     manga_id: 6dd52489-0ba2-4e84-9c0d-1666a63e1699
     number: 30
     title: "Slumber Party Massacre III"
     description: "vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae mauris viverra diam vitae quam suspendisse potenti nullam"
-    cover_image_url: "http://dummyimage.com/128x100.png/ff4444/ffffff"
+    
   - id: 024c130b-f022-425c-9270-b90b8edc5afe
     manga_id: 0952a563-671c-4a1a-93db-09d6bf64a82b
     number: 21
     title: "Los Flamencos"
     description: "vestibulum velit id pretium iaculis diam erat fermentum justo nec condimentum neque sapien placerat ante nulla justo aliquam quis turpis eget"
-    cover_image_url: "http://dummyimage.com/217x100.png/cc0000/ffffff"
+    
   - id: 532dc991-b758-4b05-b26f-e5a02c9fcca8
     manga_id: 6dd52489-0ba2-4e84-9c0d-1666a63e1699
     number: 31
     title: "Road to Morocco"
     description: "felis donec semper sapien a libero nam dui proin leo odio porttitor id consequat in consequat ut nulla sed accumsan felis ut at dolor quis"
-    cover_image_url: "http://dummyimage.com/117x100.png/5fa2dd/ffffff"
+    
   - id: 8da5265c-4a8d-4b62-8d3d-114d2e313b14
     manga_id: fc1bea74-5fde-4cf0-a332-c957c914d121
     number: 26
     title: "Kings of the Sun"
     description: "porta volutpat erat quisque erat eros viverra eget congue eget semper rutrum nulla nunc purus phasellus"
-    cover_image_url: "http://dummyimage.com/231x100.png/ff4444/ffffff"
+    
   - id: 92077652-ebc9-413c-8bfc-7f72a60a128c
     manga_id: df3be3a1-f02f-4d2e-afe8-83dc61f46839
     number: 19
     title: "Stuff and Dough (Marfa si banii)"
     description: "risus semper porta volutpat quam pede lobortis ligula sit amet eleifend"
-    cover_image_url: "http://dummyimage.com/137x100.png/dddddd/000000"
+    
   - id: 8bbd1639-b976-45c1-b63e-b07ee8ce33c6
     manga_id: 1bd31e88-0a22-4db2-a894-06a947b4a311
     number: 26
     title: "Thing: Terror Takes Shape, The"
     description: "erat volutpat in congue etiam justo etiam pretium iaculis justo in hac habitasse platea dictumst etiam faucibus cursus urna ut tellus nulla ut erat id mauris vulputate elementum nullam"
-    cover_image_url: "http://dummyimage.com/242x100.png/5fa2dd/ffffff"
+    
   - id: 2872a23c-f1f0-4f36-b580-ac4988ce75e7
     manga_id: 6dd52489-0ba2-4e84-9c0d-1666a63e1699
     number: 32
     title: "Pompatus of Love, The"
     description: "nisl nunc nisl duis bibendum felis sed interdum venenatis turpis enim blandit mi in porttitor pede"
-    cover_image_url: "http://dummyimage.com/164x100.png/ff4444/ffffff"
+    
   - id: 32a1ddc3-db1e-4349-bcbe-2bcf9a98bb36
     manga_id: fc1bea74-5fde-4cf0-a332-c957c914d121
     number: 27
     title: "Big Bully"
     description: "lacinia erat vestibulum sed magna at nunc commodo placerat praesent blandit nam nulla integer pede justo lacinia eget tincidunt eget tempus vel pede morbi porttitor lorem id ligula suspendisse"
-    cover_image_url: "http://dummyimage.com/118x100.png/ff4444/ffffff"
+    
   - id: e835f2cf-28c5-44fb-9aa5-ac5994d7d5d4
     manga_id: 0952a563-671c-4a1a-93db-09d6bf64a82b
     number: 22
     title: "Man with the Golden Gun, The"
     description: "vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae duis faucibus accumsan odio curabitur convallis duis consequat dui nec nisi volutpat"
-    cover_image_url: "http://dummyimage.com/110x100.png/ff4444/ffffff"
+    
   - id: 7c3cec73-d797-4301-9ce3-7201702ab4bd
     manga_id: 62c950be-858b-42f2-8799-a09e49bc8589
     number: 15
     title: "First Wives Club, The"
     description: "congue eget semper rutrum nulla nunc purus phasellus in felis donec semper sapien"
-    cover_image_url: "http://dummyimage.com/177x100.png/5fa2dd/ffffff"
+    
   - id: f05b9df9-9d71-4f74-af69-f4645d75bc27
     manga_id: 4ab94eda-46ae-4de8-bd3a-734b388e06fc
     number: 17
     title: "Munekata Sisters, The (Munekata kyôdai)"
     description: "justo lacinia eget tincidunt eget tempus vel pede morbi porttitor lorem id ligula"
-    cover_image_url: "http://dummyimage.com/228x100.png/5fa2dd/ffffff"
+    
   - id: 4eeb6cae-5ebc-49e3-aa5c-9d95ea60caea
     manga_id: 19382f54-1da7-4cb7-807d-9f6030bb121e
     number: 27
     title: "Take Me Home Tonight"
     description: "luctus et ultrices posuere cubilia curae duis faucibus accumsan odio curabitur convallis duis consequat dui nec nisi volutpat"
-    cover_image_url: "http://dummyimage.com/232x100.png/cc0000/ffffff"
+    
   - id: fe0042a6-ff59-452b-af30-cab68e3ea45a
     manga_id: 19382f54-1da7-4cb7-807d-9f6030bb121e
     number: 28
     title: "Resident Evil: Damnation"
     description: "ultrices aliquet maecenas leo odio condimentum id luctus nec molestie sed justo pellentesque viverra pede ac diam"
-    cover_image_url: "http://dummyimage.com/215x100.png/5fa2dd/ffffff"
+    
   - id: e3808697-af46-45f5-9400-718b834cabf8
     manga_id: 6dd52489-0ba2-4e84-9c0d-1666a63e1699
     number: 33
     title: "Fortune, The"
     description: "varius ut blandit non interdum in ante vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae duis faucibus accumsan odio"
-    cover_image_url: "http://dummyimage.com/104x100.png/ff4444/ffffff"
+    
   - id: 0f39d092-5cef-4c3e-a0a3-032b9c2ac222
     manga_id: 7c634319-937d-4447-9808-3417474309c1
     number: 22
     title: "Who Killed the Electric Car?"
     description: "ut at dolor quis odio consequat varius integer ac leo pellentesque ultrices mattis odio donec vitae nisi nam ultrices libero non mattis"
-    cover_image_url: "http://dummyimage.com/206x100.png/dddddd/000000"
+    
   - id: 35e0b171-d91b-4d14-b9e6-1a8107baac02
     manga_id: 7c634319-937d-4447-9808-3417474309c1
     number: 23
     title: "Hand That Rocks the Cradle, The"
     description: "ipsum ac tellus semper interdum mauris ullamcorper purus sit amet nulla quisque arcu libero rutrum ac lobortis vel dapibus at diam nam"
-    cover_image_url: "http://dummyimage.com/243x100.png/5fa2dd/ffffff"
+    
   - id: 189abb9f-6f23-44bb-8057-3895335fb93a
     manga_id: 62c950be-858b-42f2-8799-a09e49bc8589
     number: 16
     title: "SS Camp 5: Women's Hell (SS Lager 5: L'inferno delle donne)"
     description: "in hac habitasse platea dictumst etiam faucibus cursus urna ut tellus nulla ut erat id mauris vulputate elementum"
-    cover_image_url: "http://dummyimage.com/203x100.png/ff4444/ffffff"
+    
   - id: 3b0c6229-c459-4a12-a5f9-1bbad040e45e
     manga_id: 1bd31e88-0a22-4db2-a894-06a947b4a311
     number: 27
     title: "James and the Giant Peach"
     description: "justo nec condimentum neque sapien placerat ante nulla justo aliquam quis turpis eget elit sodales scelerisque mauris sit amet eros suspendisse"
-    cover_image_url: "http://dummyimage.com/143x100.png/dddddd/000000"
+    
 
 - model: Chapter
   rows:

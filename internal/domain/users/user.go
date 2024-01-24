@@ -12,7 +12,7 @@ import (
 	"manga-explorer/internal/util"
 )
 
-var emailRegex = regexp.MustCompile("^[a-zA-Z0-9|._]+@[a-zA-Z0-9]+(\\.[a-zA-Z0-9]{2,})+$")
+var emailRegex = regexp.MustCompile("^[a-zA-Z0-9|._]+@[a-zA-Z0-9|-]+(\\.[a-zA-Z0-9]{2,})+$")
 
 func NewUser(name, email, password string, role Role) (User, error) {
 	currentTime := time.Now()
