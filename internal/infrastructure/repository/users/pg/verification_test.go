@@ -98,8 +98,8 @@ func Test_verificationRepository_Create(t *testing.T) {
 			defer tx.Rollback()
 
 			v := NewVerification(tx)
-			if err := v.Create(tt.args.verif); (err != nil) != tt.wantErr {
-				t.Errorf("Create() error = %v, wantErr %v", err, tt.wantErr)
+			if err := v.Upsert(tt.args.verif); (err != nil) != tt.wantErr {
+				t.Errorf("Upsert() error = %v, wantErr %v", err, tt.wantErr)
 			}
 		})
 	}

@@ -7,3 +7,23 @@ packages:
     config:
       recursive: true
       all: true
+  manga-explorer/internal/domain/users/service:
+    config:
+      recursive: true
+      all: true
+  manga-explorer/internal/infrastructure/file/service:
+    config:
+      recursive: true
+      all: true
+  manga-explorer/internal/infrastructure/mail/service:
+    config:
+      recursive: true
+      all: true
+  manga-explorer/internal/domain/mangas/repository:
+    config:
+      recursive: true
+      all: true
+  manga-explorer/internal/domain/mangas/service:
+    config:
+      recursive: true
+      all: true

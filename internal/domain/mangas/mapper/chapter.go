@@ -2,7 +2,7 @@ package mapper
 
 import (
 	"github.com/google/uuid"
-	"manga-explorer/internal/app/common"
+	"manga-explorer/internal/common"
 	"manga-explorer/internal/domain/mangas"
 	"manga-explorer/internal/domain/mangas/dto"
 	"manga-explorer/internal/domain/users/mapper"

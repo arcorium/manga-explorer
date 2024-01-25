@@ -6,8 +6,8 @@ import (
 	userController "manga-explorer/internal/api/http/controller/v1/users"
 	"manga-explorer/internal/api/http/middleware"
 	"manga-explorer/internal/api/http/route"
-	"manga-explorer/internal/app/common"
-	"manga-explorer/internal/app/common/constant"
+	"manga-explorer/internal/common"
+	"manga-explorer/internal/common/constant"
 	"manga-explorer/internal/domain/users"
 )
 

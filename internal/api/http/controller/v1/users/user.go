@@ -2,9 +2,9 @@ package users
 
 import (
 	"github.com/gin-gonic/gin"
-	"manga-explorer/internal/app/common"
-	"manga-explorer/internal/app/common/constant"
-	"manga-explorer/internal/app/common/status"
+	"manga-explorer/internal/common"
+	"manga-explorer/internal/common/constant"
+	"manga-explorer/internal/common/status"
 	"manga-explorer/internal/domain/users/dto"
 	"manga-explorer/internal/domain/users/service"
 	"manga-explorer/internal/util"
@@ -32,7 +32,7 @@ func (u *UserController) GetUserProfile(ctx *gin.Context) {
 		id = claims.UserId
 	}
 
-	// Validate
+	// Response
 	if !util.IsUUID(id) {
 		stat := status.Error(status.BAD_PARAMETER_ERROR)
 		resp.ErrorDetailed(ctx, stat, common.NewParameterError("id", "should be an UUID type"))
@@ -84,7 +84,7 @@ func (u *UserController) DeleteUser(ctx *gin.Context) {
 		return
 	}
 
-	// Validate
+	// Response
 	if !util.IsUUID(id) {
 		stat := status.Error(status.BAD_PARAMETER_ERROR)
 		resp.ErrorDetailed(ctx, stat, common.NewParameterError("id", "should be an UUID type"))
@@ -96,20 +96,24 @@ func (u *UserController) DeleteUser(ctx *gin.Context) {
 }
 
 func (u *UserController) EditUser(ctx *gin.Context) {
-	claims, stat := common.GetClaims(ctx)
-	if stat.IsError() {
-		resp.Error(ctx, stat)
-		return
-	}
-
-	input := dto.UpdateUserInput{
-		UserId: claims.UserId,
-	}
+	input := dto.UserUpdateInput{}
 	stat, fieldsErr := httputil.BindJson(ctx, &input)
 	if stat.IsError() {
 		resp.ErrorDetailed(ctx, stat, fieldsErr)
 		return
 	}
+
+	if stat = input.Status(); stat.IsError() {
+		resp.Error(ctx, stat)
+		return
+	}
+
+	claims, stat := common.GetClaims(ctx)
+	if stat.IsError() {
+		resp.Error(ctx, stat)
+		return
+	}
+	input.UserId = claims.UserId
 
 	stat = u.userService.UpdateUser(&input)
 	resp.Conditional(ctx, stat, nil, nil)
@@ -122,7 +126,7 @@ func (u *UserController) UpdateUserExtended(ctx *gin.Context) {
 		return
 	}
 
-	input := dto.UpdateUserExtendedInput{UserId: claims.UserId}
+	input := dto.UserUpdateExtendedInput{UserId: claims.UserId}
 	input.ConstructURI(ctx)
 	stat, fieldsErr := httputil.BindJson(ctx, &input)
 	if stat.IsError() {
@@ -135,24 +139,26 @@ func (u *UserController) UpdateUserExtended(ctx *gin.Context) {
 }
 
 func (u *UserController) EditUserProfile(ctx *gin.Context) {
-	claims, stat := common.GetClaims(ctx)
-	if stat.IsError() {
-		resp.Error(ctx, stat)
-		return
-	}
-	input := dto.ProfileUpdateInput{UserId: claims.UserId}
+	input := dto.ProfileUpdateInput{}
 	stat, fieldsErr := httputil.BindJson(ctx, &input)
 	if stat.IsError() {
 		resp.ErrorDetailed(ctx, stat, fieldsErr)
 		return
 	}
 
+	claims, stat := common.GetClaims(ctx)
+	if stat.IsError() {
+		resp.Error(ctx, stat)
+		return
+	}
+	input.UserId = claims.UserId
+
 	stat = u.userService.UpdateProfile(&input)
 	resp.Conditional(ctx, stat, nil, nil)
 }
 
 func (u *UserController) UpdateUserProfileExtended(ctx *gin.Context) {
-	input := dto.UpdateProfileExtendedInput{}
+	input := dto.ProfileUpdateExtendedInput{}
 	input.ConstructURI(ctx)
 	stat, fieldsErr := httputil.BindJson(ctx, &input)
 	if stat.IsError() {
@@ -189,18 +195,19 @@ func (u *UserController) UpdateProfileImage(ctx *gin.Context) {
 }
 
 func (u *UserController) ChangePassword(ctx *gin.Context) {
-	claims, stat := common.GetClaims(ctx)
-	if stat.IsError() {
-		resp.Error(ctx, stat)
-		return
-	}
-
-	input := dto.ChangePasswordInput{UserId: claims.UserId}
+	input := dto.ChangePasswordInput{}
 	stat, fieldsErr := httputil.BindJson(ctx, &input)
 	if stat.IsError() {
 		resp.ErrorDetailed(ctx, stat, fieldsErr)
 		return
 	}
+
+	claims, stat := common.GetClaims(ctx)
+	if stat.IsError() {
+		resp.Error(ctx, stat)
+		return
+	}
+	input.UserId = claims.UserId
 
 	stat = u.userService.ChangePassword(&input)
 	resp.Conditional(ctx, stat, nil, nil)
@@ -234,5 +241,26 @@ func (u *UserController) ResetPassword(ctx *gin.Context) {
 	// Reset user password
 	stat = u.userService.ResetPassword(&input)
 
+	resp.Conditional(ctx, stat, nil, nil)
+}
+
+func (u *UserController) RequestVerifyEmail(ctx *gin.Context) {
+	input := dto.VerifEmailRequestInput{}
+	claims, stat := common.GetClaims(ctx)
+	if stat.IsError() {
+		resp.Error(ctx, stat)
+		return
+	}
+	input.UserId = claims.UserId
+
+	stat = u.userService.RequestEmailVerification(&input)
+	resp.Conditional(ctx, stat, nil, nil)
+}
+
+func (u *UserController) VerifyEmail(ctx *gin.Context) {
+	input := dto.VerifyEmailInput{}
+	input.ConstructURI(ctx)
+
+	stat := u.userService.VerifyEmail(&input)
 	resp.Conditional(ctx, stat, nil, nil)
 }

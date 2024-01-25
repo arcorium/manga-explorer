@@ -3,9 +3,9 @@ package service
 import (
 	"errors"
 	"github.com/golang-jwt/jwt"
-	"manga-explorer/internal/app/common"
-	"manga-explorer/internal/app/common/constant"
-	"manga-explorer/internal/app/common/status"
+	"manga-explorer/internal/common"
+	"manga-explorer/internal/common/constant"
+	"manga-explorer/internal/common/status"
 	"manga-explorer/internal/domain/users"
 	"manga-explorer/internal/domain/users/dto"
 	authMapper "manga-explorer/internal/domain/users/mapper"
@@ -13,6 +13,7 @@ import (
 	authService "manga-explorer/internal/domain/users/service"
 	"manga-explorer/internal/util"
 	"manga-explorer/internal/util/containers"
+	"manga-explorer/internal/util/opt"
 )
 
 func NewCredential(config *common.Config, credRepo userRepo.IAuthentication, userRepo userRepo.IUser) authService.IAuthentication {
@@ -29,7 +30,7 @@ type credentialService struct {
 func (c credentialService) Authenticate(input *dto.LoginInput) (dto.LoginResponse, status.Object) {
 	usr, err := c.userRepo.FindUserByEmail(input.Email)
 	if err != nil {
-		return dto.NoLoginResponse, status.RepositoryError(err)
+		return dto.NoLoginResponse, status.RepositoryError(err, opt.New(status.USER_LOGIN_ERROR))
 	}
 
 	if !usr.ValidatePassword(input.Password) {
@@ -53,7 +54,7 @@ func (c credentialService) Authenticate(input *dto.LoginInput) (dto.LoginRespons
 	cred := users.NewCredential(usr, input.DeviceName, accessTokenClaims["id"].(string), refreshToken)
 	err = c.authRepo.Create(&cred)
 	if err != nil {
-		return dto.NoLoginResponse, status.RepositoryError(err)
+		return dto.NoLoginResponse, status.RepositoryError(err, opt.NullInt)
 	}
 
 	return dto.NewLoginResponse(accessToken), status.Success()
@@ -84,13 +85,13 @@ func (c credentialService) RefreshToken(request *dto.RefreshTokenInput) (dto.Ref
 	// Find credential
 	cred, err := c.authRepo.FindByAccessTokenId(accessTokenClaims.Id)
 	if err != nil {
-		return dto.NoRefreshTokenResponse, status.Error(status.ACCESS_TOKEN_WITHOUT_REFRESH_TOKEN)
+		return dto.NoRefreshTokenResponse, status.RepositoryError(err, opt.New(status.ACCESS_TOKEN_WITHOUT_REFRESH_TOKEN))
 	}
 
 	// Check user existences
 	usr, err := c.userRepo.FindUserById(cred.UserId)
 	if err != nil {
-		return dto.NoRefreshTokenResponse, status.Error(status.USER_NOT_FOUND)
+		return dto.NoRefreshTokenResponse, status.RepositoryError(err, opt.New(status.USER_NOT_FOUND))
 	}
 
 	// Check either the credential token is expired (when the credential token is expired remove it and users should relog)
@@ -123,7 +124,7 @@ func (c credentialService) RefreshToken(request *dto.RefreshTokenInput) (dto.Ref
 	// Prevent creating many access token from old access token
 	err = c.authRepo.UpdateAccessTokenId(cred.Id, newAccessTokenClaims["id"].(string))
 	if err != nil {
-		return dto.NoRefreshTokenResponse, status.RepositoryError(err)
+		return dto.NoRefreshTokenResponse, status.RepositoryError(err, opt.New(status.ACCESS_TOKEN_WITHOUT_REFRESH_TOKEN))
 	}
 
 	return dto.NewRefreshTokenResponse(newAccessToken), status.Updated()
@@ -132,7 +133,7 @@ func (c credentialService) RefreshToken(request *dto.RefreshTokenInput) (dto.Ref
 func (c credentialService) GetCredentials(userId string) ([]dto.CredentialResponse, status.Object) {
 	creds, err := c.authRepo.FindUserCredentials(userId)
 	if err != nil {
-		return nil, status.RepositoryError(err)
+		return nil, status.RepositoryError(err, opt.New(status.CREDENTIALS_NOT_FOUND))
 	}
 
 	responses := containers.CastSlicePtr(creds, authMapper.ToCredentialResponse)
@@ -141,15 +142,15 @@ func (c credentialService) GetCredentials(userId string) ([]dto.CredentialRespon
 
 func (c credentialService) SelfLogout(userId, accessTokenId string) status.Object {
 	err := c.authRepo.RemoveByAccessTokenId(userId, accessTokenId)
-	return status.ConditionalRepository(err, status.DELETED)
+	return status.ConditionalRepository(err, status.DELETED, opt.New(status.LOGOUT_CREDENTIAL_NOT_FOUND))
 }
 
 func (c credentialService) Logout(userId, credId string) status.Object {
 	err := c.authRepo.Remove(userId, credId)
-	return status.ConditionalRepository(err, status.DELETED)
+	return status.ConditionalRepository(err, status.DELETED, opt.New(status.LOGOUT_CREDENTIAL_NOT_FOUND))
 }
 
 func (c credentialService) LogoutDevices(userId string) status.Object {
 	err := c.authRepo.RemoveUserCredentials(userId)
-	return status.ConditionalRepository(err, status.DELETED)
+	return status.ConditionalRepository(err, status.DELETED, opt.New(status.LOGOUT_CREDENTIAL_NOT_FOUND))
 }

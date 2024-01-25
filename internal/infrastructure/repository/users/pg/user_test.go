@@ -891,8 +891,8 @@ func Test_userRepository_UpdateProfile(t *testing.T) {
 			defer tx.Rollback()
 
 			repo := NewUser(tx)
-			if err := repo.UpdateProfile(tt.args.profile); (err != nil) != tt.wantErr {
-				t.Errorf("UpdateProfile() error = %v, wantErr %v", err, tt.wantErr)
+			if err := repo.UpdateProfileByUserId(tt.args.profile); (err != nil) != tt.wantErr {
+				t.Errorf("UpdateProfileByUserId() error = %v, wantErr %v", err, tt.wantErr)
 			}
 
 			if tt.wantErr {
@@ -904,7 +904,7 @@ func Test_userRepository_UpdateProfile(t *testing.T) {
 			got.UpdatedAt = tt.want.UpdatedAt
 
 			if !reflect.DeepEqual(got, tt.want) {
-				t.Errorf("UpdateProfile() got = %v, want %v", got, tt.want)
+				t.Errorf("UpdateProfileByUserId() got = %v, want %v", got, tt.want)
 			}
 		})
 	}

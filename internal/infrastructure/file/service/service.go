@@ -1,7 +1,7 @@
 package service
 
 import (
-	"manga-explorer/internal/app/common/status"
+	"manga-explorer/internal/common/status"
 	"manga-explorer/internal/infrastructure/file"
 	"mime/multipart"
 )

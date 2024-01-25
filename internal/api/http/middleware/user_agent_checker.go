@@ -3,7 +3,7 @@ package middleware
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/mileusna/useragent"
-	"manga-explorer/internal/app/common/status"
+	"manga-explorer/internal/common/status"
 	"manga-explorer/internal/domain/users"
 	"manga-explorer/internal/util"
 	"manga-explorer/internal/util/httputil/resp"

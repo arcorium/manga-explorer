@@ -6,7 +6,7 @@ import (
 	"manga-explorer/cmd/server/factory"
 	"manga-explorer/database"
 	"manga-explorer/internal/api/http/route"
-	"manga-explorer/internal/app/common"
+	"manga-explorer/internal/common"
 	"os"
 	"os/signal"
 	"syscall"

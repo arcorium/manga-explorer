@@ -17,7 +17,7 @@ import (
 	"github.com/uptrace/bun/dialect/pgdialect"
 	"github.com/uptrace/bun/driver/pgdriver"
 	"github.com/uptrace/bun/extra/bundebug"
-	"manga-explorer/internal/app/common"
+	"manga-explorer/internal/common"
 )
 
 var tables = []interface{}{

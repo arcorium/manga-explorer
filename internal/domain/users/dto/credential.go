@@ -1,7 +1,7 @@
 package dto
 
 import (
-	"manga-explorer/internal/app/common/constant"
+	"manga-explorer/internal/common/constant"
 )
 
 type LoginInput struct {

@@ -11,7 +11,9 @@ import (
 	"log"
 	"manga-explorer/database"
 	"manga-explorer/database/fixtures"
+	"manga-explorer/internal/common"
 	"manga-explorer/internal/domain/users"
+	"manga-explorer/internal/infrastructure/file"
 	"manga-explorer/internal/util"
 	"os"
 )
@@ -31,24 +33,34 @@ func init() {
 	rootCmd.Flags().StringP("seed", "s", "", "seed database without migrating")
 	rootCmd.Flags().Bool("special", false, "add special record (admin) from env")
 	rootCmd.Flags().Bool("no-ssl", false, "Disable SSL on database communication")
+	rootCmd.Flags().String("env", "", "Use env for database connection, only pass name not with .env format")
 
 	rootCmd.MarkFlagsRequiredTogether("user", "pass", "host")
-	rootCmd.MarkFlagsMutuallyExclusive("user", "dsn")
-	rootCmd.MarkFlagsOneRequired("user", "dsn")
+	rootCmd.MarkFlagsMutuallyExclusive("user", "dsn", "env")
+	rootCmd.MarkFlagsOneRequired("user", "dsn", "env")
 	rootCmd.MarkFlagsMutuallyExclusive("seed", "special")
 }
 
 func runRoot(command *cobra.Command, args []string) {
 	dsn, _ := command.Flags().GetString("dsn")
 	if len(dsn) == 0 {
-		username, _ := command.Flags().GetString("user")
-		pass, _ := command.Flags().GetString("pass")
-		host, _ := command.Flags().GetString("host")
-		dbName, _ := command.Flags().GetString("database")
-		noSSL, _ := command.Flags().GetBool("no-ssl")
-		dsn = fmt.Sprintf("postgres://%s:%s@%s/%s", username, pass, host, dbName)
-		if noSSL {
-			dsn += "?sslmode=disable"
+		env, _ := command.Flags().GetString("env")
+		if len(env) > 0 {
+			config, err := common.LoadConfig(env)
+			if err != nil {
+				panic(err)
+			}
+			dsn = config.DatabaseDSN()
+		} else {
+			username, _ := command.Flags().GetString("user")
+			pass, _ := command.Flags().GetString("pass")
+			host, _ := command.Flags().GetString("host")
+			dbName, _ := command.Flags().GetString("database")
+			noSSL, _ := command.Flags().GetBool("no-ssl")
+			dsn = fmt.Sprintf("postgres://%s:%s@%s/%s", username, pass, host, dbName)
+			if noSSL {
+				dsn += "?sslmode=disable"
+			}
 		}
 	}
 
@@ -93,7 +105,7 @@ func runRoot(command *cobra.Command, args []string) {
 		if err != nil {
 			log.Fatalln(err)
 		}
-		profile := users.NewProfile(&user, "admin", "")
+		profile := users.NewProfile(user.Id, "admin", "", "", file.NullName)
 
 		err = insertSpecialRecord(db, &user, &profile)
 		if err != nil {

@@ -1,7 +1,7 @@
 package repository
 
 import (
-	"manga-explorer/internal/app/common"
+	"manga-explorer/internal/common"
 	"manga-explorer/internal/domain/mangas"
 )
 

@@ -4,15 +4,15 @@ import (
 	"errors"
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
-	"manga-explorer/internal/app/common"
-	"manga-explorer/internal/app/common/status"
+	"manga-explorer/internal/common"
+	"manga-explorer/internal/common/status"
 )
 
 func BindJson[T any](ctx *gin.Context, data *T) (status.Object, []common.FieldError) {
 	if err := ctx.BindJSON(data); err != nil {
 		var verr validator.ValidationErrors
 		errors.As(err, &verr)
-		return status.Error(status.BAD_BODY_REQUEST_ERROR), common.GetFieldsError(verr)
+		return status.Error(status.BAD_REQUEST_ERROR), common.GetFieldsError(verr)
 	}
 	return status.Success(), nil
 }
@@ -39,7 +39,7 @@ func BindMultipartForm[T any](ctx *gin.Context, data *T) (status.Object, []commo
 	if err := ctx.Bind(data); err != nil {
 		var verr validator.ValidationErrors
 		errors.As(err, &verr)
-		return status.Error(status.BAD_BODY_REQUEST_ERROR), common.GetFieldsError(verr)
+		return status.Error(status.BAD_REQUEST_ERROR), common.GetFieldsError(verr)
 	}
 	return status.Success(), nil
 }

@@ -17,6 +17,15 @@ func MapGenreCreateInput(input dto.GenreCreateInput) mangas.Genre {
 	return mangas.Genre{
 		Id:        uuid.NewString(),
 		Name:      input.Name,
+		UpdatedAt: time.Now(),
 		CreatedAt: time.Now(),
+	}
+}
+
+func MapGenreUpdateInput(input *dto.GenreUpdateInput) mangas.Genre {
+	return mangas.Genre{
+		Id:        uuid.NewString(),
+		Name:      input.Name,
+		UpdatedAt: time.Now(),
 	}
 }

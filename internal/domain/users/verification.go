@@ -9,7 +9,7 @@ import (
 	"github.com/uptrace/bun"
 )
 
-func NewVerification(userId string, usage Usage) Verification {
+func NewVerification(userId string, usage Usage, duration time.Duration) Verification {
 	// Generate token with UUID as Underlying data
 	id := uuid.NewString()
 	hasher := sha256.New()
@@ -20,7 +20,7 @@ func NewVerification(userId string, usage Usage) Verification {
 		Token:          token,
 		UserId:         userId,
 		Usage:          usage,
-		ExpirationTime: time.Now().Add(time.Minute * 15),
+		ExpirationTime: time.Now().Add(duration),
 	}
 }
 

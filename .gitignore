@@ -1,6 +1,8 @@
 .idea/
 files/
 script/
+build/
 *.iml
 app.env
 test.env
+*.exe

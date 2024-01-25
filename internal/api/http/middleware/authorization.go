@@ -3,14 +3,14 @@ package middleware
 import (
 	"errors"
 	"log"
-	"manga-explorer/internal/app/common/status"
+	"manga-explorer/internal/common/status"
 	"manga-explorer/internal/util/httputil/resp"
 	"strings"
 	"time"
 
 	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt"
-	"manga-explorer/internal/app/common"
+	"manga-explorer/internal/common"
 	"manga-explorer/internal/util"
 )
 
@@ -90,7 +90,7 @@ func (a AuthMiddleware) Handle(ctx *gin.Context) {
 		}
 	}
 
-	// Validate
+	// Response
 	if err := claims.Valid(); err != nil {
 		log.Println(err)
 		resp.Error(ctx, status.Error(status.TOKEN_NOT_VALID))

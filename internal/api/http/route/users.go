@@ -19,11 +19,17 @@ func (u userRoute) V1Route(config *Config, router gin.IRouter) {
 
 	user.POST("/register", userController.Register)
 	user.POST("/reset-password", userController.RequestResetPassword)
-	user.PATCH("/reset-password/:token", userController.ResetPassword)
-	user.POST("/change-password", userController.ChangePassword)
+
+	user.POST("/reset-password/:token", userController.ResetPassword)
+	user.GET("/reset-password/:token", userController.ResetPassword)
+
+	user.POST("/email-verif/:token", userController.VerifyEmail)
+	user.GET("/email-verif/:token", userController.VerifyEmail)
 
 	user.Use(config.Middleware.Authorization.Handle)
 	user.PUT("/", userController.EditUser)
+	user.POST("/change-password", userController.ChangePassword)
+	user.POST("/email-verif", userController.RequestVerifyEmail)
 	// Profiles thingies
 	user.GET("/:id/profiles", userController.GetUserProfile)
 	user.GET("/profiles", userController.GetUserProfile)

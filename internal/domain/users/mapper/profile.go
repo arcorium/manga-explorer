@@ -1,6 +1,7 @@
 package mapper
 
 import (
+	"github.com/uptrace/bun"
 	"manga-explorer/internal/domain/users"
 	"manga-explorer/internal/domain/users/dto"
 	"manga-explorer/internal/infrastructure/file"
@@ -26,9 +27,12 @@ func ToProfileResponse(profile *users.Profile, file fileService.IFile) dto.Profi
 
 func MapProfileRegisterInput(user *users.User, input *dto.UserRegisterInput) users.Profile {
 	return users.Profile{
+		BaseModel: bun.BaseModel{},
 		UserId:    user.Id,
 		FirstName: input.FirstName,
 		LastName:  input.LastName,
+		Bio:       input.Bio,
+		UpdatedAt: time.Now(),
 	}
 }
 
@@ -43,7 +47,7 @@ func MapAddProfileInput(user *users.User, input *dto.AddUserInput) users.Profile
 	}
 }
 
-func MapUpdateProfileExtendedInput(input *dto.UpdateProfileExtendedInput) users.Profile {
+func MapProfileUpdateExtendedInput(input *dto.ProfileUpdateExtendedInput) users.Profile {
 	return users.Profile{
 		UserId:    input.UserId,
 		FirstName: input.FirstName,

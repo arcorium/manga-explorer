@@ -19,8 +19,7 @@ func (a authRoute) V1Route(config *Config, router gin.IRouter) {
 	authRouter.POST("/refresh-token", controller.RefreshToken)
 
 	authRouter.Use(config.Middleware.Authorization.Handle)
-	authRouter.GET("/logout/all", controller.LogoutAllDevice)
-	authRouter.GET("/logout/:id", controller.Logout)
-	authRouter.GET("/logout", controller.Logout)
+	authRouter.POST("/logout/*id", controller.Logout)
+	authRouter.POST("/logouts", controller.LogoutAllDevice)
 	authRouter.GET("/devices", controller.GetCredentials)
 }

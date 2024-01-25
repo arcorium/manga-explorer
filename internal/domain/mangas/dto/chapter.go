@@ -2,7 +2,7 @@ package dto
 
 import (
 	"github.com/gin-gonic/gin"
-	"manga-explorer/internal/app/common"
+	"manga-explorer/internal/common"
 	"manga-explorer/internal/domain/users/dto"
 	"time"
 )

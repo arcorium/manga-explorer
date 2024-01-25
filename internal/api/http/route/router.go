@@ -27,7 +27,7 @@ type Config struct {
 }
 
 func NewRouter(config *Config, router gin.IRouter) Router {
-	return Router{Config: config, router: router}
+	return Router{Config: config, Router: router}
 }
 
 const (
@@ -36,11 +36,11 @@ const (
 
 type Router struct {
 	Config *Config
-	router gin.IRouter
+	Router gin.IRouter
 }
 
 func (r *Router) Routes(routes ...IRoute) {
-	router := r.router.Group(RouterVersion1)
+	router := r.Router.Group(RouterVersion1)
 
 	for _, route := range routes {
 		route.V1Route(r.Config, router)

@@ -1,6 +1,8 @@
 package dto
 
-import "mime/multipart"
+import (
+	"mime/multipart"
+)
 
 type InternalProfileResponse struct {
 	FirstName string `json:"first_name"`

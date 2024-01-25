@@ -4,7 +4,7 @@ import (
 	"github.com/biter777/countries"
 	"github.com/google/uuid"
 	"github.com/uptrace/bun"
-	"manga-explorer/internal/app/common"
+	"manga-explorer/internal/common"
 	"manga-explorer/internal/infrastructure/file"
 	"time"
 )

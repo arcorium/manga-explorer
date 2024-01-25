@@ -2,9 +2,9 @@ package mangas
 
 import (
 	"github.com/gin-gonic/gin"
-	"manga-explorer/internal/app/common"
-	"manga-explorer/internal/app/common/status"
-	"manga-explorer/internal/app/dto"
+	"manga-explorer/internal/common"
+	"manga-explorer/internal/common/dto"
+	"manga-explorer/internal/common/status"
 	mangaDto "manga-explorer/internal/domain/mangas/dto"
 	"manga-explorer/internal/domain/mangas/service"
 	"manga-explorer/internal/util"

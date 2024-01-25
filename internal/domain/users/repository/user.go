@@ -12,6 +12,7 @@ type IUser interface {
 	FindUserByEmail(email string) (*users.User, error)
 	FindUserProfiles(userId string) (*users.Profile, error)
 	UpdateUser(user *users.User) error
+	UpdateProfileByUserId(profile *users.Profile) error
 	UpdateProfile(profile *users.Profile) error
 	DeleteUser(userId string) error
 }

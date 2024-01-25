@@ -28,6 +28,19 @@ func (m mangaGenreRepository) CreateGenre(genre *mangas.Genre) error {
 	return util.CheckSqlResult(res, err)
 }
 
+func (m mangaGenreRepository) UpdateGenre(genre *mangas.Genre) error {
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second*5)
+	defer cancel()
+
+	res, err := m.db.NewUpdate().
+		Model(genre).
+		WherePK().
+		OmitZero().
+		Exec(ctx)
+
+	return util.CheckSqlResult(res, err)
+}
+
 func (m mangaGenreRepository) DeleteGenreById(genreId string) error {
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second*5)
 	defer cancel()

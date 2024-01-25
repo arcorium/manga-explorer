@@ -5,8 +5,10 @@ import (
 	"errors"
 	"github.com/google/uuid"
 	"github.com/stretchr/testify/mock"
-	"manga-explorer/internal/app/common"
-	"manga-explorer/internal/app/common/status"
+	"github.com/stretchr/testify/require"
+	"manga-explorer/internal/common"
+	"manga-explorer/internal/common/constant"
+	"manga-explorer/internal/common/status"
 	"manga-explorer/internal/domain/users"
 	"manga-explorer/internal/domain/users/dto"
 	"manga-explorer/internal/domain/users/mapper"
@@ -49,14 +51,13 @@ func Test_credentialService_Authenticate(t *testing.T) {
 	userMock := mockUserRepo.NewUserMock(t)
 	temp, err := users.NewUser("arcorium", "arcorium.l@gmail.com", "arcorium", users.RoleAdmin)
 	userMock.EXPECT().FindUserByEmail("arcorium.l@gmail.com").Return(&temp, err)
-	userMock.EXPECT().FindUserByEmail(mock.AnythingOfType("string")).Return(nil, simpleError)
-	//userMock.On("FindUserByEmail", mock.AnythingOfType("string")).Return(nil, simpleError)
+	userMock.EXPECT().FindUserByEmail(mock.AnythingOfType("string")).Return(nil, sql.ErrNoRows)
 
 	// Auth repo mock
 	//errCredential := auth.NewCredential(&temp, "Test", uuid.NewString(), util.GenerateRandomString(40))
 	authMock := mockUserRepo.NewAuthenticationMock(t)
-	//authMock.EXPECT().Create(&errCredential).Return(simpleError)
-	authMock.EXPECT().Create(mock.AnythingOfType("*auth.Credential")).Return(nil)
+	//authMock.EXPECT().Upsert(&errCredential).Return(simpleError)
+	authMock.EXPECT().Create(mock.AnythingOfType("*users.Credential")).Return(nil)
 
 	type args struct {
 		request dto.LoginInput
@@ -77,16 +78,6 @@ func Test_credentialService_Authenticate(t *testing.T) {
 			want1: status.Success(),
 		},
 		{
-			name: "Bad email",
-			args: args{
-				request: dto.LoginInput{
-					Email:    util.GenerateRandomString(20),
-					Password: "arcorium",
-				},
-			},
-			want1: status.Error(status.BAD_BODY_REQUEST_ERROR),
-		},
-		{
 			name: "User not found",
 			args: args{
 				request: dto.LoginInput{
@@ -94,7 +85,7 @@ func Test_credentialService_Authenticate(t *testing.T) {
 					Password: "arcorium",
 				},
 			},
-			want1: status.Error(status.USER_NOT_FOUND),
+			want1: status.NotFoundError(),
 		},
 		{
 			name: "Wrong password",
@@ -180,7 +171,7 @@ func Test_credentialService_GetCredentials(t *testing.T) {
 				userId: "",
 			},
 			want:  nil,
-			want1: status.Error(status.OBJECT_NOT_FOUND),
+			want1: status.Error(status.CREDENTIALS_NOT_FOUND),
 		},
 		{
 			name: "User doesn't found or doesn't have credentials",
@@ -188,7 +179,7 @@ func Test_credentialService_GetCredentials(t *testing.T) {
 				userId: uuid.NewString(),
 			},
 			want:  nil,
-			want1: status.Error(status.OBJECT_NOT_FOUND),
+			want1: status.Error(status.CREDENTIALS_NOT_FOUND),
 		},
 	}
 	c := newCredentialServiceForTest(authMock, userMock)
@@ -212,7 +203,6 @@ func Test_credentialService_Logout(t *testing.T) {
 
 	authMock := mockUserRepo.NewAuthenticationMock(t)
 	authMock.EXPECT().Remove(userId, credId).Return(nil)
-	authMock.EXPECT().Remove(userId, mock.AnythingOfType("string")).Return(sql.ErrNoRows)
 	authMock.EXPECT().Remove(mock.AnythingOfType("string"), mock.AnythingOfType("string")).Return(sql.ErrNoRows)
 
 	userMock := mockUserRepo.NewUserMock(t)
@@ -232,7 +222,7 @@ func Test_credentialService_Logout(t *testing.T) {
 				userId: userId,
 				credId: credId,
 			},
-			want: status.Success(),
+			want: status.Deleted(),
 		},
 		{
 			name: "User doesn't exists",
@@ -240,7 +230,7 @@ func Test_credentialService_Logout(t *testing.T) {
 				userId: uuid.NewString(),
 				credId: credId,
 			},
-			want: status.NotFoundError(),
+			want: status.Error(status.LOGOUT_CREDENTIAL_NOT_FOUND),
 		},
 		{
 			name: "Credential doesn't exists",
@@ -248,7 +238,7 @@ func Test_credentialService_Logout(t *testing.T) {
 				userId: userId,
 				credId: uuid.NewString(),
 			},
-			want: status.Error(status.OBJECT_NOT_FOUND),
+			want: status.Error(status.LOGOUT_CREDENTIAL_NOT_FOUND),
 		},
 		{
 			name: "Both user and credential doesn't exists",
@@ -256,7 +246,7 @@ func Test_credentialService_Logout(t *testing.T) {
 				userId: uuid.NewString(),
 				credId: uuid.NewString(),
 			},
-			want: status.Error(status.OBJECT_NOT_FOUND),
+			want: status.Error(status.LOGOUT_CREDENTIAL_NOT_FOUND),
 		},
 	}
 	c := newCredentialServiceForTest(authMock, userMock)
@@ -296,7 +286,7 @@ func Test_credentialService_LogoutDevices(t *testing.T) {
 			args: args{
 				userId: uuid.NewString(),
 			},
-			want: status.Error(status.OBJECT_NOT_FOUND),
+			want: status.Error(status.LOGOUT_CREDENTIAL_NOT_FOUND),
 		},
 	}
 	c := newCredentialServiceForTest(authMock, userMock)
@@ -311,27 +301,88 @@ func Test_credentialService_LogoutDevices(t *testing.T) {
 
 func Test_credentialService_RefreshToken(t *testing.T) {
 	userId := uuid.NewString()
+	accessTokenId := uuid.NewString()
+	cred := users.Credential{
+		Id:            uuid.NewString(),
+		UserId:        userId,
+		AccessTokenId: uuid.NewString(),
+		Device: users.Device{
+			Name: "Test",
+		},
+		Token:     util.GenerateRandomString(20),
+		UpdatedAt: time.Now(),
+		CreatedAt: time.Now(),
+	}
+
+	badAccessTokenId := uuid.NewString()
+	badCred := users.Credential{
+		Id:            uuid.NewString(),
+		UserId:        uuid.NewString(),
+		AccessTokenId: uuid.NewString(),
+		Device: users.Device{
+			Name: "Test",
+		},
+		Token:     util.GenerateRandomString(20),
+		UpdatedAt: time.Now(),
+		CreatedAt: time.Now(),
+	}
+
+	user, err := users.NewUser("arcorium", "arcorium@gmail.com", "arcorium", users.RoleAdmin)
+	require.NoError(t, err)
+
 	authMock := mockUserRepo.NewAuthenticationMock(t)
-	authMock.EXPECT().RemoveUserCredentials(userId).Return(nil)
-	authMock.EXPECT().RemoveUserCredentials(mock.AnythingOfType("string")).Return(sql.ErrNoRows)
+	authMock.EXPECT().FindByAccessTokenId(accessTokenId).Return(&cred, nil)
+	authMock.EXPECT().FindByAccessTokenId(mock.AnythingOfType("string")).Return(nil, sql.ErrNoRows)
+	authMock.EXPECT().UpdateAccessTokenId(cred.Id, uuid.NewString()).Return(nil)
+
+	authMock.EXPECT().FindByAccessTokenId(badAccessTokenId).Return(&badCred, nil)
 
 	userMock := mockUserRepo.NewUserMock(t)
+	userMock.EXPECT().FindUserById(userId).Return(&user, nil)
+
 	type args struct {
 		request dto.RefreshTokenInput
 	}
 	tests := []struct {
 		name  string
 		args  args
-		want  dto.RefreshTokenResponse
 		want1 status.Object
-	}{}
+	}{
+		{
+			name: "Normal",
+			args: args{
+				request: dto.RefreshTokenInput{
+					Type:        constant.TokenType,
+					AccessToken: accessTokenId,
+				},
+			},
+			want1: status.Updated(),
+		},
+		{
+			name: "Refresh token without owner",
+			args: args{
+				request: dto.RefreshTokenInput{
+					Type:        constant.TokenType,
+					AccessToken: badAccessTokenId,
+				},
+			},
+			want1: status.Updated(),
+		},
+		{
+			name: "Access token not found",
+			args: args{
+				request: dto.RefreshTokenInput{
+					Type:        constant.TokenType,
+					AccessToken: uuid.NewString(),
+				},
+			},
+			want1: status.Error(status.ACCESS_TOKEN_WITHOUT_REFRESH_TOKEN),
+		},
+	}
 	c := newCredentialServiceForTest(authMock, userMock)
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got, got1 := c.RefreshToken(&tt.args.request)
-			if !reflect.DeepEqual(got, tt.want) {
-				t.Errorf("RefreshToken() got = %v, want %v", got, tt.want)
-			}
+			_, got1 := c.RefreshToken(&tt.args.request)
 			if !reflect.DeepEqual(got1, tt.want1) {
 				t.Errorf("RefreshToken() got1 = %v, want %v", got1, tt.want1)
 			}
@@ -340,30 +391,54 @@ func Test_credentialService_RefreshToken(t *testing.T) {
 }
 
 func Test_credentialService_SelfLogout(t *testing.T) {
-	type fields struct {
-		config   *common.Config
-		authRepo userRepo.IAuthentication
-		userRepo userRepo.IUser
-	}
+	userId := uuid.NewString()
+	accessTokenId := uuid.NewString()
+
+	authMock := mockUserRepo.NewAuthenticationMock(t)
+	authMock.EXPECT().RemoveByAccessTokenId(userId, accessTokenId).Return(nil)
+	authMock.EXPECT().RemoveByAccessTokenId(mock.AnythingOfType("string"), mock.AnythingOfType("string")).Return(sql.ErrNoRows)
+
+	userMock := mockUserRepo.NewUserMock(t)
+
+	c := newCredentialServiceForTest(authMock, userMock)
+
 	type args struct {
 		userId        string
 		accessTokenId string
 	}
 	tests := []struct {
-		name   string
-		fields fields
-		args   args
-		want   status.Object
+		name string
+		args args
+		want status.Object
 	}{
-		// TODO: Add test cases.
+		{
+			name: "Normal",
+			args: args{
+				userId:        userId,
+				accessTokenId: accessTokenId,
+			},
+			want: status.Deleted(),
+		},
+		{
+			name: "User has no credential",
+			args: args{
+				userId:        userId,
+				accessTokenId: accessTokenId,
+			},
+			want: status.Deleted(),
+		},
+		{
+			name: "User and access token doesn't exists",
+			args: args{
+				userId:        uuid.NewString(),
+				accessTokenId: uuid.NewString(),
+			},
+			want: status.Deleted(),
+		},
 	}
+
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			c := credentialService{
-				config:   tt.fields.config,
-				authRepo: tt.fields.authRepo,
-				userRepo: tt.fields.userRepo,
-			}
 			if got := c.SelfLogout(tt.args.userId, tt.args.accessTokenId); !reflect.DeepEqual(got, tt.want) {
 				t.Errorf("SelfLogout() = %v, want %v", got, tt.want)
 			}

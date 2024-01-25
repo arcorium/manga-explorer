@@ -1,7 +1,7 @@
 package users
 
 import (
-	"manga-explorer/internal/app/common/constant"
+	"manga-explorer/internal/common/constant"
 	"regexp"
 	"time"
 
@@ -43,7 +43,7 @@ var BadUser User
 type User struct {
 	bun.BaseModel `bun:"table:users"`
 
-	Id       string `bun:",type:uuid,pk"`
+	Id       string `bun:",nullzero,type:uuid,pk"`
 	Username string `bun:",notnull,nullzero,unique"`
 	Email    string `bun:",notnull,nullzero,unique,type:text"`
 	Password string `bun:",notnull,nullzero"`
@@ -52,8 +52,8 @@ type User struct {
 
 	BannedUntil time.Time `bun:",nullzero,default:null"`
 	DeletedAt   time.Time `bun:",nullzero,default:null"`
-	UpdatedAt   time.Time `bun:",notnull"`
-	CreatedAt   time.Time `bun:",notnull"`
+	UpdatedAt   time.Time `bun:",nullzero,notnull"`
+	CreatedAt   time.Time `bun:",nullzero,notnull"`
 }
 
 func (u *User) ValidatePassword(rawPassword string) bool {
@@ -66,6 +66,7 @@ func (u *User) GenerateAccessTokenClaims(duration time.Duration) jwt.MapClaims {
 	defaultClaims["uid"] = u.Id
 	defaultClaims["name"] = u.Username
 	defaultClaims["role"] = u.Role.String() // TODO: Maybe better to have the uint8 instead
+
 	return defaultClaims
 }
 

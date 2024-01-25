@@ -42,15 +42,33 @@ func (u UserRepository) CreateProfile(profile *users.Profile) error {
 	return util.CheckSqlResult(res, err)
 }
 
+func (u UserRepository) UpdateProfileByUserId(profile *users.Profile) error {
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second*5)
+	defer cancel()
+
+	query := u.db.NewUpdate().
+		Model(profile).
+		OmitZero().
+		ExcludeColumn("user_id").
+		Where("user_id = ?", profile.UserId)
+
+	res, err := query.
+		Exec(ctx)
+
+	return util.CheckSqlResult(res, err)
+}
+
 func (u UserRepository) UpdateProfile(profile *users.Profile) error {
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second*5)
 	defer cancel()
 
-	res, err := u.db.NewUpdate().
+	query := u.db.NewUpdate().
 		Model(profile).
 		OmitZero().
-		Where("user_id = ?", profile.UserId).
-		Exec(ctx)
+		ExcludeColumn("user_id").
+		WherePK()
+
+	res, err := query.Exec(ctx)
 
 	return util.CheckSqlResult(res, err)
 }
@@ -139,10 +157,12 @@ func (u UserRepository) UpdateUser(user *users.User) error {
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second*5)
 	defer cancel()
 
-	res, err := u.db.NewUpdate().
+	query := u.db.NewUpdate().
 		Model(user).
 		OmitZero().
-		WherePK().
+		WherePK()
+
+	res, err := query.
 		Exec(ctx)
 
 	return util.CheckSqlResult(res, err)

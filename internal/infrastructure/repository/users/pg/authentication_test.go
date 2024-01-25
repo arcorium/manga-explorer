@@ -68,7 +68,7 @@ func Test_credentialRepository_Create(t *testing.T) {
 
 		t.Run(tt.name, func(t *testing.T) {
 			if err := c.Create(tt.args.cred); (err != nil) != tt.wantErr {
-				t.Errorf("Create() error = %v, wantErr %v", err, tt.wantErr)
+				t.Errorf("Upsert() error = %v, wantErr %v", err, tt.wantErr)
 			}
 			defer func(tx bun.Tx) {
 				require.NoError(t, tx.Rollback())

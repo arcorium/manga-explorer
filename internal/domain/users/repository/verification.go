@@ -5,7 +5,8 @@ import (
 )
 
 type IVerification interface {
-	Create(verification *users.Verification) error
+	Upsert(verification *users.Verification) error
 	Find(token string) (users.Verification, error)
 	Remove(token string) error
+	RemoveByUserId(userId string, usage users.Usage) error
 }

@@ -11,15 +11,18 @@ type Genre struct {
 	Id            string `bun:",pk,type:uuid"`
 	Name          string `bun:",nullzero,notnull,unique"`
 
-	CreatedAt time.Time `bun:",notnull"`
+	UpdatedAt time.Time `bun:",nullzero"`
+	CreatedAt time.Time `bun:",nullzero,notnull"`
 	Mangas    []Manga   `bun:"m2m:manga_genres,join:Genre=Manga"`
 }
 
 func NewGenre(name string) Genre {
+	ct := time.Now()
 	return Genre{
 		Id:        uuid.NewString(),
 		Name:      name,
-		CreatedAt: time.Now(),
+		UpdatedAt: ct,
+		CreatedAt: ct,
 	}
 }
 

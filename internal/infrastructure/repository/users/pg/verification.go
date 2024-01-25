@@ -18,13 +18,17 @@ type verificationRepository struct {
 	db bun.IDB
 }
 
-func (v verificationRepository) Create(verif *users.Verification) error {
+func (v verificationRepository) Upsert(verif *users.Verification) error {
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second*5)
 	defer cancel()
 
-	res, err := v.db.NewInsert().
+	query := v.db.NewInsert().
 		Model(verif).
 		Returning("NULL").
+		On("CONFLICT (user_id, usage) DO UPDATE").
+		Set("token = EXCLUDED.token, expiration_time= EXCLUDED.expiration_time")
+
+	res, err := query.
 		Exec(ctx)
 	return util.CheckSqlResult(res, err)
 }
@@ -48,6 +52,17 @@ func (v verificationRepository) Remove(token string) error {
 	res, err := v.db.NewDelete().
 		Model((*users.Verification)(nil)).
 		Where("token = ?", token).
+		Exec(ctx)
+	return util.CheckSqlResult(res, err)
+}
+
+func (v verificationRepository) RemoveByUserId(userId string, usage users.Usage) error {
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second*5)
+	defer cancel()
+
+	res, err := v.db.NewDelete().
+		Model((*users.Verification)(nil)).
+		Where("user_id = ? AND usage = ?", userId, usage).
 		Exec(ctx)
 	return util.CheckSqlResult(res, err)
 }

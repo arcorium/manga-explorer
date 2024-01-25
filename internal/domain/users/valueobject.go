@@ -7,14 +7,14 @@ import (
 	"strings"
 )
 
-func NewRole(val string) (Role, error) {
+func NewRole(val string) Role {
 	switch val {
 	case "admin":
-		return RoleAdmin, nil
+		return RoleAdmin
 	case "user":
-		return RoleUser, nil
+		return RoleUser
 	default:
-		return Role(math.MaxUint8), ErrUnknownRole
+		return Role(math.MaxUint8)
 	}
 }
 

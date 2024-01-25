@@ -3,7 +3,7 @@ package pg
 import (
 	"context"
 	"github.com/uptrace/bun"
-	"manga-explorer/internal/app/common"
+	"manga-explorer/internal/common"
 	"manga-explorer/internal/domain/mangas"
 	"manga-explorer/internal/domain/mangas/repository"
 	"manga-explorer/internal/util"

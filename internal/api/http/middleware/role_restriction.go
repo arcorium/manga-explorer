@@ -2,8 +2,8 @@ package middleware
 
 import (
 	"github.com/gin-gonic/gin"
-	"manga-explorer/internal/app/common"
-	"manga-explorer/internal/app/common/status"
+	"manga-explorer/internal/common"
+	"manga-explorer/internal/common/status"
 	"manga-explorer/internal/domain/users"
 	"manga-explorer/internal/util"
 	"manga-explorer/internal/util/httputil/resp"
@@ -45,8 +45,8 @@ func (r RoleRestrictionMiddleware) Handle(ctx *gin.Context) {
 		return
 	}
 
-	role, err := users.NewRole(claims.Role)
-	if err != nil {
+	role := users.NewRole(claims.Role)
+	if role.Validate() != nil {
 		resp.Error(ctx, status.Error(status.JWT_TOKEN_MALFORMED))
 		ctx.Abort()
 		return

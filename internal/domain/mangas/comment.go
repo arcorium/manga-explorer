@@ -11,7 +11,7 @@ type Comment struct {
 	bun.BaseModel `bun:"table:comments"`
 
 	Id         string        `bun:",pk,type:uuid"`
-	ParentId   string        `bun:",nullzero,default:null,type:uuid"` // To check, whether the comment is in root or replying another comment
+	ParentId   string        `bun:",nullzero,default:null,type:uuid"` // Recipients check, whether the comment is in root or replying another comment
 	ObjectType CommentObject `bun:",nullzero,notnull"`
 	ObjectId   string        `bun:",nullzero,notnull,type:uuid"` // Object can be Manga, Chapter, and even Page based on ObjectType
 	UserId     string        `bun:",notnull,type:uuid"`

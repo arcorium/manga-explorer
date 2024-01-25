@@ -2,15 +2,16 @@ package users
 
 import (
 	"github.com/gin-gonic/gin"
-	"manga-explorer/internal/app/common"
-	"manga-explorer/internal/app/common/constant"
-	"manga-explorer/internal/app/common/status"
+	"manga-explorer/internal/common"
+	"manga-explorer/internal/common/constant"
+	"manga-explorer/internal/common/status"
 	"manga-explorer/internal/domain/users"
 	"manga-explorer/internal/domain/users/dto"
 	authService "manga-explorer/internal/domain/users/service"
 	"manga-explorer/internal/util"
 	"manga-explorer/internal/util/httputil"
 	"manga-explorer/internal/util/httputil/resp"
+	"strings"
 )
 
 func NewAuthController(credService authService.IAuthentication) AuthController {
@@ -62,6 +63,7 @@ func (a AuthController) Logout(ctx *gin.Context) {
 	}
 	// Check parameter
 	credId := ctx.Param("id")
+	credId = strings.Trim(credId, "/")
 	if len(credId) == 0 {
 		stat = a.authService.SelfLogout(token.UserId, token.Id)
 	} else {
@@ -89,7 +91,7 @@ func (a AuthController) RefreshToken(ctx *gin.Context) {
 	input := dto.RefreshTokenInput{}
 	stat, fieldErrors := httputil.BindJson(ctx, &input)
 	if stat.IsError() {
-		resp.ErrorDetailed(ctx, status.Error(status.BAD_BODY_REQUEST_ERROR), fieldErrors)
+		resp.ErrorDetailed(ctx, status.Error(status.BAD_REQUEST_ERROR), fieldErrors)
 		return
 	}
 

@@ -2,8 +2,8 @@ package mangas
 
 import (
 	"github.com/gin-gonic/gin"
-	"manga-explorer/internal/app/common"
-	"manga-explorer/internal/app/common/status"
+	"manga-explorer/internal/common"
+	"manga-explorer/internal/common/status"
 	"manga-explorer/internal/domain/mangas/dto"
 	"manga-explorer/internal/domain/mangas/service"
 	"manga-explorer/internal/util/httputil"
@@ -32,6 +32,18 @@ func (m GenreController) CreateGenre(ctx *gin.Context) {
 	}
 
 	stat = m.genreService.CreateGenre(genreInput)
+	resp.Conditional(ctx, stat, nil, nil)
+}
+
+func (m GenreController) UpdateGenre(ctx *gin.Context) {
+	input := dto.GenreUpdateInput{}
+	stat, fieldErrors := httputil.BindJson(ctx, &input)
+	if stat.IsError() {
+		resp.ErrorDetailed(ctx, stat, fieldErrors)
+		return
+	}
+
+	stat = m.genreService.UpdateGenre(&input)
 	resp.Conditional(ctx, stat, nil, nil)
 }
 

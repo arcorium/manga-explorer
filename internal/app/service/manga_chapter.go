@@ -1,7 +1,8 @@
 package service
 
 import (
-	"manga-explorer/internal/app/common/status"
+	"manga-explorer/internal/common/status"
+	"manga-explorer/internal/domain/mangas"
 	mangaDto "manga-explorer/internal/domain/mangas/dto"
 	"manga-explorer/internal/domain/mangas/mapper"
 	"manga-explorer/internal/domain/mangas/repository"
@@ -9,6 +10,7 @@ import (
 	"manga-explorer/internal/infrastructure/file"
 	fileService "manga-explorer/internal/infrastructure/file/service"
 	"manga-explorer/internal/util/containers"
+	"manga-explorer/internal/util/opt"
 	"mime/multipart"
 )
 
@@ -28,22 +30,19 @@ type mangaChapterService struct {
 
 func (m mangaChapterService) DeleteChapter(chapterId string) status.Object {
 	err := m.chapterRepo.DeleteChapter(chapterId)
-	return status.ConditionalRepository(err, status.SUCCESS)
+	return status.ConditionalRepository(err, status.SUCCESS, opt.New(status.CHAPTER_NO_FOUND))
 }
 
 func (m mangaChapterService) FindChapterPages(chapterId string) ([]mangaDto.PageResponse, status.Object) {
 	pages, err := m.chapterRepo.FindChapterPages(chapterId)
-	if err != nil {
-		return nil, status.RepositoryError(err)
-	}
 	pageResponses := containers.CastSlicePtr1(pages, m.fileService, mapper.ToPageResponse)
-	return pageResponses, status.Success()
+	return pageResponses, status.ConditionalRepository(err, status.SUCCESS, opt.New(status.SUCCESS))
 }
 
 func (m mangaChapterService) CreateChapter(input *mangaDto.ChapterCreateInput) status.Object {
 	chapter := mapper.MapChapterCreateInput(input)
 	err := m.chapterRepo.CreateChapter(&chapter)
-	return status.ConditionalRepository(err, status.CREATED)
+	return status.ConditionalRepository(err, status.CREATED, opt.New(status.CHAPTER_ALREADY_EXIST))
 }
 
 func (m mangaChapterService) InsertChapterPage(input *mangaDto.PageCreateInput) status.Object {
@@ -61,77 +60,69 @@ func (m mangaChapterService) InsertChapterPage(input *mangaDto.PageCreateInput) 
 	}
 
 	err := m.chapterRepo.InsertChapterPages(pages)
-	return status.ConditionalRepository(err, status.UPDATED)
+	return status.ConditionalRepository(err, status.UPDATED, opt.New(status.PAGE_INSERT_FAILED))
 }
 
 func (m mangaChapterService) EditChapter(input *mangaDto.ChapterEditInput) status.Object {
 	chapter := mapper.MapChapterEditInput(input)
 	err := m.chapterRepo.EditChapter(&chapter)
-	return status.ConditionalRepository(err, status.UPDATED)
+	return status.ConditionalRepository(err, status.UPDATED, opt.New(status.CHAPTER_UPDATE_FAILED))
 }
 
 func (m mangaChapterService) CreateChapterComment(input *mangaDto.ChapterCommentCreateInput) status.Object {
 	comment := mapper.MapChapterCommentCreateInput(input)
 	if input.HasParent() {
-		parent, err := m.commentRepo.FindComment(input.ParentId)
-		if err != nil {
-			return status.RepositoryError(err)
-		}
-
-		// Validate
-		if !comment.ValidateAsReply(parent) {
-			return status.Error(status.BAD_BODY_REQUEST_ERROR, "Couldn't reply to such comment")
+		if stat := m.validateReplyComment(input.ParentId, &comment); stat.IsError() {
+			return stat
 		}
 	}
 	err := m.commentRepo.CreateComment(&comment)
-	return status.ConditionalRepository(err, status.CREATED)
+	return status.ConditionalRepository(err, status.CREATED, opt.New(status.COMMENT_CREATE_FAILED))
 }
 
 func (m mangaChapterService) CreatePageComment(input *mangaDto.PageCommentCreateInput) status.Object {
 	comment := mapper.MapPageCommentCreateInput(input)
 	if input.HasParent() {
-		parent, err := m.commentRepo.FindComment(input.ParentId)
-		if err != nil {
-			return status.RepositoryError(err)
-		}
-
-		// Validate
-		if !comment.ValidateAsReply(parent) {
-			return status.Error(status.BAD_BODY_REQUEST_ERROR, "Couldn't reply to such comment")
+		if stat := m.validateReplyComment(input.ParentId, &comment); stat.IsError() {
+			return stat
 		}
 	}
 	err := m.commentRepo.CreateComment(&comment)
-	return status.ConditionalRepository(err, status.CREATED)
+	return status.ConditionalRepository(err, status.CREATED, opt.New(status.COMMENT_CREATE_FAILED))
+}
+
+func (m mangaChapterService) validateReplyComment(parentId string, comment *mangas.Comment) status.Object {
+	parent, err := m.commentRepo.FindComment(parentId)
+	if err != nil {
+		return status.RepositoryError(err, opt.New(status.COMMENT_PARENT_NOT_FOUND))
+	}
+
+	// Response
+	if !comment.ValidateAsReply(parent) {
+		return status.Error(status.COMMENT_PARENT_DIFFERENT_SCOPE)
+	}
+	return status.Success()
 }
 
 func (m mangaChapterService) DeleteChapterPages(input *mangaDto.PageDeleteInput) status.Object {
 	err := m.chapterRepo.DeleteChapterPages(input.ChapterId, input.Pages)
-	return status.ConditionalRepository(err, status.DELETED)
+	return status.ConditionalRepository(err, status.DELETED, opt.New(status.PAGE_NOT_FOUND))
 }
 
 func (m mangaChapterService) FindVolumeChapters(volumeId string) ([]mangaDto.ChapterResponse, status.Object) {
 	chapters, err := m.chapterRepo.FindVolumeChapters(volumeId)
-	if err != nil {
-		return nil, status.RepositoryError(err)
-	}
 	chapterResponses := containers.CastSlicePtr1(chapters, m.fileService, mapper.ToChapterResponse)
-	return chapterResponses, status.Success()
+	return chapterResponses, status.ConditionalRepository(err, status.SUCCESS, opt.New(status.SUCCESS)) // Make empty response as success
 }
 
 func (m mangaChapterService) FindChapterComments(chapterId string) ([]mangaDto.CommentResponse, status.Object) {
 	comments, err := m.commentRepo.FindChapterComments(chapterId)
-	if err != nil {
-		return nil, status.RepositoryError(err)
-	}
 	commentResponses := containers.CastSlicePtr(comments, mapper.ToCommentResponse)
-	return commentResponses, status.Success()
+	return commentResponses, status.ConditionalRepository(err, status.SUCCESS, opt.New(status.SUCCESS))
 }
 
 func (m mangaChapterService) FindPageComments(pageId string) ([]mangaDto.CommentResponse, status.Object) {
 	comments, err := m.commentRepo.FindPageComments(pageId)
-	if err != nil {
-		return nil, status.RepositoryError(err)
-	}
 	commentResponses := containers.CastSlicePtr(comments, mapper.ToCommentResponse)
-	return commentResponses, status.Success()
+	return commentResponses, status.ConditionalRepository(err, status.SUCCESS, opt.New(status.SUCCESS))
 }

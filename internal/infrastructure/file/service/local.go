@@ -5,8 +5,8 @@ import (
 	"github.com/gin-gonic/gin"
 	"io"
 	"io/fs"
-	"manga-explorer/internal/app/common"
-	"manga-explorer/internal/app/common/status"
+	"manga-explorer/internal/common"
+	"manga-explorer/internal/common/status"
 	"manga-explorer/internal/infrastructure/file"
 	"manga-explorer/internal/util"
 	"mime/multipart"
@@ -15,14 +15,14 @@ import (
 	"strings"
 )
 
-func NewLocalFileService(config *common.Config, endpoint, dir string, routes gin.IRouter) IFile {
+func NewLocalFileService(config *common.Config, host, endpoint, dir string, routes gin.IRouter) IFile {
 	dir = filepath.Dir(dir + "/") // Append '/' so /file would do
-	err := os.MkdirAll(dir, fs.ModeDir)
+	err := os.MkdirAll(dir, fs.ModePerm)
 	util.DoNothing(err)
 
 	for _, asset := range util.SliceWrap(file.MangaAsset, file.ProfileAsset, file.CoverAsset) {
 		path := filepath.Join(dir, asset.String())
-		err = os.MkdirAll(path, fs.ModeDir)
+		err = os.MkdirAll(path, fs.ModePerm)
 		if err != nil {
 			panic(fmt.Sprintf("Failed to create directory: %s", err))
 		}
@@ -32,7 +32,7 @@ func NewLocalFileService(config *common.Config, endpoint, dir string, routes gin
 
 	return &serverFileService{
 		Directory: dir,
-		endpoint:  fmt.Sprintf("%s/%s", config.Endpoint(), strings.TrimPrefix(endpoint, "/")),
+		endpoint:  fmt.Sprintf("%s/%s", host, strings.TrimPrefix(endpoint, "/")),
 	}
 }
 
@@ -42,7 +42,7 @@ type serverFileService struct {
 }
 
 func (s serverFileService) getLocalPath(types file.AssetType, filename file.Name) string {
-	return fmt.Sprintf("/%s/%s/%s", s.Directory, types.String(), filename)
+	return fmt.Sprintf("./%s/%s/%s", s.Directory, types.String(), filename)
 }
 
 func (s serverFileService) Upload(types file.AssetType, fileHeader *multipart.FileHeader) (file.Name, status.Object) {
@@ -55,9 +55,9 @@ func (s serverFileService) Upload(types file.AssetType, fileHeader *multipart.Fi
 	// Get and validate format
 	format, err := file.ParseFileFormat(fileHeader.Filename)
 	if err != nil {
-		return "", status.Error(status.BAD_BODY_REQUEST_ERROR)
+		return "", status.Error(status.BAD_REQUEST_ERROR)
 	}
-	// TODO: Validate size each image
+	// TODO: Response size each image
 
 	// Make new filename and append the format
 	filename := format.Filename(util.GenerateRandomString(30))
@@ -105,7 +105,7 @@ func (s serverFileService) Endpoint(types file.AssetType) string {
 	return fmt.Sprintf("%s/%s", s.endpoint, types.String())
 }
 func (s serverFileService) GetFullpath(assetType file.AssetType, filename file.Name) string {
-	if len(filename) == 0 {
+	if len(filename) == 0 || filename == file.NoFile {
 		return ""
 	}
 	return fmt.Sprintf("%s/%s", s.Endpoint(assetType), filename)

@@ -2,7 +2,7 @@ package mangas
 
 import (
 	"errors"
-	"manga-explorer/internal/app/common"
+	"manga-explorer/internal/common"
 	"math"
 )
 

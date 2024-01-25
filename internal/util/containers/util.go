@@ -22,6 +22,15 @@ func SliceFilter[T any](data []T, filterFunc FilterFunc[T]) []T {
 	return result
 }
 
+func SliceContains[T comparable](data []T, expected T) bool {
+	for _, v := range data {
+		if v == expected {
+			return true
+		}
+	}
+	return false
+}
+
 func CombineSplices[T any](datas ...[]T) []T {
 	if len(datas) == 0 {
 		return nil
@@ -119,7 +128,7 @@ type CastFunc[From any, To any] func(current From) To
 
 type ConvertFuncEnumerated[From any, To any] func(index int, current From) To
 
-// SafeCastSlice Used to convert []From into []To based on function parameter with error checking
+// SafeCastSlice Used to convert []From into []Recipients based on function parameter with error checking
 func SafeCastSlice[From any, To any](slice []From, convertFunc SafeConvertFunc[*From, To]) ([]To, error) {
 	if slice == nil {
 		return nil, errors.New("parameter is nil")
@@ -136,12 +145,8 @@ func SafeCastSlice[From any, To any](slice []From, convertFunc SafeConvertFunc[*
 	return result, nil
 }
 
-// CastSlice Used to convert []From into []To based on function parameter without error checking, use it when the object conversion never fail
+// CastSlice Used to convert []From into []Recipients based on function parameter without error checking, use it when the object conversion never fail and if the slice argument is nil it will return empty slice not nil
 func CastSlice[From, To any](slice []From, convertFunc CastFunc[From, To]) []To {
-	if slice == nil {
-		return nil
-	}
-
 	result := make([]To, 0, len(slice))
 	for _, val := range slice {
 		result = append(result, convertFunc(val))
@@ -151,10 +156,6 @@ func CastSlice[From, To any](slice []From, convertFunc CastFunc[From, To]) []To 
 
 // CastSlicePtr works like CastSlice method, but instead of passing From type it will pass *From type in the function parameter
 func CastSlicePtr[From, To any](slice []From, convertFunc CastFunc[*From, To]) []To {
-	if slice == nil {
-		return nil
-	}
-
 	result := make([]To, 0, len(slice))
 	for _, val := range slice {
 		result = append(result, convertFunc(&val))
@@ -164,11 +165,8 @@ func CastSlicePtr[From, To any](slice []From, convertFunc CastFunc[*From, To]) [
 
 type CastParamFunc[From, To, Param any] func(current From, param Param) To
 
+// CastSlicePtr1 works like CastSlice but instead it will use the params for each function
 func CastSlicePtr1[From any, To any, Param any](slice []From, params Param, convertFunc CastParamFunc[*From, To, Param]) []To {
-	if slice == nil {
-		return nil
-	}
-
 	result := make([]To, 0, len(slice))
 	for i := 0; i < len(slice); i++ {
 		result = append(result, convertFunc(&slice[i], params))

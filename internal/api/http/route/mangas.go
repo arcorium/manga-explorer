@@ -36,6 +36,7 @@ func (m _mangaRoute) MangaRoute(config *Config, router gin.IRouter) {
 	mangaRoute.POST("/:manga_id/ratings", mangaController.CreateMangaRatings)
 	mangaRoute.GET("/favorite", mangaController.GetMangaFavorites)
 	mangaRoute.GET("/history", mangaController.GetMangaHistories)
+
 	// Admin
 	mangaRoute.Use(config.Middleware.AdminRestrict.Handle)
 
@@ -83,5 +84,6 @@ func (m _mangaRoute) GenreRoute(config *Config, router gin.IRouter) {
 	genreRoute := router.Group("/genres", config.Middleware.Authorization.Handle, config.Middleware.AdminRestrict.Handle)
 	genreRoute.GET("/", genreController.ListGenre)
 	genreRoute.POST("/", genreController.CreateGenre)
+	genreRoute.PUT("/:genre_id", genreController.UpdateGenre)
 	genreRoute.DELETE("/:genre_id", genreController.DeleteGenre)
 }
