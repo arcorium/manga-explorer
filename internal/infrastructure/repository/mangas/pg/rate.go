@@ -27,7 +27,7 @@ func (m mangaRateRepository) FindMangaRatings(mangaId string) ([]mangas.Rate, er
 		Relation("User").
 		Relation("Manga").
 		Where("manga_id = ?", mangaId).
-		Order("updated_at DESC").
+		Order("created_at").
 		Scan(ctx)
 
 	return util.CheckSliceResult(result, err).Unwrap()

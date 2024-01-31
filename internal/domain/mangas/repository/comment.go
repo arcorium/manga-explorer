@@ -8,5 +8,6 @@ type IComment interface {
 	FindPageComments(pageId string) ([]mangas.Comment, error)
 	FindComment(id string) (*mangas.Comment, error)
 	CreateComment(comment *mangas.Comment) error
+	EditComment(comment *mangas.Comment) error
 	DeleteComment(commentId string) error
 }

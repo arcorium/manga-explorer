@@ -13,16 +13,39 @@ import (
 func ToMangaResponse(manga *mangas.Manga, fs fileService.IFile) dto.MangaResponse {
 	return dto.MangaResponse{
 		Id:              manga.Id,
-		Status:          manga.Status.Underlying(),
+		Title:           manga.OriginalTitle,
+		Description:     manga.OriginalDescription,
+		Status:          manga.Status.String(),
 		Origin:          manga.Origin,
 		PublicationYear: manga.PublicationYear,
 		CoverURL:        fs.GetFullpath(file.CoverAsset, manga.CoverURL),
-		Comments:        containers.CastSlicePtr(manga.Comments, ToCommentResponse),
-		Ratings:         containers.CastSlicePtr(manga.Ratings, ToRatingResponse),
-		Translations:    containers.CastSlicePtr(manga.Translations, ToTranslationResponse),
-		Volumes:         containers.CastSlicePtr1(manga.Volumes, fs, ToVolumeResponse),
-		ViewedCount:     0, // TODO: Implement it
-		FavoriteCount:   0,
+		Rate:            manga.AverageRate,
+		TotalRater:      manga.TotalRater,
+		TotalComment:    manga.TotalComment,
+		// TODO: Comment and ratings should be requested differently
+		//Comments:        containers.CastSlicePtr(manga.Comments, ToCommentResponse),
+		//Ratings:         containers.CastSlicePtr(manga.Ratings, ToRatingResponse),
+		Translations: containers.CastSlicePtr(manga.Translations, ToTranslationResponse),
+		Volumes:      containers.CastSlicePtr1(manga.Volumes, fs, ToVolumeResponse),
+		Genres:       containers.CastSlicePtr(manga.Genres, ToGenreResponse),
+		//ViewedCount:     0, // TODO: Implement it
+		//FavoriteCount:   0,
+	}
+}
+
+func ToMinimalMangaResponse(manga *mangas.Manga, iFile fileService.IFile) dto.MinimalMangaResponse {
+	return dto.MinimalMangaResponse{
+		Id:              manga.Id,
+		Title:           manga.OriginalTitle,
+		Description:     manga.OriginalDescription,
+		Status:          manga.Status.String(),
+		Origin:          manga.Origin,
+		PublicationYear: manga.PublicationYear,
+		CoverURL:        iFile.GetFullpath(file.MangaAsset, manga.CoverURL),
+		Rate:            manga.AverageRate,
+		TotalRater:      manga.TotalRater,
+		TotalComment:    manga.TotalComment,
+		Genres:          containers.CastSlicePtr(manga.Genres, ToGenreResponse),
 	}
 }
 
@@ -40,11 +63,17 @@ func ToMangaFavoriteResponse(favorite *mangas.MangaFavorite, fl fileService.IFil
 	}
 }
 
-func MapMangaCreateInput(input *dto.MangaCreateInput) (mangas.Manga, error) {
+func MapMangaCreateInput(input *dto.MangaCreateInput) (mangas.Manga, []mangas.MangaGenre, error) {
 	status, err := mangas.NewStatus(input.Status)
 	manga := mangas.NewManga(input.Title, input.Description, "", input.PublicationYear,
 		status, countries.ByName(string(input.Origin)))
-	return manga, err
+
+	genres := []mangas.MangaGenre{}
+	for _, v := range input.Genres {
+		genres = append(genres, mangas.NewMangaGenre(manga.Id, v))
+	}
+
+	return manga, genres, err
 }
 
 func MapMangaEditInput(input *dto.MangaEditInput) (mangas.Manga, error) {
@@ -56,7 +85,17 @@ func MapMangaEditInput(input *dto.MangaEditInput) (mangas.Manga, error) {
 		OriginalTitle:       input.Title,
 		OriginalDescription: input.Description,
 		PublicationYear:     input.PublicationYear,
-		CoverURL:            file.Name(input.CoverUrl),
 		UpdatedAt:           time.Now(),
 	}, err
+}
+
+func MapMangaGenreEditInput(input *dto.MangaGenreEditInput) (additionals []mangas.MangaGenre, removes []mangas.MangaGenre) {
+	for _, v := range input.AddGenres {
+		additionals = append(additionals, mangas.NewMangaGenre(input.MangaId, v))
+	}
+
+	for _, v := range input.RemovedGenres {
+		removes = append(removes, mangas.NewMangaGenre(input.MangaId, v))
+	}
+	return additionals, removes
 }

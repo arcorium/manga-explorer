@@ -97,7 +97,6 @@ func (m ChapterController) FindPageComments(ctx *gin.Context) {
 	resp.Conditional(ctx, stat, comments, nil)
 }
 func (m ChapterController) CreateChapter(ctx *gin.Context) {
-	// TODO: Add support for creating chapter and inserting pages so each chapter should not have empty pages
 	input := dto.ChapterCreateInput{}
 	input.ConstructURI(ctx)
 	stat, fieldsErr := httputil.BindJson(ctx, &input)
@@ -133,6 +132,8 @@ func (m ChapterController) FindChapterPages(ctx *gin.Context) {
 		resp.ErrorDetailed(ctx, status.Error(status.BAD_PARAMETER_ERROR), common.NewNotPresentParameter("chapter_id"))
 		return
 	}
+
+	// TODO: Add feature to save the chapter as history
 
 	pages, stat := m.chapterService.FindChapterPages(chapterId)
 	resp.Conditional(ctx, stat, pages, nil)

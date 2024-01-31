@@ -37,6 +37,7 @@ func (m GenreController) CreateGenre(ctx *gin.Context) {
 
 func (m GenreController) UpdateGenre(ctx *gin.Context) {
 	input := dto.GenreUpdateInput{}
+	input.ConstructURI(ctx)
 	stat, fieldErrors := httputil.BindJson(ctx, &input)
 	if stat.IsError() {
 		resp.ErrorDetailed(ctx, stat, fieldErrors)

@@ -39,8 +39,8 @@ func (v *VerifyEmailInput) ConstructURI(ctx *gin.Context) {
 
 type UserUpdateInput struct {
 	UserId   string `json:"-"`
-	Username string `json:"username" binding:"omitempty,gt=5"`
-	Email    string `json:"email" binding:"omitempty,email"`
+	Username string `json:"username" binding:"required,gt=5"`
+	Email    string `json:"email" binding:"required,email"`
 }
 
 func (u *UserUpdateInput) Status() status.Object {

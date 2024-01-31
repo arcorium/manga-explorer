@@ -9,17 +9,40 @@ import (
 )
 
 type MangaResponse struct {
-	Id              string                `json:"id"`
-	Status          uint8                 `json:"status"`
-	Origin          common.Country        `json:"origin"`
-	PublicationYear uint16                `json:"year"`
-	CoverURL        string                `json:"cover_url"`
-	Comments        []CommentResponse     `json:"comments"`
-	Ratings         []RateResponse        `json:"ratings"`
-	Translations    []TranslationResponse `json:"translations"`
-	Volumes         []VolumeResponse      `json:"volumes"`
-	ViewedCount     uint64                `json:"viewed_count"`
-	FavoriteCount   uint64                `json:"favorite_count"`
+	Id              string         `json:"id"`
+	Title           string         `json:"title"`
+	Description     string         `json:"desc"`
+	Status          string         `json:"status"`
+	Origin          common.Country `json:"origin"`
+	PublicationYear uint16         `json:"year"`
+	CoverURL        string         `json:"cover_url"`
+
+	Rate         float32 `json:"rate"`
+	TotalRater   uint64  `json:"total_rater"`
+	TotalComment uint64  `json:"total_comment"`
+	//Comments     []CommentResponse     `json:"comments,omitempty"`
+	//Ratings      []RateResponse        `json:"ratings,omitempty"`
+	Translations []TranslationResponse `json:"translations,omitempty"`
+	Volumes      []VolumeResponse      `json:"volumes,omitempty"`
+	Genres       []GenreResponse       `json:"genres"`
+	//ViewedCount   uint64                `json:"viewed_count,omitempty"`
+	//FavoriteCount uint64                `json:"favorite_count,omitempty"`
+}
+
+type MinimalMangaResponse struct {
+	Id              string          `json:"id"`
+	Title           string          `json:"title"`
+	Description     string          `json:"desc"`
+	Status          string          `json:"status"`
+	Origin          common.Country  `json:"origin"`
+	PublicationYear uint16          `json:"year"`
+	CoverURL        string          `json:"cover_url"`
+	Rate            float32         `json:"rate"`
+	TotalRater      uint64          `json:"total_rater"`
+	TotalComment    uint64          `json:"total_comment"`
+	Genres          []GenreResponse `json:"genres"`
+	//ViewedCount     uint64         `json:"viewed_count,omitempty"`
+	//FavoriteCount   uint64         `json:"favorite_count,omitempty"`
 }
 
 type MangaHistoryResponse struct {
@@ -38,6 +61,7 @@ type MangaCreateInput struct {
 	Status          string         `json:"status" binding:"required,manga_status"`
 	Origin          common.Country `json:"origin" binding:"required,iso3166_1_alpha3|iso3166_1_alpha2"`
 	PublicationYear uint16         `json:"publication_year" binding:"required"`
+	Genres          []string       `json:"genres" binding:"required,uuid4s"`
 }
 
 type MangaCoverUpdateInput struct {
@@ -50,13 +74,22 @@ func (c *MangaCoverUpdateInput) ConstructURI(ctx *gin.Context) {
 }
 
 type MangaEditInput struct {
-	MangaId         string         `uri:"manga_id" binding:"required"`
+	MangaId         string         `uri:"manga_id" binding:"required,uuid4"`
 	Status          string         `json:"status" binding:"required,manga_status"`
 	Origin          common.Country `json:"origin" binding:"iso3166_1_alpha3|iso3166_1_alpha2"`
-	Title           string         `json:"title"`
+	Title           string         `json:"title" binding:"required,min=1"`
 	Description     string         `json:"description"`
-	PublicationYear uint16         `json:"publication_year"`
-	CoverUrl        string         `json:"cover_url"`
+	PublicationYear uint16         `json:"publication_year" binding:"required"`
+}
+
+type MangaGenreEditInput struct {
+	MangaId       string   `uri:"manga_id" binding:"required,uuid4"`
+	AddGenres     []string `json:"adds" binding:"omitempty,uuid4s"`
+	RemovedGenres []string `json:"removes" binding:"omitempty,uuid4s"`
+}
+
+func (m *MangaGenreEditInput) ConstructURI(ctx *gin.Context) {
+	m.MangaId = ctx.Param("manga_id")
 }
 
 func (e *MangaEditInput) ConstructURI(ctx *gin.Context) {
@@ -68,4 +101,10 @@ type MangaSearchQuery struct {
 	Title  string                              `json:"title"`
 	Genres common.CriterionOption[string]      `json:"genre"`
 	Origin common.IncludeArray[common.Country] `json:"origin"`
+}
+
+type FavoriteMangaInput struct {
+	Operator string `json:"op" binding:"required,oneof=add remove"`
+	UserId   string `json:"-"`
+	MangaId  string `json:"manga_id" binding:"required,uuid4"`
 }

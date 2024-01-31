@@ -3,18 +3,22 @@ package dto
 import (
 	"github.com/gin-gonic/gin"
 	"manga-explorer/internal/domain/users/dto"
+	"time"
 )
 
 type CommentResponse struct {
-	User     dto.UserResponse `json:"user"`
-	Comment  string           `json:"comment"`
-	IsEdited bool             `json:"is_edited"`
-	Like     uint64           `json:"like"`
-	Dislike  uint64           `json:"dislike"`
+	Id       string            `json:"id"`
+	User     dto.UserResponse  `json:"user"`
+	Comment  string            `json:"comment"`
+	IsEdited bool              `json:"is_edited"`
+	Like     uint64            `json:"like"`
+	Dislike  uint64            `json:"dislike"`
+	Time     time.Time         `json:"time"`
+	Replies  []CommentResponse `json:"replies,omitempty"`
 }
 
 type commentCreatInputParent struct {
-	ParentId string `json:"parent_id" binding:"uuid4"`
+	ParentId string `json:"parent_id" binding:"omitempty,uuid4"`
 	UserId   string `json:"-"`
 	Comment  string `json:"comment" binding:"required"`
 }

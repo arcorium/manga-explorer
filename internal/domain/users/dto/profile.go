@@ -18,9 +18,9 @@ type ProfileResponse struct {
 
 type ProfileUpdateInput struct {
 	UserId    string `json:"-"`
-	FirstName string `json:"first_name"`
-	LastName  string `json:"last_name"`
-	Bio       string `json:"bio"`
+	FirstName string `json:"first_name" binding:"required,gte=5"`
+	LastName  string `json:"last_name" binding:"required"`
+	Bio       string `json:"bio" binding:"required"`
 }
 
 type ProfileImageUpdateInput struct {

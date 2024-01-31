@@ -7,8 +7,15 @@ import (
 	"manga-explorer/internal/util/opt"
 )
 
-func Success(code ...uint) Object {
-	var _code uint = SUCCESS
+func Conditional(code Code, errMessage ...string) Object {
+	if code.IsError() {
+		return Error(code, errMessage...)
+	}
+	return Success(code)
+}
+
+func Success(code ...Code) Object {
+	var _code = SUCCESS
 	if len(code) == 1 {
 		if code[0] >= SUCCESS && code[0] <= INTERNAL {
 			_code = code[0]
@@ -38,13 +45,13 @@ func Created() Object {
 }
 
 // Error Used to create common.Object
-func Error(code int, msg ...string) Object {
+func Error(code Code, msg ...string) Object {
 	message, ok := messages[code]
 	if !ok {
 		panic("Object message is not defined!")
 	}
 
-	return New(uint(code), errors.New(message), msg...)
+	return New(code, errors.New(message), msg...)
 }
 
 func ErrorMessage(message string) Object {
@@ -63,13 +70,13 @@ func BadRequestError() Object {
 	return Error(BAD_REQUEST_ERROR)
 }
 
-func RepositoryError(err error, notFoundStatus opt.Optional[int]) Object {
-	return RepositoryErrorE(err, notFoundStatus, opt.NullInt)
+func RepositoryError(err error, notFoundStatus opt.Optional[Code]) Object {
+	return RepositoryErrorE(err, notFoundStatus, opt.Null[Code]())
 }
 
-func RepositoryErrorE(err error, notFoundStatus opt.Optional[int], violationStatus opt.Optional[int]) Object {
+func RepositoryErrorE(err error, notFoundStatus opt.Optional[Code], violationStatus opt.Optional[Code]) Object {
 	if errors.Is(err, sql.ErrNoRows) {
-		return Error(notFoundStatus.ValueOr(OBJECT_NOT_FOUND))
+		return Conditional(notFoundStatus.ValueOr(OBJECT_NOT_FOUND))
 	}
 	var pgerror pgdriver.Error
 	ok := errors.As(err, &pgerror)
@@ -77,21 +84,22 @@ func RepositoryErrorE(err error, notFoundStatus opt.Optional[int], violationStat
 		return InternalError()
 	}
 	if pgerror.IntegrityViolation() {
-		return Error(violationStatus.ValueOr(BAD_REQUEST_ERROR))
+
+		return Conditional(violationStatus.ValueOr(BAD_REQUEST_ERROR))
 	}
 	str := pgerror.Field('C')
 	switch str {
 	case "22P02", "22P03":
-		return Error(violationStatus.ValueOr(BAD_REQUEST_ERROR))
+		return Conditional(violationStatus.ValueOr(BAD_REQUEST_ERROR))
 	}
 	return InternalError()
 }
 
-func ConditionalRepository(err error, successCode uint, notFoundStatus opt.Optional[int]) Object {
-	return ConditionalRepositoryE(err, successCode, notFoundStatus, opt.NullInt)
+func ConditionalRepository(err error, successCode Code, notFoundStatus opt.Optional[Code]) Object {
+	return ConditionalRepositoryE(err, successCode, notFoundStatus, opt.Null[Code]())
 }
 
-func ConditionalRepositoryE(err error, successCode uint, notFoundStatus opt.Optional[int], violationStatus opt.Optional[int]) Object {
+func ConditionalRepositoryE(err error, successCode Code, notFoundStatus opt.Optional[Code], violationStatus opt.Optional[Code]) Object {
 	if err != nil {
 		return RepositoryErrorE(err, notFoundStatus, violationStatus)
 	}

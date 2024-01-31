@@ -208,11 +208,11 @@ func (_c *MangaMock_EditManga_Call) RunAndReturn(run func(*mangas.Manga) error) 
 }
 
 // FindMangaById provides a mock function with given fields: id
-func (_m *MangaMock) FindMangaById(id string) (*mangas.Manga, error) {
+func (_m *MangaMock) FindMinimalMangaById(id string) (*mangas.Manga, error) {
 	ret := _m.Called(id)
 
 	if len(ret) == 0 {
-		panic("no return value specified for FindMangaById")
+		panic("no return value specified for FindMinimalMangaById")
 	}
 
 	var r0 *mangas.Manga
@@ -237,7 +237,7 @@ func (_m *MangaMock) FindMangaById(id string) (*mangas.Manga, error) {
 	return r0, r1
 }
 
-// MangaMock_FindMangaById_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'FindMangaById'
+// MangaMock_FindMangaById_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'FindMinimalMangaById'
 type MangaMock_FindMangaById_Call struct {
 	*mock.Call
 }
@@ -245,7 +245,7 @@ type MangaMock_FindMangaById_Call struct {
 // FindMangaById is a helper method to define mock.On call
 //   - id string
 func (_e *MangaMock_Expecter) FindMangaById(id interface{}) *MangaMock_FindMangaById_Call {
-	return &MangaMock_FindMangaById_Call{Call: _e.mock.On("FindMangaById", id)}
+	return &MangaMock_FindMangaById_Call{Call: _e.mock.On("FindMinimalMangaById", id)}
 }
 
 func (_c *MangaMock_FindMangaById_Call) Run(run func(id string)) *MangaMock_FindMangaById_Call {

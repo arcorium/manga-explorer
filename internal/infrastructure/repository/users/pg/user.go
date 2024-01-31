@@ -125,10 +125,12 @@ func (u UserRepository) FindUserProfiles(userId string) (*users.Profile, error) 
 	defer cancel()
 
 	profile := new(users.Profile)
-	err := u.db.NewSelect().
+	query := u.db.NewSelect().
 		Model(profile).
 		Relation("User").
-		Where("user_id = ?", userId).
+		Where("user_id = ?", userId)
+
+	err := query.
 		Scan(ctx)
 
 	if err != nil {

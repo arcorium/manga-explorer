@@ -31,6 +31,15 @@ func SliceContains[T comparable](data []T, expected T) bool {
 	return false
 }
 
+func SliceIndexOf[T any](data []T, filterFunc FilterFunc[T]) (int, bool) {
+	for i, v := range data {
+		if filterFunc(&v) {
+			return i, true
+		}
+	}
+	return -1, false
+}
+
 func CombineSplices[T any](datas ...[]T) []T {
 	if len(datas) == 0 {
 		return nil
@@ -148,6 +157,10 @@ func SafeCastSlice[From any, To any](slice []From, convertFunc SafeConvertFunc[*
 // CastSlice Used to convert []From into []Recipients based on function parameter without error checking, use it when the object conversion never fail and if the slice argument is nil it will return empty slice not nil
 func CastSlice[From, To any](slice []From, convertFunc CastFunc[From, To]) []To {
 	result := make([]To, 0, len(slice))
+	if slice == nil || len(slice) == 0 {
+		return result
+	}
+
 	for _, val := range slice {
 		result = append(result, convertFunc(val))
 	}
@@ -157,6 +170,10 @@ func CastSlice[From, To any](slice []From, convertFunc CastFunc[From, To]) []To 
 // CastSlicePtr works like CastSlice method, but instead of passing From type it will pass *From type in the function parameter
 func CastSlicePtr[From, To any](slice []From, convertFunc CastFunc[*From, To]) []To {
 	result := make([]To, 0, len(slice))
+	if slice == nil || len(slice) == 0 {
+		return result
+	}
+
 	for _, val := range slice {
 		result = append(result, convertFunc(&val))
 	}
@@ -168,6 +185,10 @@ type CastParamFunc[From, To, Param any] func(current From, param Param) To
 // CastSlicePtr1 works like CastSlice but instead it will use the params for each function
 func CastSlicePtr1[From any, To any, Param any](slice []From, params Param, convertFunc CastParamFunc[*From, To, Param]) []To {
 	result := make([]To, 0, len(slice))
+	if slice == nil || len(slice) == 0 {
+		return result
+	}
+
 	for i := 0; i < len(slice); i++ {
 		result = append(result, convertFunc(&slice[i], params))
 	}

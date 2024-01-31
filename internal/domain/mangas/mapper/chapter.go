@@ -2,7 +2,6 @@ package mapper
 
 import (
 	"github.com/google/uuid"
-	"manga-explorer/internal/common"
 	"manga-explorer/internal/domain/mangas"
 	"manga-explorer/internal/domain/mangas/dto"
 	"manga-explorer/internal/domain/users/mapper"
@@ -13,7 +12,9 @@ import (
 
 func ToChapterResponse(chapter *mangas.Chapter, fs fileService.IFile) dto.ChapterResponse {
 	return dto.ChapterResponse{
-		Language:   common.Country(chapter.Language),
+		Id:         chapter.Id,
+		Language:   chapter.Language,
+		Chapter:    chapter.Number,
 		Title:      chapter.Title,
 		CreatedAt:  chapter.CreatedAt,
 		Comments:   containers.CastSlicePtr(chapter.Comments, ToCommentResponse),
@@ -27,10 +28,11 @@ func MapChapterCreateInput(input *dto.ChapterCreateInput) mangas.Chapter {
 	chapter := mangas.Chapter{
 		Id:           uuid.NewString(),
 		VolumeId:     input.VolumeId,
-		Language:     common.Language(input.Language),
+		Language:     input.Language,
 		Title:        input.Title,
 		TranslatorId: input.TranslatorId,
 		PublishDate:  input.PublishDate,
+		Number:       input.Chapter,
 		CreatedAt:    now,
 		UpdatedAt:    now,
 	}
@@ -42,8 +44,9 @@ func MapChapterEditInput(input *dto.ChapterEditInput) mangas.Chapter {
 	return mangas.Chapter{
 		Id:          input.ChapterId,
 		VolumeId:    input.VolumeId,
-		Language:    common.Language(input.Language),
+		Language:    input.Language,
 		Title:       input.Title,
+		Number:      input.Number,
 		PublishDate: input.PublishDate,
 		UpdatedAt:   time.Now(),
 	}

@@ -6,14 +6,14 @@ import (
 )
 
 type InternalTranslation struct {
-	Lang        common.Country `json:"lang" binding:"iso3166_1_alpha3|iso3166_1_alpha2"`
-	Title       string         `json:"title"`
-	Description string         `json:"desc"`
+	Lang        common.Language `json:"lang" binding:"required,iso3166_1_alpha3|iso3166_1_alpha2"`
+	Title       string          `json:"title" binding:"required"`
+	Description string          `json:"desc" binding:"required"`
 }
 
 type MangaInsertTranslationInput struct {
 	MangaId      string                `uri:"manga_id" binding:"required,uuid4"`
-	Translations []InternalTranslation `json:"translations"`
+	Translations []InternalTranslation `json:"translations" binding:"min=1"`
 }
 
 func (i *MangaInsertTranslationInput) ConstructURI(ctx *gin.Context) {
@@ -21,17 +21,31 @@ func (i *MangaInsertTranslationInput) ConstructURI(ctx *gin.Context) {
 }
 
 type TranslationDeleteInput struct {
-	TranslationIds []string `json:"ids" binding:"required,uuid4"`
+	TranslationIds []string `json:"ids" binding:"required,dive,uuid4"`
 }
 
 type TranslationUpdateInput struct {
-	TranslationId string         `json:"translation_id" binding:"required,uuid4"`
-	Lang          common.Country `json:"lang"`
-	Title         string         `json:"title"`
-	Description   string         `json:"desc"`
+	TranslationId string          `uri:"translate_id" binding:"required,uuid4"`
+	Lang          common.Language `json:"lang" binding:"required,iso3166_1_alpha3|iso3166_1_alpha2"`
+	Title         string          `json:"title" binding:"required"`
+	Description   string          `json:"desc" binding:"required"`
+}
+
+func (t *TranslationUpdateInput) ConstructURI(ctx *gin.Context) {
+	t.TranslationId = ctx.Param("translate_id")
+}
+
+type TranslationMangaDeleteInput struct {
+	MangaId   string            `uri:"manga_id" binding:"required,uuid4"`
+	Languages []common.Language `json:"lang" binding:"required,dive,iso3166_1_alpha3|iso3166_1_alpha2"`
+}
+
+func (t *TranslationMangaDeleteInput) ConstructURI(ctx *gin.Context) {
+	t.MangaId = ctx.Param("manga_id")
 }
 
 type TranslationResponse struct {
+	Id          string          `json:"id"`
 	Lang        common.Language `json:"lang"`
 	Title       string          `json:"title"`
 	Description string          `json:"desc"`

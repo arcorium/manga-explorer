@@ -54,7 +54,7 @@ func (c credentialService) Authenticate(input *dto.LoginInput) (dto.LoginRespons
 	cred := users.NewCredential(usr, input.DeviceName, accessTokenClaims["id"].(string), refreshToken)
 	err = c.authRepo.Create(&cred)
 	if err != nil {
-		return dto.NoLoginResponse, status.RepositoryError(err, opt.NullInt)
+		return dto.NoLoginResponse, status.RepositoryError(err, opt.Null[status.Code]())
 	}
 
 	return dto.NewLoginResponse(accessToken), status.Success()

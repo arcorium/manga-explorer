@@ -32,21 +32,24 @@ func (m _mangaRoute) MangaRoute(config *Config, router gin.IRouter) {
 	mangaRoute.GET("/:manga_id/translates/*language", mangaController.FindMangaTranslations)
 	// Login user
 	mangaRoute.Use(config.Middleware.Authorization.Handle)
-	mangaRoute.POST("/:manga_id/comments", mangaController.CreateMangaComments)
-	mangaRoute.POST("/:manga_id/ratings", mangaController.CreateMangaRatings)
-	mangaRoute.GET("/favorite", mangaController.GetMangaFavorites)
-	mangaRoute.GET("/history", mangaController.GetMangaHistories)
+	mangaRoute.POST("/:manga_id/comments", mangaController.CreateMangaComment)
+	mangaRoute.POST("/:manga_id/ratings", mangaController.CreateMangaRating)
+	mangaRoute.GET("/favorites", mangaController.GetMangaFavorites)
+	mangaRoute.GET("/histories", mangaController.GetMangaHistories) // TODO: Implement each view chapter to add into chapter history repo
+	//
+	mangaRoute.POST("/:manga_id/favorites", mangaController.ModifyFavoriteManga)
 
 	// Admin
 	mangaRoute.Use(config.Middleware.AdminRestrict.Handle)
 
 	mangaRoute.POST("/:manga_id/translates", mangaController.InsertMangaTranslate)
 	mangaRoute.DELETE("/:manga_id/translates", mangaController.DeleteMangaTranslations)
-	mangaRoute.PUT("/translates", mangaController.UpdateTranslation)
+	mangaRoute.PUT("/translates/:translate_id", mangaController.UpdateTranslation)
 	mangaRoute.DELETE("/translates", mangaController.DeleteTranslations)
 
 	mangaRoute.POST("/", mangaController.CreateManga)
-	mangaRoute.POST("/:manga_id", mangaController.EditManga)
+	mangaRoute.PUT("/:manga_id", mangaController.EditManga)
+	mangaRoute.PATCH("/:manga_id/genres", mangaController.EditMangaGenres)
 	mangaRoute.POST("/:manga_id/volumes", mangaController.CreateVolume)
 	mangaRoute.DELETE("/:manga_id/volumes/:volume", mangaController.DeleteVolume)
 	mangaRoute.POST("/:manga_id/chapters", chapterController.CreateChapter)
@@ -81,9 +84,10 @@ func (m _mangaRoute) ChapterRoute(config *Config, router gin.IRouter) {
 }
 func (m _mangaRoute) GenreRoute(config *Config, router gin.IRouter) {
 	genreController := &config.Controller.MangaGenre
-	genreRoute := router.Group("/genres", config.Middleware.Authorization.Handle, config.Middleware.AdminRestrict.Handle)
+	genreRoute := router.Group("/genres")
 	genreRoute.GET("/", genreController.ListGenre)
-	genreRoute.POST("/", genreController.CreateGenre)
+	genreRoute.Use(config.Middleware.Authorization.Handle, config.Middleware.AdminRestrict.Handle)
 	genreRoute.PUT("/:genre_id", genreController.UpdateGenre)
+	genreRoute.POST("/", genreController.CreateGenre)
 	genreRoute.DELETE("/:genre_id", genreController.DeleteGenre)
 }

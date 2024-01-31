@@ -12,6 +12,7 @@ func ToRatingResponse(rate *mangas.Rate) dto.RateResponse {
 	return dto.RateResponse{
 		User: mapper.ToUserResponse(rate.User),
 		Rate: rate.Rate,
+		Time: rate.CreatedAt,
 	}
 }
 

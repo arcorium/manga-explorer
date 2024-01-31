@@ -22,10 +22,26 @@ func (c commentRepository) findComments(objectType string, objectId string) ([]m
 	defer cancel()
 
 	var result []mangas.Comment
-	query := c.db.NewSelect().
-		Model(&result).
+
+	subQuery2 := c.db.NewSelect().
+		Model(util.Nil[mangas.Comment]()).
+		Relation("User").
+		Join("JOIN result r ON comment.parent_id = r.id").
+		Where("comment.object_type = ? AND comment.object_id = ?", objectType, objectId)
+
+	subQuery := c.db.NewSelect().
+		Model(util.Nil[mangas.Comment]()).
+		Relation("User").
+		Where("parent_id IS NULL").
+		UnionAll(subQuery2).
 		Where("object_type = ? AND object_id = ?", objectType, objectId)
-	err := query.Scan(ctx)
+
+	err := c.db.NewSelect().
+		WithRecursive("result", subQuery).
+		Table("result").
+		ColumnExpr("result.*").
+		Scan(ctx, &result)
+
 	return util.CheckSliceResult(result, err).Unwrap()
 }
 
@@ -78,4 +94,19 @@ func (c commentRepository) FindComment(id string) (*mangas.Comment, error) {
 	}
 
 	return res, nil
+}
+
+func (c commentRepository) EditComment(comment *mangas.Comment) error {
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second*5)
+	defer cancel()
+
+	query := c.db.NewUpdate().
+		Model(comment).
+		WherePK().
+		Column("comment", "like", "dislike", "updated_at").
+		OmitZero()
+
+	res, err := query.Exec(ctx)
+
+	return util.CheckSqlResult(res, err)
 }

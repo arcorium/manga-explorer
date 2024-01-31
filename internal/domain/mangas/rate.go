@@ -11,7 +11,7 @@ type Rate struct {
 	bun.BaseModel `bun:"table:rates"`
 
 	Id      string `bun:",pk,type:uuid"`
-	UserId  string `bun:",notnull,unique:user_manga_idx,type:uuid,default:'afcd4ab0-3190-4d35-885a-1d20eb909bd9'"`
+	UserId  string `bun:",notnull,unique:user_manga_idx,type:uuid"`
 	MangaId string `bun:",notnull,unique:user_manga_idx,type:uuid"`
 	Rate    uint8  `bun:",notnull"`
 

@@ -9,6 +9,7 @@ import (
 
 func ToGenreResponse(genre *mangas.Genre) dto.GenreResponse {
 	return dto.GenreResponse{
+		Id:   genre.Id,
 		Name: genre.Name,
 	}
 }
@@ -24,7 +25,7 @@ func MapGenreCreateInput(input dto.GenreCreateInput) mangas.Genre {
 
 func MapGenreUpdateInput(input *dto.GenreUpdateInput) mangas.Genre {
 	return mangas.Genre{
-		Id:        uuid.NewString(),
+		Id:        input.Id,
 		Name:      input.Name,
 		UpdatedAt: time.Now(),
 	}

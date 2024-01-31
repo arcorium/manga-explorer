@@ -256,9 +256,9 @@ func Test_mangaRepository_FindMangaById(t *testing.T) {
 
 		t.Run(tt.name, func(t *testing.T) {
 			mangaRepo := NewManga(Db)
-			got, err := mangaRepo.FindMangaById(tt.args.id)
+			got, err := mangaRepo.FindMinimalMangaById(tt.args.id)
 			if (err != nil) != tt.wantErr {
-				t.Errorf("FindMangaById() error = %v, wantErr %v", err, tt.wantErr)
+				t.Errorf("FindMinimalMangaById() error = %v, wantErr %v", err, tt.wantErr)
 				return
 			}
 
@@ -276,7 +276,7 @@ func Test_mangaRepository_FindMangaById(t *testing.T) {
 			}
 
 			if !reflect.DeepEqual(got, tt.want) {
-				t.Errorf("FindMangaById() got = %v, want %v", got, tt.want)
+				t.Errorf("FindMinimalMangaById() got = %v, want %v", got, tt.want)
 			}
 		})
 	}

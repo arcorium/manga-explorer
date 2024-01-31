@@ -2,13 +2,13 @@ package status
 
 // StatusSuccess Use it when there is no error, it works like returning nil on error
 
-func New(code uint, err error, details ...string) Object {
+func New(code Code, err error, details ...string) Object {
 	var message string
 	if len(details) == 1 {
 		message = details[0]
 	}
 	return Object{
-		Code:    code,
+		Code:    uint(code.Underlying()),
 		err:     err,
 		message: message,
 		//details: details,

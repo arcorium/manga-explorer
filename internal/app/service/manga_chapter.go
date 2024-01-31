@@ -30,7 +30,7 @@ type mangaChapterService struct {
 
 func (m mangaChapterService) DeleteChapter(chapterId string) status.Object {
 	err := m.chapterRepo.DeleteChapter(chapterId)
-	return status.ConditionalRepository(err, status.SUCCESS, opt.New(status.CHAPTER_NO_FOUND))
+	return status.ConditionalRepository(err, status.SUCCESS, opt.New(status.CHAPTER_NOT_FOUND))
 }
 
 func (m mangaChapterService) FindChapterPages(chapterId string) ([]mangaDto.PageResponse, status.Object) {
@@ -117,12 +117,12 @@ func (m mangaChapterService) FindVolumeChapters(volumeId string) ([]mangaDto.Cha
 
 func (m mangaChapterService) FindChapterComments(chapterId string) ([]mangaDto.CommentResponse, status.Object) {
 	comments, err := m.commentRepo.FindChapterComments(chapterId)
-	commentResponses := containers.CastSlicePtr(comments, mapper.ToCommentResponse)
-	return commentResponses, status.ConditionalRepository(err, status.SUCCESS, opt.New(status.SUCCESS))
+	responses := mapper.ToCommentResponse2(comments)
+	return responses, status.ConditionalRepository(err, status.SUCCESS, opt.New(status.SUCCESS))
 }
 
 func (m mangaChapterService) FindPageComments(pageId string) ([]mangaDto.CommentResponse, status.Object) {
 	comments, err := m.commentRepo.FindPageComments(pageId)
-	commentResponses := containers.CastSlicePtr(comments, mapper.ToCommentResponse)
-	return commentResponses, status.ConditionalRepository(err, status.SUCCESS, opt.New(status.SUCCESS))
+	responses := mapper.ToCommentResponse2(comments)
+	return responses, status.ConditionalRepository(err, status.SUCCESS, opt.New(status.SUCCESS))
 }

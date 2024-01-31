@@ -10,6 +10,7 @@ import (
 
 func ToVolumeResponse(volume *mangas.Volume, fs fileService.IFile) dto.VolumeResponse {
 	return dto.VolumeResponse{
+		Id:       volume.Id,
 		Title:    volume.Title,
 		Number:   volume.Number,
 		Chapters: containers.CastSlicePtr1(volume.Chapters, fs, ToChapterResponse),
@@ -18,9 +19,10 @@ func ToVolumeResponse(volume *mangas.Volume, fs fileService.IFile) dto.VolumeRes
 
 func MapVolumeCreateInput(input *dto.VolumeCreateInput) mangas.Volume {
 	return mangas.Volume{
-		Id:      uuid.NewString(),
-		MangaId: input.MangaId,
-		Title:   input.Title,
-		Number:  input.Number,
+		Id:          uuid.NewString(),
+		MangaId:     input.MangaId,
+		Title:       input.Title,
+		Description: input.Description,
+		Number:      input.Number,
 	}
 }

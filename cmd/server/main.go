@@ -2,6 +2,8 @@ package main
 
 import (
 	"github.com/gin-gonic/gin"
+	"github.com/gin-gonic/gin/binding"
+	"github.com/go-playground/validator/v10"
 	"log"
 	"manga-explorer/cmd/server/factory"
 	"manga-explorer/database"
@@ -36,6 +38,7 @@ func main() {
 	repositories := factory.CreateRepositories(db)
 
 	engine := gin.Default()
+	common.RegisterValidationTags(binding.Validator.Engine().(*validator.Validate))
 	services := factory.CreateServices(config, &repositories, engine)
 
 	router := factory.CreateRouter(config, &services, engine)

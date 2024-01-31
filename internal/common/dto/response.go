@@ -40,7 +40,7 @@ type SuccessResponse struct {
 
 type ResponsePage struct {
 	Elements      uint64 `json:"elements"`
-	CurrentPage   uint64 `json:"page"`
+	CurrentPage   uint64 `json:"page,omitempty"`
 	TotalElements uint64 `json:"total_elements"`
-	TotalPage     uint64 `json:"total_page"`
+	TotalPage     uint64 `json:"total_page,omitempty"`
 }

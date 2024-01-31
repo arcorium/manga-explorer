@@ -38,17 +38,17 @@ type Status uint8
 func (s Status) String() string {
 	switch s {
 	case StatusCompleted:
-		return "Completed"
+		return "completed"
 	case StatusOnGoing:
-		return "On-going"
+		return "ongoing"
 	case StatusDraft:
-		return "Drafted"
+		return "drafted"
 	case StatusDropped:
-		return "Dropped"
+		return "dropped"
 	case StatusHiatus:
-		return "Hiatus"
+		return "hiatus"
 	default:
-		return "Unknown"
+		return "unknown"
 	}
 }
 
@@ -73,11 +73,13 @@ type SearchFilter struct {
 }
 
 func (f SearchFilter) HasGenre() bool {
-	return f.Genres.HasInclude() || f.Genres.HasExclude()
+	return f.Genres.HasInclude()
+	//|| f.Genres.HasExclude()
 }
 
 func (f SearchFilter) HasBothGenre() bool {
-	return f.Genres.HasInclude() && f.Genres.HasExclude()
+	return f.Genres.HasInclude()
+	//&& f.Genres.HasExclude()
 }
 
 func (f SearchFilter) HasOrigin() bool {

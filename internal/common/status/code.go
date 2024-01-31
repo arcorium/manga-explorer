@@ -1,8 +1,18 @@
 package status
 
+type Code int
+
+func (c Code) Underlying() int {
+	return int(c)
+}
+
+func (c Code) IsError() bool {
+	return c.Underlying() > 4
+}
+
 const (
 	// Success Code
-	SUCCESS = iota
+	SUCCESS Code = iota
 	CREATED
 	UPDATED
 	DELETED
@@ -14,6 +24,7 @@ const (
 	BAD_REQUEST_ERROR
 	USER_AGENT_UNKNOWN_ERROR
 	BAD_PARAMETER_ERROR
+	EMPTY_BODY_REQUEST
 	BAD_QUERY_ERROR
 	INTERNAL_SERVER_ERROR
 	CREDENTIALS_NOT_FOUND
@@ -23,7 +34,6 @@ const (
 	// Verification
 	VERIFICATION_REQUEST_FAILED
 	VERIFICATION_USER_NOT_EXISTS
-	MULTIPLE_VERIFICATION_REQUEST
 	VERIFICATION_TOKEN_NOT_FOUND
 	VERIFICATION_TOKEN_EXPIRED
 	VERIFICATION_TOKEN_MISUSE
@@ -68,12 +78,14 @@ const (
 	MANGA_HAS_NO_TRANSLATIONS
 	MANGA_TRANSLATION_NOT_FOUND
 	MANGA_TRANSLATION_UPDATE_FAILED
+	MANGA_TRANSLATION_CREATE_FAILED
 
 	VOLUME_ALREADY_EXISTS
+	VOLUME_CREATE_FAILED
 	VOLUME_DELETE_FAILED
 
 	CHAPTER_UPDATE_FAILED
-	CHAPTER_NO_FOUND
+	CHAPTER_NOT_FOUND
 	CHAPTER_ALREADY_EXIST
 
 	PAGE_INSERT_FAILED
@@ -91,8 +103,15 @@ const (
 	COMMENT_CREATE_FAILED
 )
 
-var messages = map[int]string{
+var messages = map[Code]string{
+	SUCCESS: "Success",
+	CREATED: "Created",
+	UPDATED: "Updated",
+	DELETED: "Deleted",
+
+	ERROR_WITH_MESSAGE:       "Error",
 	BAD_REQUEST_ERROR:        "Request is malformed or invalid",
+	EMPTY_BODY_REQUEST:       "Expected request body",
 	USER_AGENT_UNKNOWN_ERROR: "Unknown user-agent",
 	BAD_QUERY_ERROR:          "URL query is have malformed type",
 	BAD_PARAMETER_ERROR:      "URL parameter is missing",
@@ -100,13 +119,12 @@ var messages = map[int]string{
 	AUTH_UNAUTHORIZED:        "You are not authorized to access this",
 
 	// Verification
-	VERIFICATION_REQUEST_FAILED:   "Failed to request verification",
-	VERIFICATION_USER_NOT_EXISTS:  "Trying to request verification to user that doesn't exists",
-	MULTIPLE_VERIFICATION_REQUEST: "There is verification on going, complete that first",
-	VERIFICATION_TOKEN_NOT_FOUND:  "Verification token you provide is wrong",
-	VERIFICATION_TOKEN_EXPIRED:    "Verification token you provide is expired",
-	VERIFICATION_TOKEN_MISUSE:     "Verification token you provide should not used here",
-	OBJECT_NOT_FOUND:              "Object not found",
+	VERIFICATION_REQUEST_FAILED:  "Failed to request verification",
+	VERIFICATION_USER_NOT_EXISTS: "Trying to request verification to user that doesn't exists",
+	VERIFICATION_TOKEN_NOT_FOUND: "Verification token you provide is wrong",
+	VERIFICATION_TOKEN_EXPIRED:   "Verification token you provide is expired",
+	VERIFICATION_TOKEN_MISUSE:    "Verification token you provide should not used here",
+	OBJECT_NOT_FOUND:             "Object not found",
 
 	// Token
 	TOKEN_MALFORMED:                    "Token you provide is malformed",
@@ -147,12 +165,14 @@ var messages = map[int]string{
 	MANGA_HAS_NO_TRANSLATIONS:       "Those manga has no translations",
 	MANGA_TRANSLATION_NOT_FOUND:     "Manga translation not found",
 	MANGA_TRANSLATION_UPDATE_FAILED: "Could not update manga translation",
+	MANGA_TRANSLATION_CREATE_FAILED: "Could not create manga translation",
 
 	VOLUME_ALREADY_EXISTS: "Volume you try to create is already exist",
+	VOLUME_CREATE_FAILED:  "Failed to create volume",
 	VOLUME_DELETE_FAILED:  "Volume is not found",
 
 	CHAPTER_UPDATE_FAILED: "Could not update manga chapter",
-	CHAPTER_NO_FOUND:      "Manga chapter is not found",
+	CHAPTER_NOT_FOUND:     "Manga chapter is not found",
 	CHAPTER_ALREADY_EXIST: "Manga chapter is already exist",
 
 	PAGE_INSERT_FAILED: "Could not insert pages on manga chapter",

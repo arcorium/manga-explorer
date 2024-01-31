@@ -40,7 +40,7 @@ func (m mangaService) CreateVolume(input *mangaDto.VolumeCreateInput) status.Obj
 	volume := mapper.MapVolumeCreateInput(input)
 
 	err := m.mangaRepo.CreateVolume(&volume)
-	return status.ConditionalRepository(err, status.CREATED, opt.New(status.VOLUME_ALREADY_EXISTS))
+	return status.ConditionalRepositoryE(err, status.CREATED, opt.New(status.VOLUME_ALREADY_EXISTS), opt.New(status.VOLUME_CREATE_FAILED))
 }
 
 func (m mangaService) DeleteVolume(input *mangaDto.VolumeDeleteInput) status.Object {
@@ -71,17 +71,17 @@ func (m mangaService) UpsertMangaRating(input *mangaDto.RateUpsertInput) status.
 	return status.ConditionalRepository(err, status.SUCCESS, opt.New(status.RATING_NOT_FOUND))
 }
 
-func (m mangaService) ListMangas(query *commonDto.PagedQueryInput) ([]mangaDto.MangaResponse, *commonDto.ResponsePage, status.Object) {
+func (m mangaService) ListMangas(query *commonDto.PagedQueryInput) ([]mangaDto.MinimalMangaResponse, *commonDto.ResponsePage, status.Object) {
 	result, err := m.mangaRepo.ListMangas(query.ToQueryParam())
-	mangaResponses := containers.CastSlicePtr1(result.Data, m.fileService, mapper.ToMangaResponse)
+	mangaResponses := containers.CastSlicePtr1(result.Data, m.fileService, mapper.ToMinimalMangaResponse)
 	responsePage := appMapper.NewResponsePage(mangaResponses, result.Total, query)
 	return mangaResponses, &responsePage, status.ConditionalRepository(err, status.SUCCESS, opt.New(status.SUCCESS))
 }
 
-func (m mangaService) SearchMangas(query *mangaDto.MangaSearchQuery) ([]mangaDto.MangaResponse, *commonDto.ResponsePage, status.Object) {
+func (m mangaService) SearchMangas(query *mangaDto.MangaSearchQuery) ([]mangaDto.MinimalMangaResponse, *commonDto.ResponsePage, status.Object) {
 	filter := mapper.MapMangaSearchQuery(query)
 	res, err := m.mangaRepo.FindMangasByFilter(&filter, query.ToQueryParam())
-	mangaResponses := containers.CastSlicePtr1(res.Data, m.fileService, mapper.ToMangaResponse)
+	mangaResponses := containers.CastSlicePtr1(res.Data, m.fileService, mapper.ToMinimalMangaResponse)
 	responsePage := appMapper.NewResponsePage(mangaResponses, res.Total, &query.PagedQueryInput)
 	return mangaResponses, &responsePage, status.ConditionalRepository(err, status.SUCCESS, opt.New(status.SUCCESS))
 }
@@ -92,15 +92,15 @@ func (m mangaService) FindMangaByIds(mangaIds ...string) ([]mangaDto.MangaRespon
 	return responses, status.ConditionalRepository(err, status.SUCCESS, opt.New(status.SUCCESS))
 }
 
-func (m mangaService) FindRandomMangas(limit uint64) ([]mangaDto.MangaResponse, status.Object) {
-	lisMangas, err := m.mangaRepo.FindRandomMangas(limit)
-	responses := containers.CastSlicePtr1(lisMangas, m.fileService, mapper.ToMangaResponse)
+func (m mangaService) FindRandomMangas(limit uint64) ([]mangaDto.MinimalMangaResponse, status.Object) {
+	mangaList, err := m.mangaRepo.FindRandomMangas(limit)
+	responses := containers.CastSlicePtr1(mangaList, m.fileService, mapper.ToMinimalMangaResponse)
 	return responses, status.ConditionalRepository(err, status.SUCCESS, opt.New(status.SUCCESS))
 }
 
 func (m mangaService) FindMangaComments(mangaId string) ([]mangaDto.CommentResponse, status.Object) {
 	comments, err := m.commentRepo.FindMangaComments(mangaId)
-	responses := containers.CastSlicePtr(comments, mapper.ToCommentResponse)
+	responses := mapper.ToCommentResponse2(comments)
 	return responses, status.ConditionalRepository(err, status.SUCCESS, opt.New(status.SUCCESS))
 }
 
@@ -111,17 +111,17 @@ func (m mangaService) FindMangaRatings(mangaId string) ([]mangaDto.RateResponse,
 }
 
 func (m mangaService) CreateManga(input *mangaDto.MangaCreateInput) status.Object {
-	model, err := mapper.MapMangaCreateInput(input)
+	model, genres, err := mapper.MapMangaCreateInput(input)
 	if err != nil {
 		return status.Error(status.BAD_REQUEST_ERROR)
 	}
 
-	err = m.mangaRepo.CreateManga(&model)
+	err = m.mangaRepo.CreateManga(&model, genres)
 	return status.ConditionalRepository(err, status.CREATED, opt.New(status.MANGA_CREATE_ALREADY_EXIST))
 }
 
 func (m mangaService) UpdateMangaCover(input *mangaDto.MangaCoverUpdateInput) status.Object {
-	manga, err := m.mangaRepo.FindMangaById(input.MangaId)
+	manga, err := m.mangaRepo.FindMinimalMangaById(input.MangaId)
 	if err != nil {
 		return status.RepositoryError(err, opt.New(status.MANGA_NOT_FOUND))
 	}
@@ -156,11 +156,18 @@ func (m mangaService) EditManga(input *mangaDto.MangaEditInput) status.Object {
 	return status.ConditionalRepository(err, status.UPDATED, opt.New(status.MANGA_UPDATE_FAILED))
 }
 
+func (m mangaService) EditMangaGenres(input *mangaDto.MangaGenreEditInput) status.Object {
+	additionals, removes := mapper.MapMangaGenreEditInput(input)
+
+	err := m.mangaRepo.EditMangaGenres(additionals, removes)
+	return status.ConditionalRepositoryE(err, status.UPDATED, opt.New(status.MANGA_UPDATE_FAILED), opt.New(status.MANGA_UPDATE_FAILED))
+}
+
 func (m mangaService) InsertMangaTranslations(input *mangaDto.MangaInsertTranslationInput) status.Object {
 	translates := mapper.MapInsertTranslateInput(input)
 
 	err := m.translationRepo.Create(translates)
-	return status.ConditionalRepository(err, status.CREATED, opt.New(status.MANGA_TRANSLATION_ALREADY_EXIST))
+	return status.ConditionalRepositoryE(err, status.CREATED, opt.New(status.MANGA_TRANSLATION_ALREADY_EXIST), opt.New(status.MANGA_TRANSLATION_CREATE_FAILED))
 }
 
 func (m mangaService) FindMangaTranslations(mangaId string) ([]mangaDto.TranslationResponse, status.Object) {
@@ -178,8 +185,8 @@ func (m mangaService) FindSpecificMangaTranslation(mangaId string, language comm
 
 }
 
-func (m mangaService) DeleteMangaTranslations(mangaId string) status.Object {
-	err := m.translationRepo.DeleteByMangaId(mangaId)
+func (m mangaService) DeleteMangaTranslations(input *mangaDto.TranslationMangaDeleteInput) status.Object {
+	err := m.translationRepo.DeleteMangaSpecific(input.MangaId, input.Languages)
 	return status.ConditionalRepository(err, status.DELETED, opt.New(status.MANGA_HAS_NO_TRANSLATIONS))
 }
 
@@ -209,4 +216,18 @@ func (m mangaService) FindMangaFavorites(userId string, query *commonDto.PagedQu
 	responses := containers.CastSlicePtr1(res.Data, m.fileService, mapper.ToMangaFavoriteResponse)
 	pages := appMapper.NewResponsePage(responses, res.Total, query)
 	return responses, &pages, status.ConditionalRepository(err, status.SUCCESS, opt.New(status.SUCCESS))
+}
+
+func (m mangaService) AddFavoriteManga(input *mangaDto.FavoriteMangaInput) status.Object {
+	model := mapper.MapFavoriteMangaInput(input)
+
+	err := m.mangaRepo.InsertMangaFavorite(&model)
+	return status.ConditionalRepositoryE(err, status.CREATED, opt.New(status.MANGA_UPDATE_FAILED), opt.New(status.MANGA_UPDATE_FAILED))
+}
+
+func (m mangaService) RemoveFavoriteManga(input *mangaDto.FavoriteMangaInput) status.Object {
+	model := mapper.MapFavoriteMangaInput(input)
+
+	err := m.mangaRepo.RemoveMangaFavorite(&model)
+	return status.ConditionalRepositoryE(err, status.CREATED, opt.New(status.MANGA_UPDATE_FAILED), opt.New(status.MANGA_UPDATE_FAILED))
 }

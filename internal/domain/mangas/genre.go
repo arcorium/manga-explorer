@@ -11,7 +11,7 @@ type Genre struct {
 	Id            string `bun:",pk,type:uuid"`
 	Name          string `bun:",nullzero,notnull,unique"`
 
-	UpdatedAt time.Time `bun:",nullzero"`
+	UpdatedAt time.Time `bun:",nullzero,default:current_timestamp"`
 	CreatedAt time.Time `bun:",nullzero,notnull"`
 	Mangas    []Manga   `bun:"m2m:manga_genres,join:Genre=Manga"`
 }

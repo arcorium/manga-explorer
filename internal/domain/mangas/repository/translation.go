@@ -12,5 +12,6 @@ type ITranslation interface {
 	FindById(id string) (*mangas.Translation, error)
 	Update(translation *mangas.Translation) error
 	DeleteByMangaId(mangaId string) error
+	DeleteMangaSpecific(mangaId string, languages []common.Language) error
 	DeleteByIds(translationIds []string) error
 }

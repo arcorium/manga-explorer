@@ -85,7 +85,7 @@ func (t translationRepository) Update(translation *mangas.Translation) error {
 	res, err := t.db.NewUpdate().
 		Model(translation).
 		WherePK().
-		OmitZero().
+		ExcludeColumn("id", "manga_id").
 		Exec(ctx)
 
 	return util.CheckSqlResult(res, err)
@@ -99,6 +99,18 @@ func (t translationRepository) DeleteByMangaId(mangaId string) error {
 		Model(util.Nil[mangas.Translation]()).
 		Where("manga_id = ?", mangaId).
 		Exec(ctx)
+	return util.CheckSqlResult(res, err)
+}
+
+func (t translationRepository) DeleteMangaSpecific(mangaId string, languages []common.Language) error {
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second*5)
+	defer cancel()
+
+	res, err := t.db.NewDelete().
+		Model(util.Nil[mangas.Translation]()).
+		Where("manga_id = ? AND language IN (?)", mangaId, bun.In(languages)).
+		Exec(ctx)
+
 	return util.CheckSqlResult(res, err)
 }
 
