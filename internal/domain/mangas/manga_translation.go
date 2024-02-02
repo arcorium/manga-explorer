@@ -1,7 +1,6 @@
 package mangas
 
 import (
-	"github.com/biter777/countries"
 	"github.com/google/uuid"
 	"github.com/uptrace/bun"
 	"manga-explorer/internal/common"
@@ -19,11 +18,11 @@ type Translation struct {
 	Manga *Manga `bun:"rel:belongs-to,join:manga_id=id,on_delete:CASCADE"`
 }
 
-func NewTranslation(mangaId, title, desc string, lang countries.CountryCode) Translation {
+func NewTranslation(mangaId, title, desc string, lang common.Language) Translation {
 	return Translation{
 		Id:          uuid.NewString(),
 		MangaId:     mangaId,
-		Language:    common.Language(lang.Alpha3()),
+		Language:    lang,
 		Title:       title,
 		Description: desc,
 	}

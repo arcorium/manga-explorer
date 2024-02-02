@@ -8,7 +8,7 @@ import (
 	"time"
 )
 
-func ToCommentResponse(comment *mangas.Comment) dto.CommentResponse {
+func toCommentResponse(comment *mangas.Comment) dto.CommentResponse {
 	return dto.CommentResponse{
 		Id:       comment.Id,
 		User:     mapper.ToUserResponse(comment.User),
@@ -20,7 +20,7 @@ func ToCommentResponse(comment *mangas.Comment) dto.CommentResponse {
 	}
 }
 
-func ToCommentResponse2(comments []mangas.Comment) []dto.CommentResponse {
+func ToCommentsResponse(comments []mangas.Comment) []dto.CommentResponse {
 	type Wrapper struct {
 		Index int
 	}
@@ -33,7 +33,7 @@ func ToCommentResponse2(comments []mangas.Comment) []dto.CommentResponse {
 
 		// Base comment
 		if len(val.ParentId) == 0 {
-			result = append(result, ToCommentResponse(val))
+			result = append(result, toCommentResponse(val))
 			ids[val.Id] = []Wrapper{Wrapper{i}}
 		} else {
 			// Replies
@@ -44,7 +44,7 @@ func ToCommentResponse2(comments []mangas.Comment) []dto.CommentResponse {
 			}
 
 			// Set as child
-			parent.Replies = append(parent.Replies, ToCommentResponse(val))
+			parent.Replies = append(parent.Replies, toCommentResponse(val))
 			insertedIndex := len(parent.Replies) - 1
 
 			// Add to indexes

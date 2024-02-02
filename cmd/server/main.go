@@ -1,6 +1,8 @@
 package main
 
 import (
+	"errors"
+	"github.com/caarlos0/env/v10"
 	"github.com/gin-gonic/gin"
 	"github.com/gin-gonic/gin/binding"
 	"github.com/go-playground/validator/v10"
@@ -24,12 +26,21 @@ import (
 
 // @BasePath        /api/v1
 func main() {
-	config, err := common.LoadConfig("test")
+	config, err := common.LoadConfig()
 	if err != nil {
-		log.Fatalln(err)
+		var aggregateError env.AggregateError
+		ok := errors.As(err, &aggregateError)
+		if ok {
+			for _, v := range aggregateError.Errors {
+				log.Println(v)
+			}
+			os.Exit(-1)
+		} else {
+			log.Fatalln(err)
+		}
 	}
 
-	db, err := database.Open(config, true)
+	db, err := database.Open(config, false)
 	if err != nil {
 		log.Fatalln("Failed to open database connection: ", err)
 	}
@@ -38,6 +49,14 @@ func main() {
 	repositories := factory.CreateRepositories(db)
 
 	engine := gin.Default()
+	if len(config.TrustedProxies) > 0 {
+		engine.ForwardedByClientIP = true
+		err := engine.SetTrustedProxies(config.TrustedProxies)
+		if err != nil {
+			log.Fatalln(err)
+		}
+	}
+
 	common.RegisterValidationTags(binding.Validator.Engine().(*validator.Validate))
 	services := factory.CreateServices(config, &repositories, engine)
 
@@ -52,6 +71,8 @@ func main() {
 }
 
 func run(config *common.Config, engine *gin.Engine) {
+	log.Println("Server started!")
+
 	go func() {
 		if err := engine.Run(config.Endpoint()); err != nil {
 			log.Fatalln(err)
@@ -62,4 +83,6 @@ func run(config *common.Config, engine *gin.Engine) {
 	signal.Notify(quitChan, syscall.SIGINT, syscall.SIGTERM, syscall.SIGQUIT)
 	<-quitChan
 	close(quitChan)
+
+	log.Println("Server stopped!")
 }

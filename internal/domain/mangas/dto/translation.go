@@ -6,7 +6,7 @@ import (
 )
 
 type InternalTranslation struct {
-	Lang        common.Language `json:"lang" binding:"required,iso3166_1_alpha3|iso3166_1_alpha2"`
+	Lang        common.Language `json:"lang" binding:"required,bcp47_language_tag"`
 	Title       string          `json:"title" binding:"required"`
 	Description string          `json:"desc" binding:"required"`
 }
@@ -26,7 +26,7 @@ type TranslationDeleteInput struct {
 
 type TranslationUpdateInput struct {
 	TranslationId string          `uri:"translate_id" binding:"required,uuid4"`
-	Lang          common.Language `json:"lang" binding:"required,iso3166_1_alpha3|iso3166_1_alpha2"`
+	Lang          common.Language `json:"lang" binding:"required,bcp47_language_tag"`
 	Title         string          `json:"title" binding:"required"`
 	Description   string          `json:"desc" binding:"required"`
 }
@@ -37,7 +37,7 @@ func (t *TranslationUpdateInput) ConstructURI(ctx *gin.Context) {
 
 type TranslationMangaDeleteInput struct {
 	MangaId   string            `uri:"manga_id" binding:"required,uuid4"`
-	Languages []common.Language `json:"lang" binding:"required,dive,iso3166_1_alpha3|iso3166_1_alpha2"`
+	Languages []common.Language `json:"lang" binding:"required,dive,bcp47_language_tag"`
 }
 
 func (t *TranslationMangaDeleteInput) ConstructURI(ctx *gin.Context) {

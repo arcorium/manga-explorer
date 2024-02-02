@@ -14,12 +14,14 @@ type Chapter struct {
 
 	Id           string `bun:",pk,type:uuid,pk"`
 	VolumeId     string `bun:",nullzero,notnull,type:uuid,unique:chapter_lang_idx"`
-	TranslatorId string `bun:",nullzero,type:uuid,default:'afcd4ab0-3190-4d35-885a-1d20eb909bd9',unique:chapter_lang_idx"`
+	TranslatorId string `bun:",nullzero,notnull,type:uuid,unique:chapter_lang_idx"`
 
 	Language    common.Language `bun:",notnull,unique:chapter_lang_idx,type:varchar(3)"`
 	Title       string          `bun:",nullzero"`
 	Number      uint64          `bun:",nullzero,notnull,unique:chapter_lang_idx"`
 	PublishDate time.Time       `bun:",nullzero,type:date"`
+
+	TotalComment uint64 `bun:",scanonly"`
 
 	CreatedAt time.Time `bun:",notnull"`
 	UpdatedAt time.Time `bun:",notnull"`

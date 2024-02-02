@@ -392,6 +392,52 @@ func (_c *UserMock_GetAllUsers_Call) RunAndReturn(run func() ([]users.User, erro
 }
 
 // UpdateProfile provides a mock function with given fields: profile
+func (_m *UserMock) UpdateProfile(profile *users.Profile) error {
+	ret := _m.Called(profile)
+
+	if len(ret) == 0 {
+		panic("no return value specified for UpdateProfile")
+	}
+
+	var r0 error
+	if rf, ok := ret.Get(0).(func(*users.Profile) error); ok {
+		r0 = rf(profile)
+	} else {
+		r0 = ret.Error(0)
+	}
+
+	return r0
+}
+
+// UserMock_UpdateProfile_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'UpdateProfile'
+type UserMock_UpdateProfile_Call struct {
+	*mock.Call
+}
+
+// UpdateProfile is a helper method to define mock.On call
+//   - profile *users.Profile
+func (_e *UserMock_Expecter) UpdateProfile(profile interface{}) *UserMock_UpdateProfile_Call {
+	return &UserMock_UpdateProfile_Call{Call: _e.mock.On("UpdateProfile", profile)}
+}
+
+func (_c *UserMock_UpdateProfile_Call) Run(run func(profile *users.Profile)) *UserMock_UpdateProfile_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		run(args[0].(*users.Profile))
+	})
+	return _c
+}
+
+func (_c *UserMock_UpdateProfile_Call) Return(_a0 error) *UserMock_UpdateProfile_Call {
+	_c.Call.Return(_a0)
+	return _c
+}
+
+func (_c *UserMock_UpdateProfile_Call) RunAndReturn(run func(*users.Profile) error) *UserMock_UpdateProfile_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
+// UpdateProfileByUserId provides a mock function with given fields: profile
 func (_m *UserMock) UpdateProfileByUserId(profile *users.Profile) error {
 	ret := _m.Called(profile)
 
@@ -409,30 +455,30 @@ func (_m *UserMock) UpdateProfileByUserId(profile *users.Profile) error {
 	return r0
 }
 
-// UserMock_UpdateProfile_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'UpdateProfileByUserId'
-type UserMock_UpdateProfile_Call struct {
+// UserMock_UpdateProfileByUserId_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'UpdateProfileByUserId'
+type UserMock_UpdateProfileByUserId_Call struct {
 	*mock.Call
 }
 
-// UpdateProfile is a helper method to define mock.On call
+// UpdateProfileByUserId is a helper method to define mock.On call
 //   - profile *users.Profile
-func (_e *UserMock_Expecter) UpdateProfile(profile interface{}) *UserMock_UpdateProfile_Call {
-	return &UserMock_UpdateProfile_Call{Call: _e.mock.On("UpdateProfileByUserId", profile)}
+func (_e *UserMock_Expecter) UpdateProfileByUserId(profile interface{}) *UserMock_UpdateProfileByUserId_Call {
+	return &UserMock_UpdateProfileByUserId_Call{Call: _e.mock.On("UpdateProfileByUserId", profile)}
 }
 
-func (_c *UserMock_UpdateProfile_Call) Run(run func(profile *users.Profile)) *UserMock_UpdateProfile_Call {
+func (_c *UserMock_UpdateProfileByUserId_Call) Run(run func(profile *users.Profile)) *UserMock_UpdateProfileByUserId_Call {
 	_c.Call.Run(func(args mock.Arguments) {
 		run(args[0].(*users.Profile))
 	})
 	return _c
 }
 
-func (_c *UserMock_UpdateProfile_Call) Return(_a0 error) *UserMock_UpdateProfile_Call {
+func (_c *UserMock_UpdateProfileByUserId_Call) Return(_a0 error) *UserMock_UpdateProfileByUserId_Call {
 	_c.Call.Return(_a0)
 	return _c
 }
 
-func (_c *UserMock_UpdateProfile_Call) RunAndReturn(run func(*users.Profile) error) *UserMock_UpdateProfile_Call {
+func (_c *UserMock_UpdateProfileByUserId_Call) RunAndReturn(run func(*users.Profile) error) *UserMock_UpdateProfileByUserId_Call {
 	_c.Call.Return(run)
 	return _c
 }

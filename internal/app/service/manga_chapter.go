@@ -1,6 +1,8 @@
 package service
 
 import (
+	dto2 "manga-explorer/internal/common/dto"
+	mapper2 "manga-explorer/internal/common/mapper"
 	"manga-explorer/internal/common/status"
 	"manga-explorer/internal/domain/mangas"
 	mangaDto "manga-explorer/internal/domain/mangas/dto"
@@ -9,13 +11,14 @@ import (
 	"manga-explorer/internal/domain/mangas/service"
 	"manga-explorer/internal/infrastructure/file"
 	fileService "manga-explorer/internal/infrastructure/file/service"
+	repo "manga-explorer/internal/infrastructure/repository"
 	"manga-explorer/internal/util/containers"
 	"manga-explorer/internal/util/opt"
-	"mime/multipart"
 )
 
-func NewChapterService(chapterRepo repository.IChapter, commentRepo repository.IComment) service.IChapter {
+func NewChapterService(fileService fileService.IFile, chapterRepo repository.IChapter, commentRepo repository.IComment) service.IChapter {
 	return &mangaChapterService{
+		fileService: fileService,
 		chapterRepo: chapterRepo,
 		commentRepo: commentRepo,
 	}
@@ -33,10 +36,25 @@ func (m mangaChapterService) DeleteChapter(chapterId string) status.Object {
 	return status.ConditionalRepository(err, status.SUCCESS, opt.New(status.CHAPTER_NOT_FOUND))
 }
 
-func (m mangaChapterService) FindChapterPages(chapterId string) ([]mangaDto.PageResponse, status.Object) {
-	pages, err := m.chapterRepo.FindChapterPages(chapterId)
-	pageResponses := containers.CastSlicePtr1(pages, m.fileService, mapper.ToPageResponse)
-	return pageResponses, status.ConditionalRepository(err, status.SUCCESS, opt.New(status.SUCCESS))
+func (m mangaChapterService) FindChapterDetails(chapterId string, userId opt.Optional[string]) (mangaDto.ChapterResponse, status.Object) {
+	chapter, err := m.chapterRepo.FindChapter(chapterId)
+	responses := mapper.ToChapterResponse(chapter, m.fileService)
+	// Add chapter history
+	if userId.HasValue() && err == nil {
+		chapterHistory := mangas.NewChapterHistory(*userId.Value(), chapterId, opt.NullTime)
+		err = m.chapterRepo.InsertChapterHistories(&chapterHistory)
+		if err != nil {
+			return mangaDto.ChapterResponse{}, status.RepositoryError(err, opt.New(status.CHAPTER_UPDATE_FAILED))
+		}
+	}
+	return responses, status.ConditionalRepositoryE(err, status.SUCCESS, opt.New(status.SUCCESS), opt.New(status.OBJECT_NOT_FOUND))
+}
+
+func (m mangaChapterService) FindMangaChapterHistories(input *mangaDto.MangaChapterHistoriesFindInput) ([]mangaDto.ChapterResponse, *dto2.ResponsePage, status.Object) {
+	chapterHistories, err := m.chapterRepo.FindMangaChapterHistories(input.UserId, input.MangaId, repo.QueryParameter{input.Offset(), input.Element})
+	page := mapper2.NewResponsePage(chapterHistories.Data, chapterHistories.Total, &input.PagedQueryInput)
+	responses := containers.CastSlicePtr(chapterHistories.Data, mapper.ToMinimalChapterResponse)
+	return responses, &page, status.ConditionalRepository(err, status.SUCCESS, opt.New(status.SUCCESS))
 }
 
 func (m mangaChapterService) CreateChapter(input *mangaDto.ChapterCreateInput) status.Object {
@@ -45,21 +63,36 @@ func (m mangaChapterService) CreateChapter(input *mangaDto.ChapterCreateInput) s
 	return status.ConditionalRepository(err, status.CREATED, opt.New(status.CHAPTER_ALREADY_EXIST))
 }
 
+//func (m mangaChapterService) InsertChapterPage(input *mangaDto.PageCreateInput) status.Object {
+//	fileHeaders := containers.CastSlicePtr(input.Page, func(current *mangaDto.InternalPage) multipart.FileHeader {
+//		return *current.Image
+//	})
+//	filenames, stat := m.fileService.Uploads(file.MangaAsset, fileHeaders)
+//	if stat.IsError() {
+//		return stat
+//	}
+//
+//	pages := mapper.MapPageCreateInput(input, filenames)
+//	if pages == nil {
+//		return status.InternalError()
+//	}
+//
+//	err := m.chapterRepo.InsertChapterPages(pages)
+//	return status.ConditionalRepository(err, status.UPDATED, opt.New(status.PAGE_INSERT_FAILED))
+//}
+
 func (m mangaChapterService) InsertChapterPage(input *mangaDto.PageCreateInput) status.Object {
-	fileHeaders := containers.CastSlicePtr(input.Pages, func(current *mangaDto.InternalPage) multipart.FileHeader {
-		return *current.Image
-	})
-	filenames, stat := m.fileService.Uploads(file.MangaAsset, fileHeaders)
+	filename, stat := m.fileService.Upload(file.MangaAsset, input.Page.Image)
 	if stat.IsError() {
 		return stat
 	}
 
-	pages := mapper.MapPageCreateInput(input, filenames)
-	if pages == nil {
-		return status.InternalError()
-	}
+	pages := mapper.MapPageCreateInput(input, filename)
 
-	err := m.chapterRepo.InsertChapterPages(pages)
+	err := m.chapterRepo.InsertChapterPages([]mangas.Page{pages})
+	if err != nil {
+		m.fileService.Delete(file.MangaAsset, filename)
+	}
 	return status.ConditionalRepository(err, status.UPDATED, opt.New(status.PAGE_INSERT_FAILED))
 }
 
@@ -105,24 +138,46 @@ func (m mangaChapterService) validateReplyComment(parentId string, comment *mang
 }
 
 func (m mangaChapterService) DeleteChapterPages(input *mangaDto.PageDeleteInput) status.Object {
-	err := m.chapterRepo.DeleteChapterPages(input.ChapterId, input.Pages)
+	// Get pages details for deleting the page images
+	pagesDetails, err := m.chapterRepo.FindPagesDetails(input.ChapterId, input.Pages)
+	if err != nil {
+		return status.RepositoryError(err, opt.New(status.PAGE_NOT_FOUND))
+	}
+
+	// Delete metadata
+	err = m.chapterRepo.DeleteChapterPages(input.ChapterId, input.Pages)
+	if err != nil {
+		return status.RepositoryError(err, opt.New(status.PAGE_NOT_FOUND))
+	}
+
+	// Delete files
+	for _, val := range pagesDetails {
+		// Skip bad value
+		if len(val.ImageURL) > 0 {
+			m.fileService.Delete(file.MangaAsset, val.ImageURL)
+		}
+	}
+
 	return status.ConditionalRepository(err, status.DELETED, opt.New(status.PAGE_NOT_FOUND))
 }
 
-func (m mangaChapterService) FindVolumeChapters(volumeId string) ([]mangaDto.ChapterResponse, status.Object) {
-	chapters, err := m.chapterRepo.FindVolumeChapters(volumeId)
-	chapterResponses := containers.CastSlicePtr1(chapters, m.fileService, mapper.ToChapterResponse)
-	return chapterResponses, status.ConditionalRepository(err, status.SUCCESS, opt.New(status.SUCCESS)) // Make empty response as success
+func (m mangaChapterService) FindVolumeDetails(volumeId string) (mangaDto.VolumeResponse, status.Object) {
+	chapters, err := m.chapterRepo.FindVolumeDetails(volumeId)
+	if err != nil {
+		return mangaDto.VolumeResponse{}, status.RepositoryError(err, opt.New(status.OBJECT_NOT_FOUND))
+	}
+	response := mapper.ToVolumeResponse(chapters, m.fileService)
+	return response, status.Success()
 }
 
 func (m mangaChapterService) FindChapterComments(chapterId string) ([]mangaDto.CommentResponse, status.Object) {
 	comments, err := m.commentRepo.FindChapterComments(chapterId)
-	responses := mapper.ToCommentResponse2(comments)
+	responses := mapper.ToCommentsResponse(comments)
 	return responses, status.ConditionalRepository(err, status.SUCCESS, opt.New(status.SUCCESS))
 }
 
 func (m mangaChapterService) FindPageComments(pageId string) ([]mangaDto.CommentResponse, status.Object) {
 	comments, err := m.commentRepo.FindPageComments(pageId)
-	responses := mapper.ToCommentResponse2(comments)
+	responses := mapper.ToCommentsResponse(comments)
 	return responses, status.ConditionalRepository(err, status.SUCCESS, opt.New(status.SUCCESS))
 }

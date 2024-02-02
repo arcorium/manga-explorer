@@ -25,8 +25,6 @@ type MangaResponse struct {
 	Translations []TranslationResponse `json:"translations,omitempty"`
 	Volumes      []VolumeResponse      `json:"volumes,omitempty"`
 	Genres       []GenreResponse       `json:"genres"`
-	//ViewedCount   uint64                `json:"viewed_count,omitempty"`
-	//FavoriteCount uint64                `json:"favorite_count,omitempty"`
 }
 
 type MinimalMangaResponse struct {
@@ -41,8 +39,6 @@ type MinimalMangaResponse struct {
 	TotalRater      uint64          `json:"total_rater"`
 	TotalComment    uint64          `json:"total_comment"`
 	Genres          []GenreResponse `json:"genres"`
-	//ViewedCount     uint64         `json:"viewed_count,omitempty"`
-	//FavoriteCount   uint64         `json:"favorite_count,omitempty"`
 }
 
 type MangaHistoryResponse struct {
@@ -61,11 +57,11 @@ type MangaCreateInput struct {
 	Status          string         `json:"status" binding:"required,manga_status"`
 	Origin          common.Country `json:"origin" binding:"required,iso3166_1_alpha3|iso3166_1_alpha2"`
 	PublicationYear uint16         `json:"publication_year" binding:"required"`
-	Genres          []string       `json:"genres" binding:"required,uuid4s"`
+	Genres          []string       `json:"genres" binding:"required,dive,uuid4"`
 }
 
 type MangaCoverUpdateInput struct {
-	MangaId string                `uri:"-" binding:"required,uuid4"`
+	MangaId string                `uri:"manga_id" binding:"required,uuid4"`
 	Image   *multipart.FileHeader `form:"image" binding:"required"`
 }
 
@@ -76,7 +72,7 @@ func (c *MangaCoverUpdateInput) ConstructURI(ctx *gin.Context) {
 type MangaEditInput struct {
 	MangaId         string         `uri:"manga_id" binding:"required,uuid4"`
 	Status          string         `json:"status" binding:"required,manga_status"`
-	Origin          common.Country `json:"origin" binding:"iso3166_1_alpha3|iso3166_1_alpha2"`
+	Origin          common.Country `json:"origin" binding:"required,iso3166_1_alpha3|iso3166_1_alpha2"`
 	Title           string         `json:"title" binding:"required,min=1"`
 	Description     string         `json:"description"`
 	PublicationYear uint16         `json:"publication_year" binding:"required"`
@@ -84,8 +80,8 @@ type MangaEditInput struct {
 
 type MangaGenreEditInput struct {
 	MangaId       string   `uri:"manga_id" binding:"required,uuid4"`
-	AddGenres     []string `json:"adds" binding:"omitempty,uuid4s"`
-	RemovedGenres []string `json:"removes" binding:"omitempty,uuid4s"`
+	AddGenres     []string `json:"adds" binding:"omitempty,dive,uuid4"`
+	RemovedGenres []string `json:"removes" binding:"omitempty,dive,uuid4"`
 }
 
 func (m *MangaGenreEditInput) ConstructURI(ctx *gin.Context) {
@@ -107,4 +103,14 @@ type FavoriteMangaInput struct {
 	Operator string `json:"op" binding:"required,oneof=add remove"`
 	UserId   string `json:"-"`
 	MangaId  string `json:"manga_id" binding:"required,uuid4"`
+}
+
+type MangaChapterHistoriesFindInput struct {
+	UserId  string `json:"-"`
+	MangaId string `uri:"manga_id" binding:"required,uuid4"`
+	dto.PagedQueryInput
+}
+
+func (c *MangaChapterHistoriesFindInput) ConstructURI(ctx *gin.Context) {
+	c.MangaId = ctx.Param("manga_id")
 }

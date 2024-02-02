@@ -11,13 +11,14 @@ type PageResponse struct {
 }
 
 type InternalPage struct {
-	Number uint16                `form:"number" binding:"required"`
+	Number uint16                `form:"page" binding:"required,gte=1"`
 	Image  *multipart.FileHeader `form:"image" binding:"required"`
 }
 
 type PageCreateInput struct {
-	ChapterId string         `binding:"required,uuid4"`
-	Pages     []InternalPage `binding:"pages" binding:"required"`
+	ChapterId string `uri:"chapter_id" binding:"required,uuid4"`
+	Page      InternalPage
+	//InternalPage
 }
 
 func (p *PageCreateInput) ConstructURI(ctx *gin.Context) {

@@ -26,7 +26,7 @@ func (_m *AuthenticationMock) Create(credential *users.Credential) error {
 	ret := _m.Called(credential)
 
 	if len(ret) == 0 {
-		panic("no return value specified for Upsert")
+		panic("no return value specified for Create")
 	}
 
 	var r0 error
@@ -39,7 +39,7 @@ func (_m *AuthenticationMock) Create(credential *users.Credential) error {
 	return r0
 }
 
-// AuthenticationMock_Create_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'Upsert'
+// AuthenticationMock_Create_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'Create'
 type AuthenticationMock_Create_Call struct {
 	*mock.Call
 }
@@ -47,7 +47,7 @@ type AuthenticationMock_Create_Call struct {
 // Create is a helper method to define mock.On call
 //   - credential *users.Credential
 func (_e *AuthenticationMock_Expecter) Create(credential interface{}) *AuthenticationMock_Create_Call {
-	return &AuthenticationMock_Create_Call{Call: _e.mock.On("Upsert", credential)}
+	return &AuthenticationMock_Create_Call{Call: _e.mock.On("Create", credential)}
 }
 
 func (_c *AuthenticationMock_Create_Call) Run(run func(credential *users.Credential)) *AuthenticationMock_Create_Call {

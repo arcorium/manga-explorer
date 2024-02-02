@@ -113,6 +113,52 @@ func (_c *CommentMock_DeleteComment_Call) RunAndReturn(run func(string) error) *
 	return _c
 }
 
+// EditComment provides a mock function with given fields: comment
+func (_m *CommentMock) EditComment(comment *mangas.Comment) error {
+	ret := _m.Called(comment)
+
+	if len(ret) == 0 {
+		panic("no return value specified for EditComment")
+	}
+
+	var r0 error
+	if rf, ok := ret.Get(0).(func(*mangas.Comment) error); ok {
+		r0 = rf(comment)
+	} else {
+		r0 = ret.Error(0)
+	}
+
+	return r0
+}
+
+// CommentMock_EditComment_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'EditComment'
+type CommentMock_EditComment_Call struct {
+	*mock.Call
+}
+
+// EditComment is a helper method to define mock.On call
+//   - comment *mangas.Comment
+func (_e *CommentMock_Expecter) EditComment(comment interface{}) *CommentMock_EditComment_Call {
+	return &CommentMock_EditComment_Call{Call: _e.mock.On("EditComment", comment)}
+}
+
+func (_c *CommentMock_EditComment_Call) Run(run func(comment *mangas.Comment)) *CommentMock_EditComment_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		run(args[0].(*mangas.Comment))
+	})
+	return _c
+}
+
+func (_c *CommentMock_EditComment_Call) Return(_a0 error) *CommentMock_EditComment_Call {
+	_c.Call.Return(_a0)
+	return _c
+}
+
+func (_c *CommentMock_EditComment_Call) RunAndReturn(run func(*mangas.Comment) error) *CommentMock_EditComment_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
 // FindChapterComments provides a mock function with given fields: chapterId
 func (_m *CommentMock) FindChapterComments(chapterId string) ([]mangas.Comment, error) {
 	ret := _m.Called(chapterId)

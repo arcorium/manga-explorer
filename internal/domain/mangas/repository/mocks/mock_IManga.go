@@ -22,17 +22,17 @@ func (_m *MangaMock) EXPECT() *MangaMock_Expecter {
 	return &MangaMock_Expecter{mock: &_m.Mock}
 }
 
-// CreateManga provides a mock function with given fields: manga
-func (_m *MangaMock) CreateManga(manga *mangas.Manga) error {
-	ret := _m.Called(manga)
+// CreateManga provides a mock function with given fields: manga, genres
+func (_m *MangaMock) CreateManga(manga *mangas.Manga, genres []mangas.MangaGenre) error {
+	ret := _m.Called(manga, genres)
 
 	if len(ret) == 0 {
 		panic("no return value specified for CreateManga")
 	}
 
 	var r0 error
-	if rf, ok := ret.Get(0).(func(*mangas.Manga) error); ok {
-		r0 = rf(manga)
+	if rf, ok := ret.Get(0).(func(*mangas.Manga, []mangas.MangaGenre) error); ok {
+		r0 = rf(manga, genres)
 	} else {
 		r0 = ret.Error(0)
 	}
@@ -47,13 +47,14 @@ type MangaMock_CreateManga_Call struct {
 
 // CreateManga is a helper method to define mock.On call
 //   - manga *mangas.Manga
-func (_e *MangaMock_Expecter) CreateManga(manga interface{}) *MangaMock_CreateManga_Call {
-	return &MangaMock_CreateManga_Call{Call: _e.mock.On("CreateManga", manga)}
+//   - genres []mangas.MangaGenre
+func (_e *MangaMock_Expecter) CreateManga(manga interface{}, genres interface{}) *MangaMock_CreateManga_Call {
+	return &MangaMock_CreateManga_Call{Call: _e.mock.On("CreateManga", manga, genres)}
 }
 
-func (_c *MangaMock_CreateManga_Call) Run(run func(manga *mangas.Manga)) *MangaMock_CreateManga_Call {
+func (_c *MangaMock_CreateManga_Call) Run(run func(manga *mangas.Manga, genres []mangas.MangaGenre)) *MangaMock_CreateManga_Call {
 	_c.Call.Run(func(args mock.Arguments) {
-		run(args[0].(*mangas.Manga))
+		run(args[0].(*mangas.Manga), args[1].([]mangas.MangaGenre))
 	})
 	return _c
 }
@@ -63,7 +64,7 @@ func (_c *MangaMock_CreateManga_Call) Return(_a0 error) *MangaMock_CreateManga_C
 	return _c
 }
 
-func (_c *MangaMock_CreateManga_Call) RunAndReturn(run func(*mangas.Manga) error) *MangaMock_CreateManga_Call {
+func (_c *MangaMock_CreateManga_Call) RunAndReturn(run func(*mangas.Manga, []mangas.MangaGenre) error) *MangaMock_CreateManga_Call {
 	_c.Call.Return(run)
 	return _c
 }
@@ -207,118 +208,49 @@ func (_c *MangaMock_EditManga_Call) RunAndReturn(run func(*mangas.Manga) error) 
 	return _c
 }
 
-// FindMangaById provides a mock function with given fields: id
-func (_m *MangaMock) FindMinimalMangaById(id string) (*mangas.Manga, error) {
-	ret := _m.Called(id)
+// EditMangaGenres provides a mock function with given fields: additional, removes
+func (_m *MangaMock) EditMangaGenres(additional []mangas.MangaGenre, removes []mangas.MangaGenre) error {
+	ret := _m.Called(additional, removes)
 
 	if len(ret) == 0 {
-		panic("no return value specified for FindMinimalMangaById")
+		panic("no return value specified for EditMangaGenres")
 	}
 
-	var r0 *mangas.Manga
-	var r1 error
-	if rf, ok := ret.Get(0).(func(string) (*mangas.Manga, error)); ok {
-		return rf(id)
-	}
-	if rf, ok := ret.Get(0).(func(string) *mangas.Manga); ok {
-		r0 = rf(id)
+	var r0 error
+	if rf, ok := ret.Get(0).(func([]mangas.MangaGenre, []mangas.MangaGenre) error); ok {
+		r0 = rf(additional, removes)
 	} else {
-		if ret.Get(0) != nil {
-			r0 = ret.Get(0).(*mangas.Manga)
-		}
+		r0 = ret.Error(0)
 	}
 
-	if rf, ok := ret.Get(1).(func(string) error); ok {
-		r1 = rf(id)
-	} else {
-		r1 = ret.Error(1)
-	}
-
-	return r0, r1
+	return r0
 }
 
-// MangaMock_FindMangaById_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'FindMinimalMangaById'
-type MangaMock_FindMangaById_Call struct {
+// MangaMock_EditMangaGenres_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'EditMangaGenres'
+type MangaMock_EditMangaGenres_Call struct {
 	*mock.Call
 }
 
-// FindMangaById is a helper method to define mock.On call
-//   - id string
-func (_e *MangaMock_Expecter) FindMangaById(id interface{}) *MangaMock_FindMangaById_Call {
-	return &MangaMock_FindMangaById_Call{Call: _e.mock.On("FindMinimalMangaById", id)}
+// EditMangaGenres is a helper method to define mock.On call
+//   - additional []mangas.MangaGenre
+//   - removes []mangas.MangaGenre
+func (_e *MangaMock_Expecter) EditMangaGenres(additional interface{}, removes interface{}) *MangaMock_EditMangaGenres_Call {
+	return &MangaMock_EditMangaGenres_Call{Call: _e.mock.On("EditMangaGenres", additional, removes)}
 }
 
-func (_c *MangaMock_FindMangaById_Call) Run(run func(id string)) *MangaMock_FindMangaById_Call {
+func (_c *MangaMock_EditMangaGenres_Call) Run(run func(additional []mangas.MangaGenre, removes []mangas.MangaGenre)) *MangaMock_EditMangaGenres_Call {
 	_c.Call.Run(func(args mock.Arguments) {
-		run(args[0].(string))
+		run(args[0].([]mangas.MangaGenre), args[1].([]mangas.MangaGenre))
 	})
 	return _c
 }
 
-func (_c *MangaMock_FindMangaById_Call) Return(_a0 *mangas.Manga, _a1 error) *MangaMock_FindMangaById_Call {
-	_c.Call.Return(_a0, _a1)
+func (_c *MangaMock_EditMangaGenres_Call) Return(_a0 error) *MangaMock_EditMangaGenres_Call {
+	_c.Call.Return(_a0)
 	return _c
 }
 
-func (_c *MangaMock_FindMangaById_Call) RunAndReturn(run func(string) (*mangas.Manga, error)) *MangaMock_FindMangaById_Call {
-	_c.Call.Return(run)
-	return _c
-}
-
-// FindMangaChapterHistories provides a mock function with given fields: userId, mangaId, pagedQuery
-func (_m *MangaMock) FindMangaChapterHistories(userId string, mangaId string, pagedQuery infrastructurerepository.QueryParameter) (infrastructurerepository.PagedQueryResult[[]mangas.ChapterHistory], error) {
-	ret := _m.Called(userId, mangaId, pagedQuery)
-
-	if len(ret) == 0 {
-		panic("no return value specified for FindMangaChapterHistories")
-	}
-
-	var r0 infrastructurerepository.PagedQueryResult[[]mangas.ChapterHistory]
-	var r1 error
-	if rf, ok := ret.Get(0).(func(string, string, infrastructurerepository.QueryParameter) (infrastructurerepository.PagedQueryResult[[]mangas.ChapterHistory], error)); ok {
-		return rf(userId, mangaId, pagedQuery)
-	}
-	if rf, ok := ret.Get(0).(func(string, string, infrastructurerepository.QueryParameter) infrastructurerepository.PagedQueryResult[[]mangas.ChapterHistory]); ok {
-		r0 = rf(userId, mangaId, pagedQuery)
-	} else {
-		r0 = ret.Get(0).(infrastructurerepository.PagedQueryResult[[]mangas.ChapterHistory])
-	}
-
-	if rf, ok := ret.Get(1).(func(string, string, infrastructurerepository.QueryParameter) error); ok {
-		r1 = rf(userId, mangaId, pagedQuery)
-	} else {
-		r1 = ret.Error(1)
-	}
-
-	return r0, r1
-}
-
-// MangaMock_FindMangaChapterHistories_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'FindMangaChapterHistories'
-type MangaMock_FindMangaChapterHistories_Call struct {
-	*mock.Call
-}
-
-// FindMangaChapterHistories is a helper method to define mock.On call
-//   - userId string
-//   - mangaId string
-//   - pagedQuery infrastructurerepository.QueryParameter
-func (_e *MangaMock_Expecter) FindMangaChapterHistories(userId interface{}, mangaId interface{}, pagedQuery interface{}) *MangaMock_FindMangaChapterHistories_Call {
-	return &MangaMock_FindMangaChapterHistories_Call{Call: _e.mock.On("FindMangaChapterHistories", userId, mangaId, pagedQuery)}
-}
-
-func (_c *MangaMock_FindMangaChapterHistories_Call) Run(run func(userId string, mangaId string, pagedQuery infrastructurerepository.QueryParameter)) *MangaMock_FindMangaChapterHistories_Call {
-	_c.Call.Run(func(args mock.Arguments) {
-		run(args[0].(string), args[1].(string), args[2].(infrastructurerepository.QueryParameter))
-	})
-	return _c
-}
-
-func (_c *MangaMock_FindMangaChapterHistories_Call) Return(_a0 infrastructurerepository.PagedQueryResult[[]mangas.ChapterHistory], _a1 error) *MangaMock_FindMangaChapterHistories_Call {
-	_c.Call.Return(_a0, _a1)
-	return _c
-}
-
-func (_c *MangaMock_FindMangaChapterHistories_Call) RunAndReturn(run func(string, string, infrastructurerepository.QueryParameter) (infrastructurerepository.PagedQueryResult[[]mangas.ChapterHistory], error)) *MangaMock_FindMangaChapterHistories_Call {
+func (_c *MangaMock_EditMangaGenres_Call) RunAndReturn(run func([]mangas.MangaGenre, []mangas.MangaGenre) error) *MangaMock_EditMangaGenres_Call {
 	_c.Call.Return(run)
 	return _c
 }
@@ -565,6 +497,64 @@ func (_c *MangaMock_FindMangasById_Call) RunAndReturn(run func(...string) ([]man
 	return _c
 }
 
+// FindMinimalMangaById provides a mock function with given fields: id
+func (_m *MangaMock) FindMinimalMangaById(id string) (*mangas.Manga, error) {
+	ret := _m.Called(id)
+
+	if len(ret) == 0 {
+		panic("no return value specified for FindMinimalMangaById")
+	}
+
+	var r0 *mangas.Manga
+	var r1 error
+	if rf, ok := ret.Get(0).(func(string) (*mangas.Manga, error)); ok {
+		return rf(id)
+	}
+	if rf, ok := ret.Get(0).(func(string) *mangas.Manga); ok {
+		r0 = rf(id)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*mangas.Manga)
+		}
+	}
+
+	if rf, ok := ret.Get(1).(func(string) error); ok {
+		r1 = rf(id)
+	} else {
+		r1 = ret.Error(1)
+	}
+
+	return r0, r1
+}
+
+// MangaMock_FindMinimalMangaById_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'FindMinimalMangaById'
+type MangaMock_FindMinimalMangaById_Call struct {
+	*mock.Call
+}
+
+// FindMinimalMangaById is a helper method to define mock.On call
+//   - id string
+func (_e *MangaMock_Expecter) FindMinimalMangaById(id interface{}) *MangaMock_FindMinimalMangaById_Call {
+	return &MangaMock_FindMinimalMangaById_Call{Call: _e.mock.On("FindMinimalMangaById", id)}
+}
+
+func (_c *MangaMock_FindMinimalMangaById_Call) Run(run func(id string)) *MangaMock_FindMinimalMangaById_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		run(args[0].(string))
+	})
+	return _c
+}
+
+func (_c *MangaMock_FindMinimalMangaById_Call) Return(_a0 *mangas.Manga, _a1 error) *MangaMock_FindMinimalMangaById_Call {
+	_c.Call.Return(_a0, _a1)
+	return _c
+}
+
+func (_c *MangaMock_FindMinimalMangaById_Call) RunAndReturn(run func(string) (*mangas.Manga, error)) *MangaMock_FindMinimalMangaById_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
 // FindRandomMangas provides a mock function with given fields: limit
 func (_m *MangaMock) FindRandomMangas(limit uint64) ([]mangas.Manga, error) {
 	ret := _m.Called(limit)
@@ -623,6 +613,52 @@ func (_c *MangaMock_FindRandomMangas_Call) RunAndReturn(run func(uint64) ([]mang
 	return _c
 }
 
+// InsertMangaFavorite provides a mock function with given fields: favorite
+func (_m *MangaMock) InsertMangaFavorite(favorite *mangas.MangaFavorite) error {
+	ret := _m.Called(favorite)
+
+	if len(ret) == 0 {
+		panic("no return value specified for InsertMangaFavorite")
+	}
+
+	var r0 error
+	if rf, ok := ret.Get(0).(func(*mangas.MangaFavorite) error); ok {
+		r0 = rf(favorite)
+	} else {
+		r0 = ret.Error(0)
+	}
+
+	return r0
+}
+
+// MangaMock_InsertMangaFavorite_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'InsertMangaFavorite'
+type MangaMock_InsertMangaFavorite_Call struct {
+	*mock.Call
+}
+
+// InsertMangaFavorite is a helper method to define mock.On call
+//   - favorite *mangas.MangaFavorite
+func (_e *MangaMock_Expecter) InsertMangaFavorite(favorite interface{}) *MangaMock_InsertMangaFavorite_Call {
+	return &MangaMock_InsertMangaFavorite_Call{Call: _e.mock.On("InsertMangaFavorite", favorite)}
+}
+
+func (_c *MangaMock_InsertMangaFavorite_Call) Run(run func(favorite *mangas.MangaFavorite)) *MangaMock_InsertMangaFavorite_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		run(args[0].(*mangas.MangaFavorite))
+	})
+	return _c
+}
+
+func (_c *MangaMock_InsertMangaFavorite_Call) Return(_a0 error) *MangaMock_InsertMangaFavorite_Call {
+	_c.Call.Return(_a0)
+	return _c
+}
+
+func (_c *MangaMock_InsertMangaFavorite_Call) RunAndReturn(run func(*mangas.MangaFavorite) error) *MangaMock_InsertMangaFavorite_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
 // ListMangas provides a mock function with given fields: parameter
 func (_m *MangaMock) ListMangas(parameter infrastructurerepository.QueryParameter) (infrastructurerepository.PagedQueryResult[[]mangas.Manga], error) {
 	ret := _m.Called(parameter)
@@ -675,6 +711,98 @@ func (_c *MangaMock_ListMangas_Call) Return(_a0 infrastructurerepository.PagedQu
 }
 
 func (_c *MangaMock_ListMangas_Call) RunAndReturn(run func(infrastructurerepository.QueryParameter) (infrastructurerepository.PagedQueryResult[[]mangas.Manga], error)) *MangaMock_ListMangas_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
+// PatchManga provides a mock function with given fields: manga
+func (_m *MangaMock) PatchManga(manga *mangas.Manga) error {
+	ret := _m.Called(manga)
+
+	if len(ret) == 0 {
+		panic("no return value specified for PatchManga")
+	}
+
+	var r0 error
+	if rf, ok := ret.Get(0).(func(*mangas.Manga) error); ok {
+		r0 = rf(manga)
+	} else {
+		r0 = ret.Error(0)
+	}
+
+	return r0
+}
+
+// MangaMock_PatchManga_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'PatchManga'
+type MangaMock_PatchManga_Call struct {
+	*mock.Call
+}
+
+// PatchManga is a helper method to define mock.On call
+//   - manga *mangas.Manga
+func (_e *MangaMock_Expecter) PatchManga(manga interface{}) *MangaMock_PatchManga_Call {
+	return &MangaMock_PatchManga_Call{Call: _e.mock.On("PatchManga", manga)}
+}
+
+func (_c *MangaMock_PatchManga_Call) Run(run func(manga *mangas.Manga)) *MangaMock_PatchManga_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		run(args[0].(*mangas.Manga))
+	})
+	return _c
+}
+
+func (_c *MangaMock_PatchManga_Call) Return(_a0 error) *MangaMock_PatchManga_Call {
+	_c.Call.Return(_a0)
+	return _c
+}
+
+func (_c *MangaMock_PatchManga_Call) RunAndReturn(run func(*mangas.Manga) error) *MangaMock_PatchManga_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
+// RemoveMangaFavorite provides a mock function with given fields: favorite
+func (_m *MangaMock) RemoveMangaFavorite(favorite *mangas.MangaFavorite) error {
+	ret := _m.Called(favorite)
+
+	if len(ret) == 0 {
+		panic("no return value specified for RemoveMangaFavorite")
+	}
+
+	var r0 error
+	if rf, ok := ret.Get(0).(func(*mangas.MangaFavorite) error); ok {
+		r0 = rf(favorite)
+	} else {
+		r0 = ret.Error(0)
+	}
+
+	return r0
+}
+
+// MangaMock_RemoveMangaFavorite_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'RemoveMangaFavorite'
+type MangaMock_RemoveMangaFavorite_Call struct {
+	*mock.Call
+}
+
+// RemoveMangaFavorite is a helper method to define mock.On call
+//   - favorite *mangas.MangaFavorite
+func (_e *MangaMock_Expecter) RemoveMangaFavorite(favorite interface{}) *MangaMock_RemoveMangaFavorite_Call {
+	return &MangaMock_RemoveMangaFavorite_Call{Call: _e.mock.On("RemoveMangaFavorite", favorite)}
+}
+
+func (_c *MangaMock_RemoveMangaFavorite_Call) Run(run func(favorite *mangas.MangaFavorite)) *MangaMock_RemoveMangaFavorite_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		run(args[0].(*mangas.MangaFavorite))
+	})
+	return _c
+}
+
+func (_c *MangaMock_RemoveMangaFavorite_Call) Return(_a0 error) *MangaMock_RemoveMangaFavorite_Call {
+	_c.Call.Return(_a0)
+	return _c
+}
+
+func (_c *MangaMock_RemoveMangaFavorite_Call) RunAndReturn(run func(*mangas.MangaFavorite) error) *MangaMock_RemoveMangaFavorite_Call {
 	_c.Call.Return(run)
 	return _c
 }

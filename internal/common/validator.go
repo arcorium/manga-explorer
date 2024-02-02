@@ -2,22 +2,7 @@ package common
 
 import (
 	"github.com/go-playground/validator/v10"
-	"manga-explorer/internal/util"
 )
-
-func validateUUID4Slice(level validator.FieldLevel) bool {
-	val, ok := level.Field().Interface().([]string)
-	if !ok {
-		return false
-	}
-
-	for _, v := range val {
-		if !util.IsUUID(v) {
-			return false
-		}
-	}
-	return true
-}
 
 func RegisterValidationTags(validate *validator.Validate) {
 	//err := validate.RegisterValidation("uuid", func(fl validator.FieldLevel) bool {
@@ -31,10 +16,11 @@ func RegisterValidationTags(validate *validator.Validate) {
 	//	panic(err)
 	//}
 
-	err := validate.RegisterValidation("uuid4s", validateUUID4Slice)
-	if err != nil {
-		panic(err)
-	}
+	//err := validate.RegisterValidation("language", validateLanguages)
+	//if err != nil {
+	//	panic(err)
+	//}
+	validate.RegisterAlias("language", "bcp47_language_tag")
 
 	validate.RegisterAlias("manga_status", "oneof=completed ongoing drafted dropped hiatus")
 }

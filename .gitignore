@@ -3,6 +3,6 @@ files/
 script/
 build/
 *.iml
-app.env
+.env
 test.env
 *.exe

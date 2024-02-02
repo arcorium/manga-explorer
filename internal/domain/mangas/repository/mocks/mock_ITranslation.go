@@ -27,7 +27,7 @@ func (_m *TranslationMock) Create(translation []mangas.Translation) error {
 	ret := _m.Called(translation)
 
 	if len(ret) == 0 {
-		panic("no return value specified for Upsert")
+		panic("no return value specified for Create")
 	}
 
 	var r0 error
@@ -40,7 +40,7 @@ func (_m *TranslationMock) Create(translation []mangas.Translation) error {
 	return r0
 }
 
-// TranslationMock_Create_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'Upsert'
+// TranslationMock_Create_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'Create'
 type TranslationMock_Create_Call struct {
 	*mock.Call
 }
@@ -48,7 +48,7 @@ type TranslationMock_Create_Call struct {
 // Create is a helper method to define mock.On call
 //   - translation []mangas.Translation
 func (_e *TranslationMock_Expecter) Create(translation interface{}) *TranslationMock_Create_Call {
-	return &TranslationMock_Create_Call{Call: _e.mock.On("Upsert", translation)}
+	return &TranslationMock_Create_Call{Call: _e.mock.On("Create", translation)}
 }
 
 func (_c *TranslationMock_Create_Call) Run(run func(translation []mangas.Translation)) *TranslationMock_Create_Call {
@@ -156,6 +156,53 @@ func (_c *TranslationMock_DeleteByMangaId_Call) Return(_a0 error) *TranslationMo
 }
 
 func (_c *TranslationMock_DeleteByMangaId_Call) RunAndReturn(run func(string) error) *TranslationMock_DeleteByMangaId_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
+// DeleteMangaSpecific provides a mock function with given fields: mangaId, languages
+func (_m *TranslationMock) DeleteMangaSpecific(mangaId string, languages []common.Language) error {
+	ret := _m.Called(mangaId, languages)
+
+	if len(ret) == 0 {
+		panic("no return value specified for DeleteMangaSpecific")
+	}
+
+	var r0 error
+	if rf, ok := ret.Get(0).(func(string, []common.Language) error); ok {
+		r0 = rf(mangaId, languages)
+	} else {
+		r0 = ret.Error(0)
+	}
+
+	return r0
+}
+
+// TranslationMock_DeleteMangaSpecific_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'DeleteMangaSpecific'
+type TranslationMock_DeleteMangaSpecific_Call struct {
+	*mock.Call
+}
+
+// DeleteMangaSpecific is a helper method to define mock.On call
+//   - mangaId string
+//   - languages []common.Language
+func (_e *TranslationMock_Expecter) DeleteMangaSpecific(mangaId interface{}, languages interface{}) *TranslationMock_DeleteMangaSpecific_Call {
+	return &TranslationMock_DeleteMangaSpecific_Call{Call: _e.mock.On("DeleteMangaSpecific", mangaId, languages)}
+}
+
+func (_c *TranslationMock_DeleteMangaSpecific_Call) Run(run func(mangaId string, languages []common.Language)) *TranslationMock_DeleteMangaSpecific_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		run(args[0].(string), args[1].([]common.Language))
+	})
+	return _c
+}
+
+func (_c *TranslationMock_DeleteMangaSpecific_Call) Return(_a0 error) *TranslationMock_DeleteMangaSpecific_Call {
+	_c.Call.Return(_a0)
+	return _c
+}
+
+func (_c *TranslationMock_DeleteMangaSpecific_Call) RunAndReturn(run func(string, []common.Language) error) *TranslationMock_DeleteMangaSpecific_Call {
 	_c.Call.Return(run)
 	return _c
 }

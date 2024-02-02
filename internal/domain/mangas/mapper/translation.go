@@ -1,7 +1,6 @@
 package mapper
 
 import (
-	"github.com/biter777/countries"
 	"manga-explorer/internal/domain/mangas"
 	"manga-explorer/internal/domain/mangas/dto"
 )
@@ -16,7 +15,7 @@ func ToTranslationResponse(translation *mangas.Translation) dto.TranslationRespo
 }
 
 func MapCreateTranslateInput(input *dto.InternalTranslation, mangaId string) mangas.Translation {
-	return mangas.NewTranslation(mangaId, input.Title, input.Description, countries.ByName(string(input.Lang)))
+	return mangas.NewTranslation(mangaId, input.Title, input.Description, input.Lang.ParseLang())
 }
 
 func MapInsertTranslateInput(input *dto.MangaInsertTranslationInput) []mangas.Translation {
@@ -31,12 +30,8 @@ func MapInsertTranslateInput(input *dto.MangaInsertTranslationInput) []mangas.Tr
 func MapTranslationUpdateInput(input *dto.TranslationUpdateInput) mangas.Translation {
 	return mangas.Translation{
 		Id:          input.TranslationId,
-		Language:    input.Lang,
+		Language:    input.Lang.ParseLang(),
 		Title:       input.Title,
 		Description: input.Description,
 	}
-}
-
-func MapFavoriteMangaInput(input *dto.FavoriteMangaInput) mangas.MangaFavorite {
-	return mangas.NewFavorite(input.UserId, input.MangaId)
 }

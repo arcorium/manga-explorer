@@ -631,7 +631,7 @@ func (_m *UserMock) UpdateProfile(input *dto.ProfileUpdateInput) status.Object {
 	ret := _m.Called(input)
 
 	if len(ret) == 0 {
-		panic("no return value specified for UpdateProfileByUserId")
+		panic("no return value specified for UpdateProfile")
 	}
 
 	var r0 status.Object
@@ -644,7 +644,7 @@ func (_m *UserMock) UpdateProfile(input *dto.ProfileUpdateInput) status.Object {
 	return r0
 }
 
-// UserMock_UpdateProfile_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'UpdateProfileByUserId'
+// UserMock_UpdateProfile_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'UpdateProfile'
 type UserMock_UpdateProfile_Call struct {
 	*mock.Call
 }
@@ -652,7 +652,7 @@ type UserMock_UpdateProfile_Call struct {
 // UpdateProfile is a helper method to define mock.On call
 //   - input *dto.ProfileUpdateInput
 func (_e *UserMock_Expecter) UpdateProfile(input interface{}) *UserMock_UpdateProfile_Call {
-	return &UserMock_UpdateProfile_Call{Call: _e.mock.On("UpdateProfileByUserId", input)}
+	return &UserMock_UpdateProfile_Call{Call: _e.mock.On("UpdateProfile", input)}
 }
 
 func (_c *UserMock_UpdateProfile_Call) Run(run func(input *dto.ProfileUpdateInput)) *UserMock_UpdateProfile_Call {

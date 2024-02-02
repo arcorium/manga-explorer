@@ -5,7 +5,9 @@ import (
 	"github.com/uptrace/bun"
 	"manga-explorer/internal/domain/mangas"
 	"manga-explorer/internal/domain/mangas/repository"
+	repo "manga-explorer/internal/infrastructure/repository"
 	"manga-explorer/internal/util"
+	"manga-explorer/internal/util/containers"
 	"time"
 )
 
@@ -34,8 +36,8 @@ func (c chapterRepository) EditChapter(chapter *mangas.Chapter) error {
 
 	res, err := c.db.NewUpdate().
 		Model(chapter).
-		OmitZero().
 		WherePK().
+		ExcludeColumn("id", "translator_id", "created_at").
 		Exec(ctx)
 	return util.CheckSqlResult(res, err)
 }
@@ -58,7 +60,16 @@ func (c chapterRepository) FindChapter(id string) (*mangas.Chapter, error) {
 	chapter := new(mangas.Chapter)
 	err := c.db.NewSelect().
 		Model(chapter).
-		Where("id = ?", id).
+		ColumnExpr("COUNT(DISTINCT comment.*) AS total_comment, chapter.*").
+		Join("LEFT JOIN comments AS comment").
+		JoinOn("comment.object_type = ?", mangas.CommentObjectChapter.String()).
+		JoinOn("comment.object_id = chapter.id").
+		Relation("Pages", func(query *bun.SelectQuery) *bun.SelectQuery {
+			return query.Order("page.number")
+		}).
+		Relation("Translator").
+		Where("chapter.id = ?", id).
+		Group("chapter.id", "translator.id").
 		Scan(ctx)
 	if err != nil {
 		return nil, err
@@ -66,34 +77,42 @@ func (c chapterRepository) FindChapter(id string) (*mangas.Chapter, error) {
 	return chapter, nil
 }
 
-func (c chapterRepository) FindChapterPages(chapterId string) ([]mangas.Page, error) {
+func (c chapterRepository) FindVolumeDetails(volumeId string) (*mangas.Volume, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second*5)
 	defer cancel()
 
-	var result []mangas.Page
+	volume := new(mangas.Volume)
 	err := c.db.NewSelect().
-		Model(&result).
-		Relation("Chapter").
-		Where("chapter_id = ?", chapterId).
-		Order("number").
+		Model(volume).
+		Relation("Chapters", func(query *bun.SelectQuery) *bun.SelectQuery {
+			return query.Order("chapter.number", "chapter.created_at").
+				ColumnExpr("COUNT(DISTINCT comment.*) AS total_comment, chapter.*").
+				Join("LEFT JOIN comments AS comment").
+				JoinOn("comment.object_type = ?", mangas.CommentObjectChapter.String()).
+				JoinOn("comment.object_id = chapter.id").
+				Group("chapter.id", "translator.id")
+		}).
+		Relation("Chapters.Translator").
+		Where("volume.id = ?", volumeId).
 		Scan(ctx)
-	return util.CheckSliceResult(result, err).Unwrap()
+
+	if err != nil {
+		return nil, err
+	}
+	return volume, nil
 }
 
-func (c chapterRepository) FindVolumeChapters(volumeId string) ([]mangas.Chapter, error) {
+func (c chapterRepository) FindPagesDetails(chapterId string, pages []uint16) ([]mangas.Page, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second*5)
 	defer cancel()
 
-	var result []mangas.Chapter
-	err := c.db.NewSelect().
+	result := []mangas.Page{}
+	query := c.db.NewSelect().
 		Model(&result).
-		Relation("Comments").
-		Relation("Pages").
-		Relation("Translator").
-		Relation("Volume").
-		Where("volume_id = ?", volumeId).
-		Order("number", "created_at").
-		Scan(ctx)
+		Where("chapter_id = ? AND number IN (?)", chapterId, bun.In(pages))
+
+	err := query.Scan(ctx)
+
 	return util.CheckSliceResult(result, err).Unwrap()
 }
 
@@ -117,4 +136,43 @@ func (c chapterRepository) InsertChapterPages(pages []mangas.Page) error {
 		Returning("NULL").
 		Exec(ctx)
 	return util.CheckSqlResult(res, err)
+}
+
+func (c chapterRepository) InsertChapterHistories(history *mangas.ChapterHistory) error {
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second*5)
+	defer cancel()
+
+	res, err := c.db.NewInsert().
+		Model(history).
+		On("CONFLICT (user_id, chapter_id) DO UPDATE SET last_view = EXCLUDED.last_view").
+		Exec(ctx)
+
+	return util.CheckSqlResult(res, err)
+}
+
+func (c chapterRepository) FindMangaChapterHistories(userId string, mangaId string, pagedQuery repo.QueryParameter) (repo.PagedQueryResult[[]mangas.Chapter], error) {
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second*5)
+	defer cancel()
+
+	var result []mangas.ChapterHistory
+
+	query := c.db.NewSelect().
+		//Model(util.Nil[mangas.ChapterHistory]()).
+		Model(&result).
+		ExcludeColumn("*").
+		Relation("Chapter").
+		Relation("Chapter.Translator").
+		Relation("Chapter.Volume").
+		Where("user_id = ? AND chapter__volume.manga_id = ?", userId, mangaId).
+		OrderExpr("last_view DESC")
+
+	query = pagedQuery.Insert(query)
+	count, err := query.ScanAndCount(ctx)
+
+	actuals := containers.CastSlicePtr(result, func(current *mangas.ChapterHistory) mangas.Chapter {
+		return *current.Chapter
+	})
+
+	res := util.CheckSliceResult(actuals, err)
+	return repo.NewResult(res.Data, count), res.Err
 }

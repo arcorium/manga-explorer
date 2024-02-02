@@ -128,7 +128,7 @@ func Test_mangaRepository_CreateVolume(t *testing.T) {
 			wantErr: true,
 		},
 		{
-			name: "Duplicate Volume Number on Manga",
+			name: "Duplicate Volume Chapter on Manga",
 			args: args{
 				volume: newVolumeForTest(opt.Null[string](), "2aa478df-9f0f-4e67-b652-f9b01023eefb", 1, "title", "desc"),
 			},

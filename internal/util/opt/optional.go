@@ -1,5 +1,7 @@
 package opt
 
+import "time"
+
 type Optional[T any] struct {
 	data []T
 }
@@ -20,8 +22,8 @@ func (o Optional[T]) ValueOr(val T) T {
 }
 
 var (
-	NullStr = Null[string]()
-	NullInt = Null[int]()
+	NullStr  = Null[string]()
+	NullTime = Null[time.Time]()
 )
 
 func Null[T any]() Optional[T] {

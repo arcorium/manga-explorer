@@ -4,6 +4,7 @@ package repository
 
 import (
 	mangas "manga-explorer/internal/domain/mangas"
+	infrastructurerepository "manga-explorer/internal/infrastructure/repository"
 
 	mock "github.com/stretchr/testify/mock"
 )
@@ -264,29 +265,27 @@ func (_c *ChapterMock_FindChapter_Call) RunAndReturn(run func(string) (*mangas.C
 	return _c
 }
 
-// FindChapterPages provides a mock function with given fields: chapterId
-func (_m *ChapterMock) FindChapterPages(chapterId string) ([]mangas.Page, error) {
-	ret := _m.Called(chapterId)
+// FindMangaChapterHistories provides a mock function with given fields: userId, mangaId, pagedQuery
+func (_m *ChapterMock) FindMangaChapterHistories(userId string, mangaId string, pagedQuery infrastructurerepository.QueryParameter) (infrastructurerepository.PagedQueryResult[[]mangas.Chapter], error) {
+	ret := _m.Called(userId, mangaId, pagedQuery)
 
 	if len(ret) == 0 {
-		panic("no return value specified for FindChapterPages")
+		panic("no return value specified for FindMangaChapterHistories")
 	}
 
-	var r0 []mangas.Page
+	var r0 infrastructurerepository.PagedQueryResult[[]mangas.Chapter]
 	var r1 error
-	if rf, ok := ret.Get(0).(func(string) ([]mangas.Page, error)); ok {
-		return rf(chapterId)
+	if rf, ok := ret.Get(0).(func(string, string, infrastructurerepository.QueryParameter) (infrastructurerepository.PagedQueryResult[[]mangas.Chapter], error)); ok {
+		return rf(userId, mangaId, pagedQuery)
 	}
-	if rf, ok := ret.Get(0).(func(string) []mangas.Page); ok {
-		r0 = rf(chapterId)
+	if rf, ok := ret.Get(0).(func(string, string, infrastructurerepository.QueryParameter) infrastructurerepository.PagedQueryResult[[]mangas.Chapter]); ok {
+		r0 = rf(userId, mangaId, pagedQuery)
 	} else {
-		if ret.Get(0) != nil {
-			r0 = ret.Get(0).([]mangas.Page)
-		}
+		r0 = ret.Get(0).(infrastructurerepository.PagedQueryResult[[]mangas.Chapter])
 	}
 
-	if rf, ok := ret.Get(1).(func(string) error); ok {
-		r1 = rf(chapterId)
+	if rf, ok := ret.Get(1).(func(string, string, infrastructurerepository.QueryParameter) error); ok {
+		r1 = rf(userId, mangaId, pagedQuery)
 	} else {
 		r1 = ret.Error(1)
 	}
@@ -294,52 +293,113 @@ func (_m *ChapterMock) FindChapterPages(chapterId string) ([]mangas.Page, error)
 	return r0, r1
 }
 
-// ChapterMock_FindChapterPages_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'FindChapterPages'
-type ChapterMock_FindChapterPages_Call struct {
+// ChapterMock_FindMangaChapterHistories_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'FindMangaChapterHistories'
+type ChapterMock_FindMangaChapterHistories_Call struct {
 	*mock.Call
 }
 
-// FindChapterPages is a helper method to define mock.On call
-//   - chapterId string
-func (_e *ChapterMock_Expecter) FindChapterPages(chapterId interface{}) *ChapterMock_FindChapterPages_Call {
-	return &ChapterMock_FindChapterPages_Call{Call: _e.mock.On("FindChapterPages", chapterId)}
+// FindMangaChapterHistories is a helper method to define mock.On call
+//   - userId string
+//   - mangaId string
+//   - pagedQuery infrastructurerepository.QueryParameter
+func (_e *ChapterMock_Expecter) FindMangaChapterHistories(userId interface{}, mangaId interface{}, pagedQuery interface{}) *ChapterMock_FindMangaChapterHistories_Call {
+	return &ChapterMock_FindMangaChapterHistories_Call{Call: _e.mock.On("FindMangaChapterHistories", userId, mangaId, pagedQuery)}
 }
 
-func (_c *ChapterMock_FindChapterPages_Call) Run(run func(chapterId string)) *ChapterMock_FindChapterPages_Call {
+func (_c *ChapterMock_FindMangaChapterHistories_Call) Run(run func(userId string, mangaId string, pagedQuery infrastructurerepository.QueryParameter)) *ChapterMock_FindMangaChapterHistories_Call {
 	_c.Call.Run(func(args mock.Arguments) {
-		run(args[0].(string))
+		run(args[0].(string), args[1].(string), args[2].(infrastructurerepository.QueryParameter))
 	})
 	return _c
 }
 
-func (_c *ChapterMock_FindChapterPages_Call) Return(_a0 []mangas.Page, _a1 error) *ChapterMock_FindChapterPages_Call {
+func (_c *ChapterMock_FindMangaChapterHistories_Call) Return(_a0 infrastructurerepository.PagedQueryResult[[]mangas.Chapter], _a1 error) *ChapterMock_FindMangaChapterHistories_Call {
 	_c.Call.Return(_a0, _a1)
 	return _c
 }
 
-func (_c *ChapterMock_FindChapterPages_Call) RunAndReturn(run func(string) ([]mangas.Page, error)) *ChapterMock_FindChapterPages_Call {
+func (_c *ChapterMock_FindMangaChapterHistories_Call) RunAndReturn(run func(string, string, infrastructurerepository.QueryParameter) (infrastructurerepository.PagedQueryResult[[]mangas.Chapter], error)) *ChapterMock_FindMangaChapterHistories_Call {
 	_c.Call.Return(run)
 	return _c
 }
 
-// FindVolumeChapters provides a mock function with given fields: volumeId
-func (_m *ChapterMock) FindVolumeChapters(volumeId string) ([]mangas.Chapter, error) {
+// FindPagesDetails provides a mock function with given fields: chapterId, pages
+func (_m *ChapterMock) FindPagesDetails(chapterId string, pages []uint16) ([]mangas.Page, error) {
+	ret := _m.Called(chapterId, pages)
+
+	if len(ret) == 0 {
+		panic("no return value specified for FindPagesDetails")
+	}
+
+	var r0 []mangas.Page
+	var r1 error
+	if rf, ok := ret.Get(0).(func(string, []uint16) ([]mangas.Page, error)); ok {
+		return rf(chapterId, pages)
+	}
+	if rf, ok := ret.Get(0).(func(string, []uint16) []mangas.Page); ok {
+		r0 = rf(chapterId, pages)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).([]mangas.Page)
+		}
+	}
+
+	if rf, ok := ret.Get(1).(func(string, []uint16) error); ok {
+		r1 = rf(chapterId, pages)
+	} else {
+		r1 = ret.Error(1)
+	}
+
+	return r0, r1
+}
+
+// ChapterMock_FindPagesDetails_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'FindPagesDetails'
+type ChapterMock_FindPagesDetails_Call struct {
+	*mock.Call
+}
+
+// FindPagesDetails is a helper method to define mock.On call
+//   - chapterId string
+//   - pages []uint16
+func (_e *ChapterMock_Expecter) FindPagesDetails(chapterId interface{}, pages interface{}) *ChapterMock_FindPagesDetails_Call {
+	return &ChapterMock_FindPagesDetails_Call{Call: _e.mock.On("FindPagesDetails", chapterId, pages)}
+}
+
+func (_c *ChapterMock_FindPagesDetails_Call) Run(run func(chapterId string, pages []uint16)) *ChapterMock_FindPagesDetails_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		run(args[0].(string), args[1].([]uint16))
+	})
+	return _c
+}
+
+func (_c *ChapterMock_FindPagesDetails_Call) Return(_a0 []mangas.Page, _a1 error) *ChapterMock_FindPagesDetails_Call {
+	_c.Call.Return(_a0, _a1)
+	return _c
+}
+
+func (_c *ChapterMock_FindPagesDetails_Call) RunAndReturn(run func(string, []uint16) ([]mangas.Page, error)) *ChapterMock_FindPagesDetails_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
+// FindVolumeDetails provides a mock function with given fields: volumeId
+func (_m *ChapterMock) FindVolumeDetails(volumeId string) (*mangas.Volume, error) {
 	ret := _m.Called(volumeId)
 
 	if len(ret) == 0 {
-		panic("no return value specified for FindVolumeChapters")
+		panic("no return value specified for FindVolumeDetails")
 	}
 
-	var r0 []mangas.Chapter
+	var r0 *mangas.Volume
 	var r1 error
-	if rf, ok := ret.Get(0).(func(string) ([]mangas.Chapter, error)); ok {
+	if rf, ok := ret.Get(0).(func(string) (*mangas.Volume, error)); ok {
 		return rf(volumeId)
 	}
-	if rf, ok := ret.Get(0).(func(string) []mangas.Chapter); ok {
+	if rf, ok := ret.Get(0).(func(string) *mangas.Volume); ok {
 		r0 = rf(volumeId)
 	} else {
 		if ret.Get(0) != nil {
-			r0 = ret.Get(0).([]mangas.Chapter)
+			r0 = ret.Get(0).(*mangas.Volume)
 		}
 	}
 
@@ -352,30 +412,76 @@ func (_m *ChapterMock) FindVolumeChapters(volumeId string) ([]mangas.Chapter, er
 	return r0, r1
 }
 
-// ChapterMock_FindVolumeChapters_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'FindVolumeChapters'
-type ChapterMock_FindVolumeChapters_Call struct {
+// ChapterMock_FindVolumeDetails_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'FindVolumeDetails'
+type ChapterMock_FindVolumeDetails_Call struct {
 	*mock.Call
 }
 
-// FindVolumeChapters is a helper method to define mock.On call
+// FindVolumeDetails is a helper method to define mock.On call
 //   - volumeId string
-func (_e *ChapterMock_Expecter) FindVolumeChapters(volumeId interface{}) *ChapterMock_FindVolumeChapters_Call {
-	return &ChapterMock_FindVolumeChapters_Call{Call: _e.mock.On("FindVolumeChapters", volumeId)}
+func (_e *ChapterMock_Expecter) FindVolumeDetails(volumeId interface{}) *ChapterMock_FindVolumeDetails_Call {
+	return &ChapterMock_FindVolumeDetails_Call{Call: _e.mock.On("FindVolumeDetails", volumeId)}
 }
 
-func (_c *ChapterMock_FindVolumeChapters_Call) Run(run func(volumeId string)) *ChapterMock_FindVolumeChapters_Call {
+func (_c *ChapterMock_FindVolumeDetails_Call) Run(run func(volumeId string)) *ChapterMock_FindVolumeDetails_Call {
 	_c.Call.Run(func(args mock.Arguments) {
 		run(args[0].(string))
 	})
 	return _c
 }
 
-func (_c *ChapterMock_FindVolumeChapters_Call) Return(_a0 []mangas.Chapter, _a1 error) *ChapterMock_FindVolumeChapters_Call {
+func (_c *ChapterMock_FindVolumeDetails_Call) Return(_a0 *mangas.Volume, _a1 error) *ChapterMock_FindVolumeDetails_Call {
 	_c.Call.Return(_a0, _a1)
 	return _c
 }
 
-func (_c *ChapterMock_FindVolumeChapters_Call) RunAndReturn(run func(string) ([]mangas.Chapter, error)) *ChapterMock_FindVolumeChapters_Call {
+func (_c *ChapterMock_FindVolumeDetails_Call) RunAndReturn(run func(string) (*mangas.Volume, error)) *ChapterMock_FindVolumeDetails_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
+// InsertChapterHistories provides a mock function with given fields: history
+func (_m *ChapterMock) InsertChapterHistories(history *mangas.ChapterHistory) error {
+	ret := _m.Called(history)
+
+	if len(ret) == 0 {
+		panic("no return value specified for InsertChapterHistories")
+	}
+
+	var r0 error
+	if rf, ok := ret.Get(0).(func(*mangas.ChapterHistory) error); ok {
+		r0 = rf(history)
+	} else {
+		r0 = ret.Error(0)
+	}
+
+	return r0
+}
+
+// ChapterMock_InsertChapterHistories_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'InsertChapterHistories'
+type ChapterMock_InsertChapterHistories_Call struct {
+	*mock.Call
+}
+
+// InsertChapterHistories is a helper method to define mock.On call
+//   - history *mangas.ChapterHistory
+func (_e *ChapterMock_Expecter) InsertChapterHistories(history interface{}) *ChapterMock_InsertChapterHistories_Call {
+	return &ChapterMock_InsertChapterHistories_Call{Call: _e.mock.On("InsertChapterHistories", history)}
+}
+
+func (_c *ChapterMock_InsertChapterHistories_Call) Run(run func(history *mangas.ChapterHistory)) *ChapterMock_InsertChapterHistories_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		run(args[0].(*mangas.ChapterHistory))
+	})
+	return _c
+}
+
+func (_c *ChapterMock_InsertChapterHistories_Call) Return(_a0 error) *ChapterMock_InsertChapterHistories_Call {
+	_c.Call.Return(_a0)
+	return _c
+}
+
+func (_c *ChapterMock_InsertChapterHistories_Call) RunAndReturn(run func(*mangas.ChapterHistory) error) *ChapterMock_InsertChapterHistories_Call {
 	_c.Call.Return(run)
 	return _c
 }

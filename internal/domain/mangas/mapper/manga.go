@@ -22,14 +22,9 @@ func ToMangaResponse(manga *mangas.Manga, fs fileService.IFile) dto.MangaRespons
 		Rate:            manga.AverageRate,
 		TotalRater:      manga.TotalRater,
 		TotalComment:    manga.TotalComment,
-		// TODO: Comment and ratings should be requested differently
-		//Comments:        containers.CastSlicePtr(manga.Comments, ToCommentResponse),
-		//Ratings:         containers.CastSlicePtr(manga.Ratings, ToRatingResponse),
-		Translations: containers.CastSlicePtr(manga.Translations, ToTranslationResponse),
-		Volumes:      containers.CastSlicePtr1(manga.Volumes, fs, ToVolumeResponse),
-		Genres:       containers.CastSlicePtr(manga.Genres, ToGenreResponse),
-		//ViewedCount:     0, // TODO: Implement it
-		//FavoriteCount:   0,
+		Translations:    containers.CastSlicePtr(manga.Translations, ToTranslationResponse),
+		Volumes:         containers.CastSlicePtr1(manga.Volumes, fs, ToVolumeResponse),
+		Genres:          containers.CastSlicePtr(manga.Genres, ToGenreResponse),
 	}
 }
 
@@ -98,4 +93,8 @@ func MapMangaGenreEditInput(input *dto.MangaGenreEditInput) (additionals []manga
 		removes = append(removes, mangas.NewMangaGenre(input.MangaId, v))
 	}
 	return additionals, removes
+}
+
+func MapFavoriteMangaInput(input *dto.FavoriteMangaInput) mangas.MangaFavorite {
+	return mangas.NewFavorite(input.UserId, input.MangaId)
 }

@@ -21,52 +21,6 @@ func (_m *VerificationMock) EXPECT() *VerificationMock_Expecter {
 	return &VerificationMock_Expecter{mock: &_m.Mock}
 }
 
-// Create provides a mock function with given fields: verification
-func (_m *VerificationMock) Create(verification *users.Verification) error {
-	ret := _m.Called(verification)
-
-	if len(ret) == 0 {
-		panic("no return value specified for Upsert")
-	}
-
-	var r0 error
-	if rf, ok := ret.Get(0).(func(*users.Verification) error); ok {
-		r0 = rf(verification)
-	} else {
-		r0 = ret.Error(0)
-	}
-
-	return r0
-}
-
-// VerificationMock_Create_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'Upsert'
-type VerificationMock_Create_Call struct {
-	*mock.Call
-}
-
-// Create is a helper method to define mock.On call
-//   - verification *users.Verification
-func (_e *VerificationMock_Expecter) Create(verification interface{}) *VerificationMock_Create_Call {
-	return &VerificationMock_Create_Call{Call: _e.mock.On("Upsert", verification)}
-}
-
-func (_c *VerificationMock_Create_Call) Run(run func(verification *users.Verification)) *VerificationMock_Create_Call {
-	_c.Call.Run(func(args mock.Arguments) {
-		run(args[0].(*users.Verification))
-	})
-	return _c
-}
-
-func (_c *VerificationMock_Create_Call) Return(_a0 error) *VerificationMock_Create_Call {
-	_c.Call.Return(_a0)
-	return _c
-}
-
-func (_c *VerificationMock_Create_Call) RunAndReturn(run func(*users.Verification) error) *VerificationMock_Create_Call {
-	_c.Call.Return(run)
-	return _c
-}
-
 // Find provides a mock function with given fields: token
 func (_m *VerificationMock) Find(token string) (users.Verification, error) {
 	ret := _m.Called(token)
@@ -165,6 +119,99 @@ func (_c *VerificationMock_Remove_Call) Return(_a0 error) *VerificationMock_Remo
 }
 
 func (_c *VerificationMock_Remove_Call) RunAndReturn(run func(string) error) *VerificationMock_Remove_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
+// RemoveByUserId provides a mock function with given fields: userId, usage
+func (_m *VerificationMock) RemoveByUserId(userId string, usage users.Usage) error {
+	ret := _m.Called(userId, usage)
+
+	if len(ret) == 0 {
+		panic("no return value specified for RemoveByUserId")
+	}
+
+	var r0 error
+	if rf, ok := ret.Get(0).(func(string, users.Usage) error); ok {
+		r0 = rf(userId, usage)
+	} else {
+		r0 = ret.Error(0)
+	}
+
+	return r0
+}
+
+// VerificationMock_RemoveByUserId_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'RemoveByUserId'
+type VerificationMock_RemoveByUserId_Call struct {
+	*mock.Call
+}
+
+// RemoveByUserId is a helper method to define mock.On call
+//   - userId string
+//   - usage users.Usage
+func (_e *VerificationMock_Expecter) RemoveByUserId(userId interface{}, usage interface{}) *VerificationMock_RemoveByUserId_Call {
+	return &VerificationMock_RemoveByUserId_Call{Call: _e.mock.On("RemoveByUserId", userId, usage)}
+}
+
+func (_c *VerificationMock_RemoveByUserId_Call) Run(run func(userId string, usage users.Usage)) *VerificationMock_RemoveByUserId_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		run(args[0].(string), args[1].(users.Usage))
+	})
+	return _c
+}
+
+func (_c *VerificationMock_RemoveByUserId_Call) Return(_a0 error) *VerificationMock_RemoveByUserId_Call {
+	_c.Call.Return(_a0)
+	return _c
+}
+
+func (_c *VerificationMock_RemoveByUserId_Call) RunAndReturn(run func(string, users.Usage) error) *VerificationMock_RemoveByUserId_Call {
+	_c.Call.Return(run)
+	return _c
+}
+
+// Upsert provides a mock function with given fields: verification
+func (_m *VerificationMock) Upsert(verification *users.Verification) error {
+	ret := _m.Called(verification)
+
+	if len(ret) == 0 {
+		panic("no return value specified for Upsert")
+	}
+
+	var r0 error
+	if rf, ok := ret.Get(0).(func(*users.Verification) error); ok {
+		r0 = rf(verification)
+	} else {
+		r0 = ret.Error(0)
+	}
+
+	return r0
+}
+
+// VerificationMock_Upsert_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'Upsert'
+type VerificationMock_Upsert_Call struct {
+	*mock.Call
+}
+
+// Upsert is a helper method to define mock.On call
+//   - verification *users.Verification
+func (_e *VerificationMock_Expecter) Upsert(verification interface{}) *VerificationMock_Upsert_Call {
+	return &VerificationMock_Upsert_Call{Call: _e.mock.On("Upsert", verification)}
+}
+
+func (_c *VerificationMock_Upsert_Call) Run(run func(verification *users.Verification)) *VerificationMock_Upsert_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		run(args[0].(*users.Verification))
+	})
+	return _c
+}
+
+func (_c *VerificationMock_Upsert_Call) Return(_a0 error) *VerificationMock_Upsert_Call {
+	_c.Call.Return(_a0)
+	return _c
+}
+
+func (_c *VerificationMock_Upsert_Call) RunAndReturn(run func(*users.Verification) error) *VerificationMock_Upsert_Call {
 	_c.Call.Return(run)
 	return _c
 }

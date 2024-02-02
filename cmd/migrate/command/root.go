@@ -33,7 +33,7 @@ func init() {
 	rootCmd.Flags().StringP("seed", "s", "", "seed database without migrating")
 	rootCmd.Flags().Bool("special", false, "add special record (admin) from env")
 	rootCmd.Flags().Bool("no-ssl", false, "Disable SSL on database communication")
-	rootCmd.Flags().String("env", "", "Use env for database connection, only pass name not with .env format")
+	rootCmd.Flags().Bool("env", false, "Use environment variables for database connection")
 
 	rootCmd.MarkFlagsRequiredTogether("user", "pass", "host")
 	rootCmd.MarkFlagsMutuallyExclusive("user", "dsn", "env")
@@ -44,9 +44,9 @@ func init() {
 func runRoot(command *cobra.Command, args []string) {
 	dsn, _ := command.Flags().GetString("dsn")
 	if len(dsn) == 0 {
-		env, _ := command.Flags().GetString("env")
-		if len(env) > 0 {
-			config, err := common.LoadConfig(env)
+		env, _ := command.Flags().GetBool("env")
+		if env {
+			config, err := common.LoadConfig()
 			if err != nil {
 				panic(err)
 			}
@@ -93,9 +93,9 @@ func runRoot(command *cobra.Command, args []string) {
 	// Insert special record
 	special, _ := command.Flags().GetBool("special")
 	if special {
-		adminUsername := os.Getenv("ME_USERNAME")
-		adminPass := os.Getenv("ME_PASSWORD")
-		adminEmail := os.Getenv("ME_EMAIL")
+		adminUsername := os.Getenv("ME_ADMIN_USERNAME")
+		adminPass := os.Getenv("ME_ADMIN_PASSWORD")
+		adminEmail := os.Getenv("ME_ADMIN_EMAIL")
 
 		util.SetDefaultString(&adminUsername, "admin")
 		util.SetDefaultString(&adminPass, "admin123")

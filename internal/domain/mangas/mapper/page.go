@@ -14,13 +14,17 @@ func ToPageResponse(page *mangas.Page, fs fileService.IFile) dto.PageResponse {
 	}
 }
 
-func MapPageCreateInput(input *dto.PageCreateInput, filenames []file.Name) []mangas.Page {
-	if len(input.Pages) != len(filenames) {
-		return nil
-	}
-	pages := make([]mangas.Page, 0, len(filenames))
-	for i := 0; i < len(input.Pages); i++ {
-		pages = append(pages, mangas.NewPage(input.ChapterId, filenames[i], input.Pages[i].Number))
-	}
-	return pages
+//func MapPageCreateInput(input *dto.PageCreateInput, filenames []file.Name) []mangas.Page {
+//	if len(input.Page) != len(filenames) {
+//		return nil
+//	}
+//	pages := make([]mangas.Page, 0, len(filenames))
+//	for i := 0; i < len(input.Page); i++ {
+//		pages = append(pages, mangas.NewPage(input.ChapterId, filenames[i], input.Page[i].Number))
+//	}
+//	return pages
+//}
+
+func MapPageCreateInput(input *dto.PageCreateInput, filename file.Name) mangas.Page {
+	return mangas.NewPage(input.ChapterId, filename, input.Page.Number)
 }

@@ -399,7 +399,7 @@ func Test_chapterRepository_EditChapter(t *testing.T) {
 				return
 			}
 
-			chapters, err := c.FindVolumeChapters(tt.args.chapter.VolumeId)
+			chapters, err := c.FindVolumeDetails(tt.args.chapter.VolumeId)
 			require.NoError(t, err)
 			res := containers.SliceFilter(chapters, func(chapter *mangas.Chapter) bool {
 				return chapter.Id == tt.args.chapter.Id
@@ -522,15 +522,15 @@ func Test_chapterRepository_FindChapterPages(t *testing.T) {
 	for _, tt := range tests {
 		c := NewMangaChapter(Db)
 		t.Run(tt.name, func(t *testing.T) {
-			got, err := c.FindChapterPages(tt.args.chapterId)
-			if !tt.wantErr(t, err, fmt.Sprintf("FindChapterPages(%v)", tt.args.chapterId)) {
+			got, err := c.FindChapterDetails(tt.args.chapterId)
+			if !tt.wantErr(t, err, fmt.Sprintf("FindChapterDetails(%v)", tt.args.chapterId)) {
 				return
 			}
 
 			if count := util.NilCount[mangas.Page](got, tt.want); count == 2 {
 				return
 			} else if count == 1 {
-				t.Errorf("FindVolumeChapters(): expected: %v got: %v", tt.want, got)
+				t.Errorf("FindVolumeDetails(): expected: %v got: %v", tt.want, got)
 				return
 			}
 
@@ -540,7 +540,7 @@ func Test_chapterRepository_FindChapterPages(t *testing.T) {
 				got[i].Chapter = tt.want[i].Chapter
 			}
 
-			assert.Equalf(t, tt.want, got, "FindChapterPages(%v)", tt.args.chapterId)
+			assert.Equalf(t, tt.want, got, "FindChapterDetails(%v)", tt.args.chapterId)
 		})
 	}
 }
@@ -624,16 +624,16 @@ func Test_chapterRepository_FindVolumeChapters(t *testing.T) {
 	for _, tt := range tests {
 		c := NewMangaChapter(Db)
 		t.Run(tt.name, func(t *testing.T) {
-			got, err := c.FindVolumeChapters(tt.args.volumeId)
+			got, err := c.FindVolumeDetails(tt.args.volumeId)
 			if !tt.wantErr(t, err) {
-				t.Errorf("FindVolumeChapters(%v)", tt.args.volumeId)
+				t.Errorf("FindVolumeDetails(%v)", tt.args.volumeId)
 				return
 			}
 
 			if count := util.NilCount[mangas.Chapter](got, tt.want); count == 2 {
 				return
 			} else if count == 1 {
-				t.Errorf("FindVolumeChapters(): expected: %v got: %v", tt.want, got)
+				t.Errorf("FindVolumeDetails(): expected: %v got: %v", tt.want, got)
 				return
 			}
 
@@ -649,7 +649,7 @@ func Test_chapterRepository_FindVolumeChapters(t *testing.T) {
 				got[i].Comments = tt.want[i].Comments
 				got[i].Pages = tt.want[i].Pages
 			}
-			assert.Equalf(t, tt.want, got, "FindVolumeChapters(%v)", tt.args.volumeId)
+			assert.Equalf(t, tt.want, got, "FindVolumeDetails(%v)", tt.args.volumeId)
 		})
 	}
 }

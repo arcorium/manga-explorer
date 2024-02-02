@@ -8,6 +8,7 @@ import (
 type IManga interface {
 	CreateManga(manga *mangas.Manga, genres []mangas.MangaGenre) error
 	EditManga(manga *mangas.Manga) error
+	PatchManga(manga *mangas.Manga) error
 	EditMangaGenres(additional, removes []mangas.MangaGenre) error
 	FindMinimalMangaById(id string) (*mangas.Manga, error)
 	FindMangasById(ids ...string) ([]mangas.Manga, error)
@@ -16,7 +17,6 @@ type IManga interface {
 	// FindRandomMangas Get manga which will be returning different manga for each call, set limit to 0 to get all the mangas
 	FindRandomMangas(limit uint64) ([]mangas.Manga, error)
 	FindMangaHistories(userId string, pagedQuery repository.QueryParameter) (repository.PagedQueryResult[[]mangas.MangaHistory], error)
-	FindMangaChapterHistories(userId string, mangaId string, pagedQuery repository.QueryParameter) (repository.PagedQueryResult[[]mangas.ChapterHistory], error)
 	// FindMangaFavorites Find favorites mangas by userId, returning favorites mangas and total favorites mangas on user
 	FindMangaFavorites(userId string, pagedQuery repository.QueryParameter) (repository.PagedQueryResult[[]mangas.MangaFavorite], error)
 	InsertMangaFavorite(favorite *mangas.MangaFavorite) error

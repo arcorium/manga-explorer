@@ -12,13 +12,26 @@ import (
 
 func ToChapterResponse(chapter *mangas.Chapter, fs fileService.IFile) dto.ChapterResponse {
 	return dto.ChapterResponse{
+		Id:           chapter.Id,
+		Language:     chapter.Language.ParseLang(),
+		Chapter:      chapter.Number,
+		Title:        chapter.Title,
+		TotalComment: &chapter.TotalComment,
+		CreatedAt:    chapter.CreatedAt,
+		Comments:     containers.CastSlicePtr(chapter.Comments, toCommentResponse),
+		Pages:        containers.CastSlicePtr1(chapter.Pages, fs, ToPageResponse),
+		Translator:   mapper.ToUserResponse(chapter.Translator),
+	}
+}
+
+func ToMinimalChapterResponse(chapter *mangas.Chapter) dto.ChapterResponse {
+	return dto.ChapterResponse{
 		Id:         chapter.Id,
-		Language:   chapter.Language,
+		Language:   chapter.Language.ParseLang(),
 		Chapter:    chapter.Number,
 		Title:      chapter.Title,
 		CreatedAt:  chapter.CreatedAt,
-		Comments:   containers.CastSlicePtr(chapter.Comments, ToCommentResponse),
-		Pages:      containers.CastSlicePtr1(chapter.Pages, fs, ToPageResponse),
+		Comments:   containers.CastSlicePtr(chapter.Comments, toCommentResponse),
 		Translator: mapper.ToUserResponse(chapter.Translator),
 	}
 }
@@ -28,7 +41,7 @@ func MapChapterCreateInput(input *dto.ChapterCreateInput) mangas.Chapter {
 	chapter := mangas.Chapter{
 		Id:           uuid.NewString(),
 		VolumeId:     input.VolumeId,
-		Language:     input.Language,
+		Language:     input.Language.ParseLang(),
 		Title:        input.Title,
 		TranslatorId: input.TranslatorId,
 		PublishDate:  input.PublishDate,
@@ -44,9 +57,9 @@ func MapChapterEditInput(input *dto.ChapterEditInput) mangas.Chapter {
 	return mangas.Chapter{
 		Id:          input.ChapterId,
 		VolumeId:    input.VolumeId,
-		Language:    input.Language,
+		Language:    input.Language.ParseLang(),
 		Title:       input.Title,
-		Number:      input.Number,
+		Number:      input.Chapter,
 		PublishDate: input.PublishDate,
 		UpdatedAt:   time.Now(),
 	}

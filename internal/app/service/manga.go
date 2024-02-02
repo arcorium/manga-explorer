@@ -100,7 +100,7 @@ func (m mangaService) FindRandomMangas(limit uint64) ([]mangaDto.MinimalMangaRes
 
 func (m mangaService) FindMangaComments(mangaId string) ([]mangaDto.CommentResponse, status.Object) {
 	comments, err := m.commentRepo.FindMangaComments(mangaId)
-	responses := mapper.ToCommentResponse2(comments)
+	responses := mapper.ToCommentsResponse(comments)
 	return responses, status.ConditionalRepository(err, status.SUCCESS, opt.New(status.SUCCESS))
 }
 
@@ -142,7 +142,7 @@ func (m mangaService) UpdateMangaCover(input *mangaDto.MangaCoverUpdateInput) st
 
 	// Update metadata
 	editedManga := mangas.Manga{Id: manga.Id, CoverURL: filename, UpdatedAt: time.Now()}
-	err = m.mangaRepo.EditManga(&editedManga)
+	err = m.mangaRepo.PatchManga(&editedManga)
 	return status.ConditionalRepository(err, status.UPDATED, opt.New(status.MANGA_UPDATE_FAILED))
 }
 
@@ -177,9 +177,10 @@ func (m mangaService) FindMangaTranslations(mangaId string) ([]mangaDto.Translat
 }
 
 func (m mangaService) FindSpecificMangaTranslation(mangaId string, language common.Language) (mangaDto.TranslationResponse, status.Object) {
-	// Convert into 3 letter Country code
-	lang := common.NewLanguage(language.Code())
-	translate, err := m.translationRepo.FindMangaSpecific(mangaId, lang)
+	translate, err := m.translationRepo.FindMangaSpecific(mangaId, language)
+	if err != nil {
+		return mangaDto.TranslationResponse{}, status.RepositoryError(err, opt.New(status.SUCCESS))
+	}
 	response := mapper.ToTranslationResponse(translate)
 	return response, status.ConditionalRepository(err, status.SUCCESS, opt.New(status.SUCCESS))
 

@@ -35,9 +35,9 @@ func (m _mangaRoute) MangaRoute(config *Config, router gin.IRouter) {
 	mangaRoute.POST("/:manga_id/comments", mangaController.CreateMangaComment)
 	mangaRoute.POST("/:manga_id/ratings", mangaController.CreateMangaRating)
 	mangaRoute.GET("/favorites", mangaController.GetMangaFavorites)
-	mangaRoute.GET("/histories", mangaController.GetMangaHistories) // TODO: Implement each view chapter to add into chapter history repo
-	//
-	mangaRoute.POST("/:manga_id/favorites", mangaController.ModifyFavoriteManga)
+	mangaRoute.POST("/favorites", mangaController.ModifyFavoriteManga)
+	mangaRoute.GET("/histories", mangaController.GetMangaHistories)
+	mangaRoute.GET("/:manga_id/histories", chapterController.GetMangaChapterHistories)
 
 	// Admin
 	mangaRoute.Use(config.Middleware.AdminRestrict.Handle)
@@ -54,13 +54,13 @@ func (m _mangaRoute) MangaRoute(config *Config, router gin.IRouter) {
 	mangaRoute.DELETE("/:manga_id/volumes/:volume", mangaController.DeleteVolume)
 	mangaRoute.POST("/:manga_id/chapters", chapterController.CreateChapter)
 
-	mangaRoute.PUT("/:manga_id/cover", mangaController.UpdateMangaCover)
+	mangaRoute.PATCH("/:manga_id/covers", mangaController.UpdateMangaCover)
 }
 func (m _mangaRoute) ChapterRoute(config *Config, router gin.IRouter) {
 	chapterController := &config.Controller.MangaChapter
 	chapterRoute := router.Group("/chapters")
 	chapterRoute.GET("/:chapter_id/comments", chapterController.FindChapterComments)
-	chapterRoute.GET("/:chapter_id", chapterController.FindChapterPages)
+	chapterRoute.GET("/:chapter_id", config.Middleware.Authorization.Handle2, chapterController.FindChapterDetails)
 	// Login user
 	chapterRoute.Use(config.Middleware.Authorization.Handle)
 	chapterRoute.POST("/:chapter_id/comments", chapterController.CreateChapterComments)
@@ -74,13 +74,13 @@ func (m _mangaRoute) ChapterRoute(config *Config, router gin.IRouter) {
 
 	// Page IRoute
 	pageRoute := router.Group("/pages")
-	pageRoute.GET("/:page_id/comments", chapterController.FindPageComments)
+	//pageRoute.GET("/:page_id/comments", chapterController.FindPageComments)
 	// Login user
 	pageRoute.Use(config.Middleware.Authorization.Handle)
-	pageRoute.POST("/:page_id/comments", chapterController.CreatePageComments)
+	//pageRoute.POST("/:page_id/comments", chapterController.CreatePageComments)
 
 	volumeRoute := router.Group("/volumes")
-	volumeRoute.GET("/:volume_id", chapterController.FindVolumeChapters)
+	volumeRoute.GET("/:volume_id", chapterController.FindVolumeDetails)
 }
 func (m _mangaRoute) GenreRoute(config *Config, router gin.IRouter) {
 	genreController := &config.Controller.MangaGenre

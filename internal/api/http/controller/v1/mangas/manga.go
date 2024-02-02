@@ -243,14 +243,18 @@ func (m MangaController) FindMangaTranslations(ctx *gin.Context) {
 		return
 	}
 
-	lang := common.Language(language)
-	if !lang.Validate() {
+	lang := common.NewLanguage(language)
+	if len(lang) == 0 {
 		resp.ErrorDetailed(ctx, status.Error(status.BAD_PARAMETER_ERROR), common.NewParameterError("language", "language isn't supported"))
 		return
 	}
 
 	translation, stat := m.mangaService.FindSpecificMangaTranslation(mangaId, lang)
-	resp.Conditional(ctx, stat, translation, nil)
+	if stat.IsError() || len(translation.Id) == 0 {
+		resp.Error(ctx, status.ErrorMessage("Translation not found"))
+		return
+	}
+	resp.Success(ctx, stat, translation, nil)
 }
 
 func (m MangaController) DeleteMangaTranslations(ctx *gin.Context) {
@@ -329,6 +333,13 @@ func (m MangaController) ModifyFavoriteManga(ctx *gin.Context) {
 		return
 	}
 
+	claims, stat := common.GetClaims(ctx)
+	if stat.IsError() {
+		resp.Error(ctx, stat)
+		return
+	}
+	input.UserId = claims.UserId
+
 	if input.Operator == "add" {
 		stat = m.mangaService.AddFavoriteManga(&input)
 	} else if input.Operator == "remove" {
@@ -337,18 +348,6 @@ func (m MangaController) ModifyFavoriteManga(ctx *gin.Context) {
 		resp.ErrorDetailed(ctx, status.Error(status.BAD_REQUEST_ERROR), common.FieldError{Field: "op", Error: "operator should be one of add or remove"})
 		return
 	}
-	resp.Conditional(ctx, stat, nil, nil)
-}
-
-func (m MangaController) RemoveFavoriteManga(ctx *gin.Context) {
-	input := mangaDto.FavoriteMangaInput{}
-	stat, fieldErrors := httputil.BindJson(ctx, &input)
-	if stat.IsError() {
-		resp.ErrorDetailed(ctx, stat, fieldErrors)
-		return
-	}
-
-	stat = m.mangaService.RemoveFavoriteManga(&input)
 	resp.Conditional(ctx, stat, nil, nil)
 }
 

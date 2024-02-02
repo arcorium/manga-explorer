@@ -1,1 +1,29 @@
 version: "3.8"
+services:
+  backend:
+    networks:
+      - me_network
+    build: .
+    ports:
+      - "9999:9999"
+    depends_on:
+      - db
+    environment:
+      - DB_PROTOCOL=postgres
+      - DB_HOST=db
+      - DB_PORT=5432
+      - DB_NAME=manga-explorer
+      - ME_ADMIN_USERNAME=admin
+      - ME_ADMIN_PASSWORD=adminadmin
+      - ME_ADMIN_EMAIL=admin@manga-explorer.com
+  db:
+    networks:
+     - me_network
+    image: postgres
+    environment:
+      - POSTGRES_DB=manga-explorer
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+networks:
+  me_network:
+    driver: bridge

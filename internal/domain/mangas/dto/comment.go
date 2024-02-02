@@ -20,7 +20,7 @@ type CommentResponse struct {
 type commentCreatInputParent struct {
 	ParentId string `json:"parent_id" binding:"omitempty,uuid4"`
 	UserId   string `json:"-"`
-	Comment  string `json:"comment" binding:"required"`
+	Comment  string `json:"comment" binding:"required,gte=1"`
 }
 
 func (c commentCreatInputParent) HasParent() bool {
@@ -28,7 +28,7 @@ func (c commentCreatInputParent) HasParent() bool {
 }
 
 type MangaCommentCreateInput struct {
-	MangaId string `uri:"manga_id" binding:"required"`
+	MangaId string `uri:"manga_id" binding:"required,uuid4"`
 	commentCreatInputParent
 }
 
@@ -37,7 +37,7 @@ func (c *MangaCommentCreateInput) ConstructURI(ctx *gin.Context) {
 }
 
 type ChapterCommentCreateInput struct {
-	ChapterId string `uri:"chapter_id" binding:"required"`
+	ChapterId string `uri:"chapter_id" binding:"required,uuid4"`
 	commentCreatInputParent
 }
 
@@ -46,7 +46,7 @@ func (c *ChapterCommentCreateInput) ConstructURI(ctx *gin.Context) {
 }
 
 type PageCommentCreateInput struct {
-	PageId string `uri:"page_id" binding:"required"`
+	PageId string `uri:"page_id" binding:"required,uuid4"`
 	commentCreatInputParent
 }
 
