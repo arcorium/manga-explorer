@@ -627,7 +627,7 @@ func (_c *UserMock_ResetPassword_Call) RunAndReturn(run func(*dto.ResetPasswordI
 }
 
 // UpdateProfile provides a mock function with given fields: input
-func (_m *UserMock) UpdateProfile(input *dto.ProfileUpdateInput) status.Object {
+func (_m *UserMock) UpdateProfile(input *dto.ProfileEditInput) status.Object {
 	ret := _m.Called(input)
 
 	if len(ret) == 0 {
@@ -635,7 +635,7 @@ func (_m *UserMock) UpdateProfile(input *dto.ProfileUpdateInput) status.Object {
 	}
 
 	var r0 status.Object
-	if rf, ok := ret.Get(0).(func(*dto.ProfileUpdateInput) status.Object); ok {
+	if rf, ok := ret.Get(0).(func(*dto.ProfileEditInput) status.Object); ok {
 		r0 = rf(input)
 	} else {
 		r0 = ret.Get(0).(status.Object)
@@ -650,14 +650,14 @@ type UserMock_UpdateProfile_Call struct {
 }
 
 // UpdateProfile is a helper method to define mock.On call
-//   - input *dto.ProfileUpdateInput
+//   - input *dto.ProfileEditInput
 func (_e *UserMock_Expecter) UpdateProfile(input interface{}) *UserMock_UpdateProfile_Call {
 	return &UserMock_UpdateProfile_Call{Call: _e.mock.On("UpdateProfile", input)}
 }
 
-func (_c *UserMock_UpdateProfile_Call) Run(run func(input *dto.ProfileUpdateInput)) *UserMock_UpdateProfile_Call {
+func (_c *UserMock_UpdateProfile_Call) Run(run func(input *dto.ProfileEditInput)) *UserMock_UpdateProfile_Call {
 	_c.Call.Run(func(args mock.Arguments) {
-		run(args[0].(*dto.ProfileUpdateInput))
+		run(args[0].(*dto.ProfileEditInput))
 	})
 	return _c
 }
@@ -667,13 +667,13 @@ func (_c *UserMock_UpdateProfile_Call) Return(_a0 status.Object) *UserMock_Updat
 	return _c
 }
 
-func (_c *UserMock_UpdateProfile_Call) RunAndReturn(run func(*dto.ProfileUpdateInput) status.Object) *UserMock_UpdateProfile_Call {
+func (_c *UserMock_UpdateProfile_Call) RunAndReturn(run func(*dto.ProfileEditInput) status.Object) *UserMock_UpdateProfile_Call {
 	_c.Call.Return(run)
 	return _c
 }
 
 // UpdateProfileExtended provides a mock function with given fields: input
-func (_m *UserMock) UpdateProfileExtended(input *dto.ProfileUpdateExtendedInput) status.Object {
+func (_m *UserMock) UpdateProfileExtended(input *dto.ProfileEditExtendedInput) status.Object {
 	ret := _m.Called(input)
 
 	if len(ret) == 0 {
@@ -681,7 +681,7 @@ func (_m *UserMock) UpdateProfileExtended(input *dto.ProfileUpdateExtendedInput)
 	}
 
 	var r0 status.Object
-	if rf, ok := ret.Get(0).(func(*dto.ProfileUpdateExtendedInput) status.Object); ok {
+	if rf, ok := ret.Get(0).(func(*dto.ProfileEditExtendedInput) status.Object); ok {
 		r0 = rf(input)
 	} else {
 		r0 = ret.Get(0).(status.Object)
@@ -696,14 +696,14 @@ type UserMock_UpdateProfileExtended_Call struct {
 }
 
 // UpdateProfileExtended is a helper method to define mock.On call
-//   - input *dto.ProfileUpdateExtendedInput
+//   - input *dto.ProfileEditExtendedInput
 func (_e *UserMock_Expecter) UpdateProfileExtended(input interface{}) *UserMock_UpdateProfileExtended_Call {
 	return &UserMock_UpdateProfileExtended_Call{Call: _e.mock.On("UpdateProfileExtended", input)}
 }
 
-func (_c *UserMock_UpdateProfileExtended_Call) Run(run func(input *dto.ProfileUpdateExtendedInput)) *UserMock_UpdateProfileExtended_Call {
+func (_c *UserMock_UpdateProfileExtended_Call) Run(run func(input *dto.ProfileEditExtendedInput)) *UserMock_UpdateProfileExtended_Call {
 	_c.Call.Run(func(args mock.Arguments) {
-		run(args[0].(*dto.ProfileUpdateExtendedInput))
+		run(args[0].(*dto.ProfileEditExtendedInput))
 	})
 	return _c
 }
@@ -713,7 +713,7 @@ func (_c *UserMock_UpdateProfileExtended_Call) Return(_a0 status.Object) *UserMo
 	return _c
 }
 
-func (_c *UserMock_UpdateProfileExtended_Call) RunAndReturn(run func(*dto.ProfileUpdateExtendedInput) status.Object) *UserMock_UpdateProfileExtended_Call {
+func (_c *UserMock_UpdateProfileExtended_Call) RunAndReturn(run func(*dto.ProfileEditExtendedInput) status.Object) *UserMock_UpdateProfileExtended_Call {
 	_c.Call.Return(run)
 	return _c
 }
@@ -765,7 +765,7 @@ func (_c *UserMock_UpdateProfileImage_Call) RunAndReturn(run func(*dto.ProfileIm
 }
 
 // UpdateUser provides a mock function with given fields: input
-func (_m *UserMock) UpdateUser(input *dto.UserUpdateInput) status.Object {
+func (_m *UserMock) UpdateUser(input *dto.UserEditInput) status.Object {
 	ret := _m.Called(input)
 
 	if len(ret) == 0 {
@@ -773,7 +773,7 @@ func (_m *UserMock) UpdateUser(input *dto.UserUpdateInput) status.Object {
 	}
 
 	var r0 status.Object
-	if rf, ok := ret.Get(0).(func(*dto.UserUpdateInput) status.Object); ok {
+	if rf, ok := ret.Get(0).(func(*dto.UserEditInput) status.Object); ok {
 		r0 = rf(input)
 	} else {
 		r0 = ret.Get(0).(status.Object)
@@ -788,14 +788,14 @@ type UserMock_UpdateUser_Call struct {
 }
 
 // UpdateUser is a helper method to define mock.On call
-//   - input *dto.UserUpdateInput
+//   - input *dto.UserEditInput
 func (_e *UserMock_Expecter) UpdateUser(input interface{}) *UserMock_UpdateUser_Call {
 	return &UserMock_UpdateUser_Call{Call: _e.mock.On("UpdateUser", input)}
 }
 
-func (_c *UserMock_UpdateUser_Call) Run(run func(input *dto.UserUpdateInput)) *UserMock_UpdateUser_Call {
+func (_c *UserMock_UpdateUser_Call) Run(run func(input *dto.UserEditInput)) *UserMock_UpdateUser_Call {
 	_c.Call.Run(func(args mock.Arguments) {
-		run(args[0].(*dto.UserUpdateInput))
+		run(args[0].(*dto.UserEditInput))
 	})
 	return _c
 }
@@ -805,13 +805,13 @@ func (_c *UserMock_UpdateUser_Call) Return(_a0 status.Object) *UserMock_UpdateUs
 	return _c
 }
 
-func (_c *UserMock_UpdateUser_Call) RunAndReturn(run func(*dto.UserUpdateInput) status.Object) *UserMock_UpdateUser_Call {
+func (_c *UserMock_UpdateUser_Call) RunAndReturn(run func(*dto.UserEditInput) status.Object) *UserMock_UpdateUser_Call {
 	_c.Call.Return(run)
 	return _c
 }
 
 // UpdateUserExtended provides a mock function with given fields: input
-func (_m *UserMock) UpdateUserExtended(input *dto.UserUpdateExtendedInput) status.Object {
+func (_m *UserMock) UpdateUserExtended(input *dto.UserEditExtendedInput) status.Object {
 	ret := _m.Called(input)
 
 	if len(ret) == 0 {
@@ -819,7 +819,7 @@ func (_m *UserMock) UpdateUserExtended(input *dto.UserUpdateExtendedInput) statu
 	}
 
 	var r0 status.Object
-	if rf, ok := ret.Get(0).(func(*dto.UserUpdateExtendedInput) status.Object); ok {
+	if rf, ok := ret.Get(0).(func(*dto.UserEditExtendedInput) status.Object); ok {
 		r0 = rf(input)
 	} else {
 		r0 = ret.Get(0).(status.Object)
@@ -834,14 +834,14 @@ type UserMock_UpdateUserExtended_Call struct {
 }
 
 // UpdateUserExtended is a helper method to define mock.On call
-//   - input *dto.UserUpdateExtendedInput
+//   - input *dto.UserEditExtendedInput
 func (_e *UserMock_Expecter) UpdateUserExtended(input interface{}) *UserMock_UpdateUserExtended_Call {
 	return &UserMock_UpdateUserExtended_Call{Call: _e.mock.On("UpdateUserExtended", input)}
 }
 
-func (_c *UserMock_UpdateUserExtended_Call) Run(run func(input *dto.UserUpdateExtendedInput)) *UserMock_UpdateUserExtended_Call {
+func (_c *UserMock_UpdateUserExtended_Call) Run(run func(input *dto.UserEditExtendedInput)) *UserMock_UpdateUserExtended_Call {
 	_c.Call.Run(func(args mock.Arguments) {
-		run(args[0].(*dto.UserUpdateExtendedInput))
+		run(args[0].(*dto.UserEditExtendedInput))
 	})
 	return _c
 }
@@ -851,7 +851,7 @@ func (_c *UserMock_UpdateUserExtended_Call) Return(_a0 status.Object) *UserMock_
 	return _c
 }
 
-func (_c *UserMock_UpdateUserExtended_Call) RunAndReturn(run func(*dto.UserUpdateExtendedInput) status.Object) *UserMock_UpdateUserExtended_Call {
+func (_c *UserMock_UpdateUserExtended_Call) RunAndReturn(run func(*dto.UserEditExtendedInput) status.Object) *UserMock_UpdateUserExtended_Call {
 	_c.Call.Return(run)
 	return _c
 }

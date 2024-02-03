@@ -27,7 +27,7 @@ func (_m *MangaMock) EXPECT() *MangaMock_Expecter {
 }
 
 // AddFavoriteManga provides a mock function with given fields: input
-func (_m *MangaMock) AddFavoriteManga(input *dto.FavoriteMangaInput) status.Object {
+func (_m *MangaMock) AddFavoriteManga(input *dto.FavoriteMangaModificationInput) status.Object {
 	ret := _m.Called(input)
 
 	if len(ret) == 0 {
@@ -35,7 +35,7 @@ func (_m *MangaMock) AddFavoriteManga(input *dto.FavoriteMangaInput) status.Obje
 	}
 
 	var r0 status.Object
-	if rf, ok := ret.Get(0).(func(*dto.FavoriteMangaInput) status.Object); ok {
+	if rf, ok := ret.Get(0).(func(*dto.FavoriteMangaModificationInput) status.Object); ok {
 		r0 = rf(input)
 	} else {
 		r0 = ret.Get(0).(status.Object)
@@ -50,14 +50,14 @@ type MangaMock_AddFavoriteManga_Call struct {
 }
 
 // AddFavoriteManga is a helper method to define mock.On call
-//   - input *dto.FavoriteMangaInput
+//   - input *dto.FavoriteMangaModificationInput
 func (_e *MangaMock_Expecter) AddFavoriteManga(input interface{}) *MangaMock_AddFavoriteManga_Call {
 	return &MangaMock_AddFavoriteManga_Call{Call: _e.mock.On("AddFavoriteManga", input)}
 }
 
-func (_c *MangaMock_AddFavoriteManga_Call) Run(run func(input *dto.FavoriteMangaInput)) *MangaMock_AddFavoriteManga_Call {
+func (_c *MangaMock_AddFavoriteManga_Call) Run(run func(input *dto.FavoriteMangaModificationInput)) *MangaMock_AddFavoriteManga_Call {
 	_c.Call.Run(func(args mock.Arguments) {
-		run(args[0].(*dto.FavoriteMangaInput))
+		run(args[0].(*dto.FavoriteMangaModificationInput))
 	})
 	return _c
 }
@@ -67,7 +67,7 @@ func (_c *MangaMock_AddFavoriteManga_Call) Return(_a0 status.Object) *MangaMock_
 	return _c
 }
 
-func (_c *MangaMock_AddFavoriteManga_Call) RunAndReturn(run func(*dto.FavoriteMangaInput) status.Object) *MangaMock_AddFavoriteManga_Call {
+func (_c *MangaMock_AddFavoriteManga_Call) RunAndReturn(run func(*dto.FavoriteMangaModificationInput) status.Object) *MangaMock_AddFavoriteManga_Call {
 	_c.Call.Return(run)
 	return _c
 }
@@ -211,7 +211,7 @@ func (_c *MangaMock_CreateVolume_Call) RunAndReturn(run func(*dto.VolumeCreateIn
 }
 
 // DeleteMangaTranslations provides a mock function with given fields: input
-func (_m *MangaMock) DeleteMangaTranslations(input *dto.TranslationMangaDeleteInput) status.Object {
+func (_m *MangaMock) DeleteMangaTranslations(input *dto.MangaTranslationsDeleteInput) status.Object {
 	ret := _m.Called(input)
 
 	if len(ret) == 0 {
@@ -219,7 +219,7 @@ func (_m *MangaMock) DeleteMangaTranslations(input *dto.TranslationMangaDeleteIn
 	}
 
 	var r0 status.Object
-	if rf, ok := ret.Get(0).(func(*dto.TranslationMangaDeleteInput) status.Object); ok {
+	if rf, ok := ret.Get(0).(func(*dto.MangaTranslationsDeleteInput) status.Object); ok {
 		r0 = rf(input)
 	} else {
 		r0 = ret.Get(0).(status.Object)
@@ -234,14 +234,14 @@ type MangaMock_DeleteMangaTranslations_Call struct {
 }
 
 // DeleteMangaTranslations is a helper method to define mock.On call
-//   - input *dto.TranslationMangaDeleteInput
+//   - input *dto.MangaTranslationsDeleteInput
 func (_e *MangaMock_Expecter) DeleteMangaTranslations(input interface{}) *MangaMock_DeleteMangaTranslations_Call {
 	return &MangaMock_DeleteMangaTranslations_Call{Call: _e.mock.On("DeleteMangaTranslations", input)}
 }
 
-func (_c *MangaMock_DeleteMangaTranslations_Call) Run(run func(input *dto.TranslationMangaDeleteInput)) *MangaMock_DeleteMangaTranslations_Call {
+func (_c *MangaMock_DeleteMangaTranslations_Call) Run(run func(input *dto.MangaTranslationsDeleteInput)) *MangaMock_DeleteMangaTranslations_Call {
 	_c.Call.Run(func(args mock.Arguments) {
-		run(args[0].(*dto.TranslationMangaDeleteInput))
+		run(args[0].(*dto.MangaTranslationsDeleteInput))
 	})
 	return _c
 }
@@ -251,7 +251,7 @@ func (_c *MangaMock_DeleteMangaTranslations_Call) Return(_a0 status.Object) *Man
 	return _c
 }
 
-func (_c *MangaMock_DeleteMangaTranslations_Call) RunAndReturn(run func(*dto.TranslationMangaDeleteInput) status.Object) *MangaMock_DeleteMangaTranslations_Call {
+func (_c *MangaMock_DeleteMangaTranslations_Call) RunAndReturn(run func(*dto.MangaTranslationsDeleteInput) status.Object) *MangaMock_DeleteMangaTranslations_Call {
 	_c.Call.Return(run)
 	return _c
 }
@@ -937,7 +937,7 @@ func (_c *MangaMock_FindSpecificMangaTranslation_Call) RunAndReturn(run func(str
 }
 
 // InsertMangaTranslations provides a mock function with given fields: input
-func (_m *MangaMock) InsertMangaTranslations(input *dto.MangaInsertTranslationInput) status.Object {
+func (_m *MangaMock) InsertMangaTranslations(input *dto.MangaTranslationInsertInput) status.Object {
 	ret := _m.Called(input)
 
 	if len(ret) == 0 {
@@ -945,7 +945,7 @@ func (_m *MangaMock) InsertMangaTranslations(input *dto.MangaInsertTranslationIn
 	}
 
 	var r0 status.Object
-	if rf, ok := ret.Get(0).(func(*dto.MangaInsertTranslationInput) status.Object); ok {
+	if rf, ok := ret.Get(0).(func(*dto.MangaTranslationInsertInput) status.Object); ok {
 		r0 = rf(input)
 	} else {
 		r0 = ret.Get(0).(status.Object)
@@ -960,14 +960,14 @@ type MangaMock_InsertMangaTranslations_Call struct {
 }
 
 // InsertMangaTranslations is a helper method to define mock.On call
-//   - input *dto.MangaInsertTranslationInput
+//   - input *dto.MangaTranslationInsertInput
 func (_e *MangaMock_Expecter) InsertMangaTranslations(input interface{}) *MangaMock_InsertMangaTranslations_Call {
 	return &MangaMock_InsertMangaTranslations_Call{Call: _e.mock.On("InsertMangaTranslations", input)}
 }
 
-func (_c *MangaMock_InsertMangaTranslations_Call) Run(run func(input *dto.MangaInsertTranslationInput)) *MangaMock_InsertMangaTranslations_Call {
+func (_c *MangaMock_InsertMangaTranslations_Call) Run(run func(input *dto.MangaTranslationInsertInput)) *MangaMock_InsertMangaTranslations_Call {
 	_c.Call.Run(func(args mock.Arguments) {
-		run(args[0].(*dto.MangaInsertTranslationInput))
+		run(args[0].(*dto.MangaTranslationInsertInput))
 	})
 	return _c
 }
@@ -977,7 +977,7 @@ func (_c *MangaMock_InsertMangaTranslations_Call) Return(_a0 status.Object) *Man
 	return _c
 }
 
-func (_c *MangaMock_InsertMangaTranslations_Call) RunAndReturn(run func(*dto.MangaInsertTranslationInput) status.Object) *MangaMock_InsertMangaTranslations_Call {
+func (_c *MangaMock_InsertMangaTranslations_Call) RunAndReturn(run func(*dto.MangaTranslationInsertInput) status.Object) *MangaMock_InsertMangaTranslations_Call {
 	_c.Call.Return(run)
 	return _c
 }
@@ -1050,7 +1050,7 @@ func (_c *MangaMock_ListMangas_Call) RunAndReturn(run func(*commondto.PagedQuery
 }
 
 // RemoveFavoriteManga provides a mock function with given fields: input
-func (_m *MangaMock) RemoveFavoriteManga(input *dto.FavoriteMangaInput) status.Object {
+func (_m *MangaMock) RemoveFavoriteManga(input *dto.FavoriteMangaModificationInput) status.Object {
 	ret := _m.Called(input)
 
 	if len(ret) == 0 {
@@ -1058,7 +1058,7 @@ func (_m *MangaMock) RemoveFavoriteManga(input *dto.FavoriteMangaInput) status.O
 	}
 
 	var r0 status.Object
-	if rf, ok := ret.Get(0).(func(*dto.FavoriteMangaInput) status.Object); ok {
+	if rf, ok := ret.Get(0).(func(*dto.FavoriteMangaModificationInput) status.Object); ok {
 		r0 = rf(input)
 	} else {
 		r0 = ret.Get(0).(status.Object)
@@ -1073,14 +1073,14 @@ type MangaMock_RemoveFavoriteManga_Call struct {
 }
 
 // RemoveFavoriteManga is a helper method to define mock.On call
-//   - input *dto.FavoriteMangaInput
+//   - input *dto.FavoriteMangaModificationInput
 func (_e *MangaMock_Expecter) RemoveFavoriteManga(input interface{}) *MangaMock_RemoveFavoriteManga_Call {
 	return &MangaMock_RemoveFavoriteManga_Call{Call: _e.mock.On("RemoveFavoriteManga", input)}
 }
 
-func (_c *MangaMock_RemoveFavoriteManga_Call) Run(run func(input *dto.FavoriteMangaInput)) *MangaMock_RemoveFavoriteManga_Call {
+func (_c *MangaMock_RemoveFavoriteManga_Call) Run(run func(input *dto.FavoriteMangaModificationInput)) *MangaMock_RemoveFavoriteManga_Call {
 	_c.Call.Run(func(args mock.Arguments) {
-		run(args[0].(*dto.FavoriteMangaInput))
+		run(args[0].(*dto.FavoriteMangaModificationInput))
 	})
 	return _c
 }
@@ -1090,7 +1090,7 @@ func (_c *MangaMock_RemoveFavoriteManga_Call) Return(_a0 status.Object) *MangaMo
 	return _c
 }
 
-func (_c *MangaMock_RemoveFavoriteManga_Call) RunAndReturn(run func(*dto.FavoriteMangaInput) status.Object) *MangaMock_RemoveFavoriteManga_Call {
+func (_c *MangaMock_RemoveFavoriteManga_Call) RunAndReturn(run func(*dto.FavoriteMangaModificationInput) status.Object) *MangaMock_RemoveFavoriteManga_Call {
 	_c.Call.Return(run)
 	return _c
 }
@@ -1209,7 +1209,7 @@ func (_c *MangaMock_UpdateMangaCover_Call) RunAndReturn(run func(*dto.MangaCover
 }
 
 // UpdateTranslation provides a mock function with given fields: input
-func (_m *MangaMock) UpdateTranslation(input *dto.TranslationUpdateInput) status.Object {
+func (_m *MangaMock) UpdateTranslation(input *dto.TranslationEditInput) status.Object {
 	ret := _m.Called(input)
 
 	if len(ret) == 0 {
@@ -1217,7 +1217,7 @@ func (_m *MangaMock) UpdateTranslation(input *dto.TranslationUpdateInput) status
 	}
 
 	var r0 status.Object
-	if rf, ok := ret.Get(0).(func(*dto.TranslationUpdateInput) status.Object); ok {
+	if rf, ok := ret.Get(0).(func(*dto.TranslationEditInput) status.Object); ok {
 		r0 = rf(input)
 	} else {
 		r0 = ret.Get(0).(status.Object)
@@ -1232,14 +1232,14 @@ type MangaMock_UpdateTranslation_Call struct {
 }
 
 // UpdateTranslation is a helper method to define mock.On call
-//   - input *dto.TranslationUpdateInput
+//   - input *dto.TranslationEditInput
 func (_e *MangaMock_Expecter) UpdateTranslation(input interface{}) *MangaMock_UpdateTranslation_Call {
 	return &MangaMock_UpdateTranslation_Call{Call: _e.mock.On("UpdateTranslation", input)}
 }
 
-func (_c *MangaMock_UpdateTranslation_Call) Run(run func(input *dto.TranslationUpdateInput)) *MangaMock_UpdateTranslation_Call {
+func (_c *MangaMock_UpdateTranslation_Call) Run(run func(input *dto.TranslationEditInput)) *MangaMock_UpdateTranslation_Call {
 	_c.Call.Run(func(args mock.Arguments) {
-		run(args[0].(*dto.TranslationUpdateInput))
+		run(args[0].(*dto.TranslationEditInput))
 	})
 	return _c
 }
@@ -1249,7 +1249,7 @@ func (_c *MangaMock_UpdateTranslation_Call) Return(_a0 status.Object) *MangaMock
 	return _c
 }
 
-func (_c *MangaMock_UpdateTranslation_Call) RunAndReturn(run func(*dto.TranslationUpdateInput) status.Object) *MangaMock_UpdateTranslation_Call {
+func (_c *MangaMock_UpdateTranslation_Call) RunAndReturn(run func(*dto.TranslationEditInput) status.Object) *MangaMock_UpdateTranslation_Call {
 	_c.Call.Return(run)
 	return _c
 }

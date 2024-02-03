@@ -25,14 +25,17 @@ type AuthController struct {
 }
 
 // Login sign in account
-// @Summary login
-// @Description login to get token
-// @Tags auth, account
-// @Accept json
-// @Produce json
-// @Success 200 {object} resp.SuccessWrapper[dto.SuccessResponse]
-// @Failure 401 {object} resp.ErrorWrapper[dto.ErrorResponse]{}
-// @Router /login [post]
+//
+//	@Summary		Login
+//	@Description	login to authenticate
+//	@Tags			auth
+//	@Accept			json
+//	@Produce		json
+//	@Param			input	body		dto.LoginInput	true	"user login input"
+//	@Success		200		{object}	dto.SuccessWrapper{success=dto.SuccessResponse{data=dto.LoginResponse}}
+//	@Failure		400		{object}	dto.ErrorWrapper{error=dto.ErrorResponse{details=[]common.FieldError}}
+//	@Failure		500		{object}	dto.ErrorWrapper{error=dto.ErrorResponse{details=nil}}
+//	@Router			/auth/login [post]
 func (a AuthController) Login(ctx *gin.Context) {
 	input := dto.LoginInput{}
 	stat, errFields := httputil.BindJson(ctx, &input)
@@ -50,11 +53,21 @@ func (a AuthController) Login(ctx *gin.Context) {
 	input.DeviceName = usr.Name
 
 	res, stat := a.authService.Authenticate(&input)
-	resp.Conditional(ctx, stat, res, nil)
+	resp.Conditional(ctx, stat, &res, nil)
 }
 
 // Logout Handle user logout, when the uri provide id parameter, those credential will be removed otherwise
 // current credential will be removed
+//
+//	@Summary		Logout
+//	@Description	logout credential id or current logged in credential
+//	@Tags			auth
+//	@Produce		json
+//	@Param			cred_id	path		uuid.UUID	false	"credential id"
+//	@Success		200		{object}	dto.SuccessWrapper{success=dto.SuccessResponse{data=nil}}
+//	@Failure		400		{object}	dto.ErrorWrapper{error=dto.ErrorResponse{details=common.ParameterError}}
+//	@Failure		500		{object}	dto.ErrorWrapper{error=dto.ErrorResponse{details=nil}}
+//	@Router			/auth/logout/{cred_id} [post]
 func (a AuthController) Logout(ctx *gin.Context) {
 	token, stat := common.GetClaims(ctx)
 	if stat.IsError() {
@@ -77,6 +90,15 @@ func (a AuthController) Logout(ctx *gin.Context) {
 	resp.Conditional(ctx, stat, nil, nil)
 }
 
+// LogoutAllDevice Remove all credentials associated on logged-in user
+//
+//	@Summary		Logout All Device
+//	@Description	Remove all current user logged in credentials
+//	@Tags			auth
+//	@Produce		json
+//	@Success		200	{object}	dto.SuccessWrapper{success=dto.SuccessResponse{data=nil}}
+//	@Failure		400	{object}	dto.ErrorWrapper{error=dto.ErrorResponse{details=[]common.FieldError}}
+//	@Router			/auth/logouts [post]
 func (a AuthController) LogoutAllDevice(ctx *gin.Context) {
 	token, stat := common.GetClaims(ctx)
 	if stat.IsError() {
@@ -87,6 +109,18 @@ func (a AuthController) LogoutAllDevice(ctx *gin.Context) {
 	resp.Conditional(ctx, stat, nil, nil)
 }
 
+// RefreshToken Get new access token and recreate refresh token
+//
+//	@Summary		Refresh Token
+//	@Description	Recreate access token
+//	@Tags			auth
+//	@Accept			json
+//	@Produce		json
+//	@Param			input	body		dto.RefreshTokenInput	true	"refresh token input, token type should be Bearer"
+//	@Success		200		{object}	dto.SuccessWrapper{success=dto.SuccessResponse{data=dto.RefreshTokenResponse}}
+//	@Failure		400		{object}	dto.ErrorWrapper{error=dto.ErrorResponse{details=[]common.FieldError}}
+//	@Failure		500		{object}	dto.ErrorWrapper{error=dto.ErrorResponse{details=nil}}
+//	@Router			/auth/refresh-token [post]
 func (a AuthController) RefreshToken(ctx *gin.Context) {
 	input := dto.RefreshTokenInput{}
 	stat, fieldErrors := httputil.BindJson(ctx, &input)
@@ -99,6 +133,15 @@ func (a AuthController) RefreshToken(ctx *gin.Context) {
 	resp.Conditional(ctx, stat, token, nil)
 }
 
+// GetCredentials Get all user credentials or session
+//
+//	@Summary		Get Credentials
+//	@Description	Get all user credentials
+//	@Tags			auth
+//	@Produce		json
+//	@Success		200	{object}	dto.SuccessWrapper{success=dto.SuccessResponse{data=[]dto.CredentialResponse}}
+//	@Failure		400	{object}	dto.ErrorWrapper{error=dto.ErrorResponse{details=[]common.FieldError}}
+//	@Router			/auth/devices [get]
 func (a AuthController) GetCredentials(ctx *gin.Context) {
 	token, stat := common.GetClaims(ctx)
 	if stat.IsError() {

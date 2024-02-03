@@ -108,13 +108,13 @@ func (u userService) GetAllUsers() ([]dto.UserResponse, status.Object) {
 	return result, status.ConditionalRepository(err, status.SUCCESS, opt.New(status.SUCCESS))
 }
 
-func (u userService) UpdateUser(input *dto.UserUpdateInput) status.Object {
+func (u userService) UpdateUser(input *dto.UserEditInput) status.Object {
 	usr := mapper.MapUserUpdateInput(input)
 	err := u.repo.UpdateUser(&usr)
 	return status.ConditionalRepository(err, status.UPDATED, opt.New(status.USER_UPDATE_FAILED))
 }
 
-func (u userService) UpdateUserExtended(input *dto.UserUpdateExtendedInput) status.Object {
+func (u userService) UpdateUserExtended(input *dto.UserEditExtendedInput) status.Object {
 	user, err := mapper.MapUserUpdateExtendedInput(input)
 	if err != nil {
 		return status.InternalError()
@@ -122,13 +122,14 @@ func (u userService) UpdateUserExtended(input *dto.UserUpdateExtendedInput) stat
 	err = u.repo.UpdateUser(&user)
 	return status.ConditionalRepository(err, status.UPDATED, opt.New(status.USER_UPDATE_FAILED))
 }
-func (u userService) UpdateProfileExtended(input *dto.ProfileUpdateExtendedInput) status.Object {
+
+func (u userService) UpdateProfileExtended(input *dto.ProfileEditExtendedInput) status.Object {
 	profile := mapper.MapProfileUpdateExtendedInput(input)
 	err := u.repo.UpdateProfileByUserId(&profile)
 	return status.ConditionalRepository(err, status.UPDATED, opt.New(status.PROFILE_UPDATE_FAILED))
 }
 
-func (u userService) UpdateProfile(input *dto.ProfileUpdateInput) status.Object {
+func (u userService) UpdateProfile(input *dto.ProfileEditInput) status.Object {
 	profile := mapper.MapProfileUpdateInput(input)
 	err := u.repo.UpdateProfileByUserId(&profile)
 	return status.ConditionalRepository(err, status.UPDATED, opt.New(status.PROFILE_UPDATE_FAILED))
@@ -179,12 +180,18 @@ func (u userService) FindUserById(id string) (dto.UserResponse, status.Object) {
 
 func (u userService) FindUserByEmail(email string) (dto.UserResponse, status.Object) {
 	usr, err := u.repo.FindUserByEmail(email)
-	return mapper.ToUserResponse(usr), status.RepositoryError(err, opt.New(status.USER_NOT_FOUND))
+	if err != nil {
+		return dto.UserResponse{}, status.RepositoryError(err, opt.New(status.USER_NOT_FOUND))
+	}
+	return mapper.ToUserResponse(usr), status.Success()
 }
 
 func (u userService) FindUserProfileById(userId string) (dto.ProfileResponse, status.Object) {
 	profile, err := u.repo.FindUserProfiles(userId)
-	return mapper.ToProfileResponse(profile, u.fileService), status.ConditionalRepository(err, status.SUCCESS, opt.New(status.PROFILE_NOT_FOUND))
+	if err != nil {
+		return dto.ProfileResponse{}, status.RepositoryError(err, opt.New(status.PROFILE_NOT_FOUND))
+	}
+	return mapper.ToProfileResponse(profile, u.fileService), status.Success()
 }
 
 func (u userService) ChangePassword(input *dto.ChangePasswordInput) status.Object {

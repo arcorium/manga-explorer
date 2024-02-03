@@ -1,5 +1,148 @@
 basePath: /api/v1
 definitions:
+  common.FieldError:
+    properties:
+      error:
+        type: string
+      field:
+        type: string
+    type: object
+  common.ParameterError:
+    properties:
+      error:
+        type: string
+      param:
+        type: string
+    type: object
+  dto.AddUserInput:
+    properties:
+      bio:
+        type: string
+      email:
+        type: string
+      first_name:
+        type: string
+      last_name:
+        type: string
+      password:
+        type: string
+      photo_url:
+        type: string
+      role:
+        enum:
+        - admin
+        - user
+        type: string
+      username:
+        type: string
+      verified:
+        type: boolean
+    required:
+    - email
+    - password
+    - role
+    type: object
+  dto.ChangePasswordInput:
+    properties:
+      last_password:
+        type: string
+      new_password:
+        minLength: 7
+        type: string
+    required:
+    - last_password
+    - new_password
+    type: object
+  dto.ChapterCreateInput:
+    properties:
+      chapter:
+        minimum: 1
+        type: integer
+      language:
+        type: string
+      publish_date:
+        type: string
+      title:
+        type: string
+      volume_id:
+        type: string
+    required:
+    - chapter
+    - language
+    - title
+    - volume_id
+    type: object
+  dto.ChapterEditInput:
+    properties:
+      chapter:
+        type: integer
+      language:
+        type: string
+      publish_date:
+        type: string
+      title:
+        type: string
+      volume_id:
+        type: string
+    required:
+    - chapter
+    - language
+    - title
+    - volume_id
+    type: object
+  dto.ChapterResponse:
+    properties:
+      chapter:
+        type: integer
+      comments:
+        items:
+          $ref: '#/definitions/dto.CommentResponse'
+        type: array
+      created_at:
+        type: string
+      id:
+        type: string
+      language:
+        type: string
+      pages:
+        items:
+          $ref: '#/definitions/dto.PageResponse'
+        type: array
+      title:
+        type: string
+      total_comment:
+        type: integer
+      translator:
+        $ref: '#/definitions/dto.UserResponse'
+    type: object
+  dto.CommentResponse:
+    properties:
+      comment:
+        type: string
+      dislike:
+        type: integer
+      id:
+        type: string
+      is_edited:
+        type: boolean
+      like:
+        type: integer
+      replies:
+        items:
+          $ref: '#/definitions/dto.CommentResponse'
+        type: array
+      time:
+        type: string
+      user:
+        $ref: '#/definitions/dto.UserResponse'
+    type: object
+  dto.CredentialResponse:
+    properties:
+      device_name:
+        type: string
+      id:
+        type: string
+    type: object
   dto.ErrorResponse:
     properties:
       code:
@@ -7,6 +150,402 @@ definitions:
       details: {}
       message:
         type: string
+    type: object
+  dto.ErrorWrapper:
+    properties:
+      error:
+        $ref: '#/definitions/dto.ErrorResponse'
+    type: object
+  dto.FavoriteMangaModificationInput:
+    properties:
+      op:
+        enum:
+        - add
+        - remove
+        type: string
+    required:
+    - op
+    type: object
+  dto.GenreCreateInput:
+    properties:
+      name:
+        type: string
+    required:
+    - name
+    type: object
+  dto.GenreEditInput:
+    properties:
+      new_name:
+        type: string
+    required:
+    - new_name
+    type: object
+  dto.GenreResponse:
+    properties:
+      id:
+        type: string
+      name:
+        type: string
+    type: object
+  dto.InternalProfileResponse:
+    properties:
+      bio:
+        type: string
+      first_name:
+        type: string
+      last_name:
+        type: string
+      photo_url:
+        type: string
+    type: object
+  dto.InternalTranslation:
+    properties:
+      desc:
+        type: string
+      lang:
+        type: string
+      title:
+        type: string
+    required:
+    - desc
+    - lang
+    - title
+    type: object
+  dto.LoginInput:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+    required:
+    - email
+    - password
+    type: object
+  dto.LoginResponse:
+    properties:
+      access_token:
+        type: string
+      token_type:
+        type: string
+    type: object
+  dto.MangaCommentCreateInput:
+    properties:
+      comment:
+        minLength: 1
+        type: string
+      parent_id:
+        type: string
+    required:
+    - comment
+    type: object
+  dto.MangaCreateInput:
+    properties:
+      desc:
+        type: string
+      genres:
+        items:
+          type: string
+        type: array
+      origin:
+        type: string
+      publication_year:
+        type: integer
+      status:
+        type: string
+      title:
+        type: string
+    required:
+    - desc
+    - genres
+    - origin
+    - publication_year
+    - status
+    - title
+    type: object
+  dto.MangaEditInput:
+    properties:
+      description:
+        type: string
+      origin:
+        type: string
+      publication_year:
+        type: integer
+      status:
+        type: string
+      title:
+        minLength: 1
+        type: string
+    required:
+    - origin
+    - publication_year
+    - status
+    - title
+    type: object
+  dto.MangaFavoriteResponse:
+    properties:
+      cover_url:
+        type: string
+      desc:
+        type: string
+      favorited_at:
+        type: string
+      genres:
+        items:
+          $ref: '#/definitions/dto.GenreResponse'
+        type: array
+      id:
+        type: string
+      origin:
+        type: string
+      rate:
+        type: number
+      status:
+        type: string
+      title:
+        type: string
+      total_comment:
+        type: integer
+      total_rater:
+        type: integer
+      translations:
+        description: |-
+          Comments     []CommentResponse     `json:"comments,omitempty"`
+          Ratings      []RateResponse        `json:"ratings,omitempty"`
+        items:
+          $ref: '#/definitions/dto.TranslationResponse'
+        type: array
+      volumes:
+        items:
+          $ref: '#/definitions/dto.VolumeResponse'
+        type: array
+      year:
+        type: integer
+    type: object
+  dto.MangaGenreEditInput:
+    properties:
+      adds:
+        items:
+          type: string
+        type: array
+      removes:
+        items:
+          type: string
+        type: array
+    type: object
+  dto.MangaHistoryResponse:
+    properties:
+      cover_url:
+        type: string
+      desc:
+        type: string
+      genres:
+        items:
+          $ref: '#/definitions/dto.GenreResponse'
+        type: array
+      id:
+        type: string
+      last_view:
+        type: string
+      origin:
+        type: string
+      rate:
+        type: number
+      status:
+        type: string
+      title:
+        type: string
+      total_comment:
+        type: integer
+      total_rater:
+        type: integer
+      translations:
+        description: |-
+          Comments     []CommentResponse     `json:"comments,omitempty"`
+          Ratings      []RateResponse        `json:"ratings,omitempty"`
+        items:
+          $ref: '#/definitions/dto.TranslationResponse'
+        type: array
+      volumes:
+        items:
+          $ref: '#/definitions/dto.VolumeResponse'
+        type: array
+      year:
+        type: integer
+    type: object
+  dto.MangaResponse:
+    properties:
+      cover_url:
+        type: string
+      desc:
+        type: string
+      genres:
+        items:
+          $ref: '#/definitions/dto.GenreResponse'
+        type: array
+      id:
+        type: string
+      origin:
+        type: string
+      rate:
+        type: number
+      status:
+        type: string
+      title:
+        type: string
+      total_comment:
+        type: integer
+      total_rater:
+        type: integer
+      translations:
+        description: |-
+          Comments     []CommentResponse     `json:"comments,omitempty"`
+          Ratings      []RateResponse        `json:"ratings,omitempty"`
+        items:
+          $ref: '#/definitions/dto.TranslationResponse'
+        type: array
+      volumes:
+        items:
+          $ref: '#/definitions/dto.VolumeResponse'
+        type: array
+      year:
+        type: integer
+    type: object
+  dto.MangaSearchQuery:
+    type: object
+  dto.MangaTranslationInsertInput:
+    properties:
+      translations:
+        items:
+          $ref: '#/definitions/dto.InternalTranslation'
+        minItems: 1
+        type: array
+    type: object
+  dto.MangaTranslationsDeleteInput:
+    properties:
+      lang:
+        items:
+          type: string
+        type: array
+    required:
+    - lang
+    type: object
+  dto.MinimalMangaResponse:
+    properties:
+      cover_url:
+        type: string
+      desc:
+        type: string
+      genres:
+        items:
+          $ref: '#/definitions/dto.GenreResponse'
+        type: array
+      id:
+        type: string
+      origin:
+        type: string
+      rate:
+        type: number
+      status:
+        type: string
+      title:
+        type: string
+      total_comment:
+        type: integer
+      total_rater:
+        type: integer
+      year:
+        type: integer
+    type: object
+  dto.PageDeleteInput:
+    properties:
+      pages:
+        items:
+          type: integer
+        type: array
+    required:
+    - pages
+    type: object
+  dto.PageResponse:
+    properties:
+      image_url:
+        description: Can be returning image bytes
+        type: string
+      page:
+        type: integer
+    type: object
+  dto.ProfileEditExtendedInput:
+    properties:
+      bio:
+        type: string
+      first_name:
+        type: string
+      last_name:
+        type: string
+      photo_url:
+        type: string
+    type: object
+  dto.ProfileEditInput:
+    properties:
+      bio:
+        type: string
+      first_name:
+        minLength: 5
+        type: string
+      last_name:
+        type: string
+    required:
+    - bio
+    - first_name
+    - last_name
+    type: object
+  dto.ProfileResponse:
+    properties:
+      profile:
+        $ref: '#/definitions/dto.InternalProfileResponse'
+      user:
+        $ref: '#/definitions/dto.UserResponse'
+    type: object
+  dto.RateResponse:
+    properties:
+      rate:
+        type: integer
+      time:
+        type: string
+      user:
+        $ref: '#/definitions/dto.UserResponse'
+    type: object
+  dto.RateUpsertInput:
+    properties:
+      rate:
+        maximum: 10
+        type: integer
+    required:
+    - rate
+    type: object
+  dto.RefreshTokenInput:
+    properties:
+      access_token:
+        type: string
+      token_type:
+        type: string
+    required:
+    - access_token
+    - token_type
+    type: object
+  dto.RefreshTokenResponse:
+    properties:
+      access_token:
+        type: string
+      token_type:
+        type: string
+    type: object
+  dto.ResetPasswordInput:
+    properties:
+      new_password:
+        minLength: 7
+        type: string
+    required:
+    - new_password
     type: object
   dto.ResponsePage:
     properties:
@@ -27,33 +566,2830 @@ definitions:
       page:
         $ref: '#/definitions/dto.ResponsePage'
     type: object
+  dto.SuccessWrapper:
+    properties:
+      success:
+        $ref: '#/definitions/dto.SuccessResponse'
+    type: object
+  dto.TranslationDeleteInput:
+    properties:
+      ids:
+        items:
+          type: string
+        type: array
+    required:
+    - ids
+    type: object
+  dto.TranslationEditInput:
+    properties:
+      desc:
+        type: string
+      lang:
+        type: string
+      title:
+        type: string
+    required:
+    - desc
+    - lang
+    - title
+    type: object
+  dto.TranslationResponse:
+    properties:
+      desc:
+        type: string
+      id:
+        type: string
+      lang:
+        type: string
+      title:
+        type: string
+    type: object
+  dto.UserEditExtendedInput:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+      userId:
+        type: string
+      username:
+        type: string
+    required:
+    - userId
+    type: object
+  dto.UserEditInput:
+    properties:
+      email:
+        type: string
+      username:
+        type: string
+    required:
+    - email
+    - username
+    type: object
+  dto.UserRegisterInput:
+    properties:
+      bio:
+        type: string
+      email:
+        type: string
+      firstname:
+        type: string
+      lastname:
+        type: string
+      password:
+        minLength: 7
+        type: string
+      username:
+        minLength: 5
+        type: string
+    required:
+    - email
+    - firstname
+    - password
+    - username
+    type: object
+  dto.UserResponse:
+    properties:
+      email:
+        type: string
+      id:
+        type: string
+      role:
+        type: string
+      username:
+        type: string
+    type: object
+  dto.VolumeCreateInput:
+    properties:
+      desc:
+        type: string
+      number:
+        type: integer
+      title:
+        type: string
+    required:
+    - number
+    type: object
+  dto.VolumeDeleteInput:
+    properties:
+      volumes:
+        items:
+          type: integer
+        type: array
+    required:
+    - volumes
+    type: object
+  dto.VolumeResponse:
+    properties:
+      chapters:
+        items:
+          $ref: '#/definitions/dto.ChapterResponse'
+        type: array
+      id:
+        type: string
+      number:
+        type: integer
+      title:
+        type: string
+    type: object
 info:
   contact:
     email: arcorium.l@gmail.com
     name: arcorium
     url: github.com/arcorium
-  description: Simple manga explorer used to read manga and save the manga
+  description: Simple manga reader app with rate, favorite and comment features
   title: Manga Explorer API
   version: "1.0"
 paths:
-  /login:
-    post:
-      consumes:
-      - application/json
-      description: login to get token
+  /auth/devices:
+    get:
+      description: Get all user credentials
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/dto.SuccessResponse'
-        "401":
-          description: Unauthorized
+            allOf:
+            - $ref: '#/definitions/dto.SuccessWrapper'
+            - properties:
+                success:
+                  allOf:
+                  - $ref: '#/definitions/dto.SuccessResponse'
+                  - properties:
+                      data:
+                        items:
+                          $ref: '#/definitions/dto.CredentialResponse'
+                        type: array
+                    type: object
+              type: object
+        "400":
+          description: Bad Request
           schema:
-            $ref: '#/definitions/dto.ErrorResponse'
-      summary: login
+            allOf:
+            - $ref: '#/definitions/dto.ErrorWrapper'
+            - properties:
+                error:
+                  allOf:
+                  - $ref: '#/definitions/dto.ErrorResponse'
+                  - properties:
+                      details:
+                        items:
+                          $ref: '#/definitions/common.FieldError'
+                        type: array
+                    type: object
+              type: object
+      summary: Get Credentials
       tags:
       - auth
-      - account
+  /auth/login:
+    post:
+      consumes:
+      - application/json
+      description: login to authenticate
+      parameters:
+      - description: user login input
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/dto.LoginInput'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/dto.SuccessWrapper'
+            - properties:
+                success:
+                  allOf:
+                  - $ref: '#/definitions/dto.SuccessResponse'
+                  - properties:
+                      data:
+                        $ref: '#/definitions/dto.LoginResponse'
+                    type: object
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            allOf:
+            - $ref: '#/definitions/dto.ErrorWrapper'
+            - properties:
+                error:
+                  allOf:
+                  - $ref: '#/definitions/dto.ErrorResponse'
+                  - properties:
+                      details:
+                        items:
+                          $ref: '#/definitions/common.FieldError'
+                        type: array
+                    type: object
+              type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            allOf:
+            - $ref: '#/definitions/dto.ErrorWrapper'
+            - properties:
+                error:
+                  allOf:
+                  - $ref: '#/definitions/dto.ErrorResponse'
+                  - properties:
+                      details:
+                        type: object
+                    type: object
+              type: object
+      summary: Login
+      tags:
+      - auth
+  /auth/logout/{cred_id}:
+    post:
+      description: logout credential id or current logged in credential
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/dto.SuccessWrapper'
+            - properties:
+                success:
+                  allOf:
+                  - $ref: '#/definitions/dto.SuccessResponse'
+                  - properties:
+                      data:
+                        type: object
+                    type: object
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            allOf:
+            - $ref: '#/definitions/dto.ErrorWrapper'
+            - properties:
+                error:
+                  allOf:
+                  - $ref: '#/definitions/dto.ErrorResponse'
+                  - properties:
+                      details:
+                        $ref: '#/definitions/common.ParameterError'
+                    type: object
+              type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            allOf:
+            - $ref: '#/definitions/dto.ErrorWrapper'
+            - properties:
+                error:
+                  allOf:
+                  - $ref: '#/definitions/dto.ErrorResponse'
+                  - properties:
+                      details:
+                        type: object
+                    type: object
+              type: object
+      summary: Logout
+      tags:
+      - auth
+  /auth/logouts:
+    post:
+      description: Remove all current user logged in credentials
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/dto.SuccessWrapper'
+            - properties:
+                success:
+                  allOf:
+                  - $ref: '#/definitions/dto.SuccessResponse'
+                  - properties:
+                      data:
+                        type: object
+                    type: object
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            allOf:
+            - $ref: '#/definitions/dto.ErrorWrapper'
+            - properties:
+                error:
+                  allOf:
+                  - $ref: '#/definitions/dto.ErrorResponse'
+                  - properties:
+                      details:
+                        items:
+                          $ref: '#/definitions/common.FieldError'
+                        type: array
+                    type: object
+              type: object
+      summary: Logout All Device
+      tags:
+      - auth
+  /auth/refresh-token:
+    post:
+      consumes:
+      - application/json
+      description: Recreate access token
+      parameters:
+      - description: refresh token input, token type should be Bearer
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/dto.RefreshTokenInput'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/dto.SuccessWrapper'
+            - properties:
+                success:
+                  allOf:
+                  - $ref: '#/definitions/dto.SuccessResponse'
+                  - properties:
+                      data:
+                        $ref: '#/definitions/dto.RefreshTokenResponse'
+                    type: object
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            allOf:
+            - $ref: '#/definitions/dto.ErrorWrapper'
+            - properties:
+                error:
+                  allOf:
+                  - $ref: '#/definitions/dto.ErrorResponse'
+                  - properties:
+                      details:
+                        items:
+                          $ref: '#/definitions/common.FieldError'
+                        type: array
+                    type: object
+              type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            allOf:
+            - $ref: '#/definitions/dto.ErrorWrapper'
+            - properties:
+                error:
+                  allOf:
+                  - $ref: '#/definitions/dto.ErrorResponse'
+                  - properties:
+                      details:
+                        type: object
+                    type: object
+              type: object
+      summary: Refresh Token
+      tags:
+      - auth
+  /chapters/{chapter_id}:
+    delete:
+      description: delete specific manga chapter and pages associated with it
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/dto.SuccessWrapper'
+            - properties:
+                success:
+                  allOf:
+                  - $ref: '#/definitions/dto.SuccessResponse'
+                  - properties:
+                      data:
+                        type: object
+                    type: object
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            allOf:
+            - $ref: '#/definitions/dto.ErrorWrapper'
+            - properties:
+                error:
+                  allOf:
+                  - $ref: '#/definitions/dto.ErrorResponse'
+                  - properties:
+                      details:
+                        type: object
+                    type: object
+              type: object
+      summary: Delete Chapter
+      tags:
+      - manga
+      - chapter
+    get:
+      description: get specific chapter details with pages associated with it
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/dto.SuccessWrapper'
+            - properties:
+                success:
+                  allOf:
+                  - $ref: '#/definitions/dto.SuccessResponse'
+                  - properties:
+                      data:
+                        $ref: '#/definitions/dto.ChapterResponse'
+                    type: object
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            allOf:
+            - $ref: '#/definitions/dto.ErrorWrapper'
+            - properties:
+                error:
+                  allOf:
+                  - $ref: '#/definitions/dto.ErrorResponse'
+                  - properties:
+                      details:
+                        type: object
+                    type: object
+              type: object
+      summary: Find Chapter Details
+      tags:
+      - manga
+      - chapter
+    put:
+      consumes:
+      - application/json
+      description: edit specific chapter
+      parameters:
+      - description: chapter edit input
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/dto.ChapterEditInput'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/dto.SuccessWrapper'
+            - properties:
+                success:
+                  allOf:
+                  - $ref: '#/definitions/dto.SuccessResponse'
+                  - properties:
+                      data:
+                        type: object
+                    type: object
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            allOf:
+            - $ref: '#/definitions/dto.ErrorWrapper'
+            - properties:
+                error:
+                  allOf:
+                  - $ref: '#/definitions/dto.ErrorResponse'
+                  - properties:
+                      details:
+                        type: object
+                    type: object
+              type: object
+      summary: Edit Chapter
+      tags:
+      - manga
+      - chapter
+  /chapters/{chapter_id}/comments:
+    get:
+      description: get all comments from specific chapter
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/dto.SuccessWrapper'
+            - properties:
+                success:
+                  allOf:
+                  - $ref: '#/definitions/dto.SuccessResponse'
+                  - properties:
+                      data:
+                        items:
+                          $ref: '#/definitions/dto.CommentResponse'
+                        type: array
+                    type: object
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            allOf:
+            - $ref: '#/definitions/dto.ErrorWrapper'
+            - properties:
+                error:
+                  allOf:
+                  - $ref: '#/definitions/dto.ErrorResponse'
+                  - properties:
+                      details:
+                        type: object
+                    type: object
+              type: object
+      summary: Find Chapter Comment
+      tags:
+      - manga
+      - chapter
+    post:
+      description: create comment for specific chapter
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            allOf:
+            - $ref: '#/definitions/dto.SuccessWrapper'
+            - properties:
+                success:
+                  allOf:
+                  - $ref: '#/definitions/dto.SuccessResponse'
+                  - properties:
+                      data:
+                        type: object
+                    type: object
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            allOf:
+            - $ref: '#/definitions/dto.ErrorWrapper'
+            - properties:
+                error:
+                  allOf:
+                  - $ref: '#/definitions/dto.ErrorResponse'
+                  - properties:
+                      details:
+                        type: object
+                    type: object
+              type: object
+      summary: Create Chapter Comment
+      tags:
+      - manga
+      - chapter
+  /chapters/{chapter_id}/pages:
+    delete:
+      consumes:
+      - application/json
+      description: delete specifc chapter pages
+      parameters:
+      - description: page delete input
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/dto.PageDeleteInput'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/dto.SuccessWrapper'
+            - properties:
+                success:
+                  allOf:
+                  - $ref: '#/definitions/dto.SuccessResponse'
+                  - properties:
+                      data:
+                        type: object
+                    type: object
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            allOf:
+            - $ref: '#/definitions/dto.ErrorWrapper'
+            - properties:
+                error:
+                  allOf:
+                  - $ref: '#/definitions/dto.ErrorResponse'
+                  - properties:
+                      details:
+                        type: object
+                    type: object
+              type: object
+      summary: Delete Chapter Pages
+      tags:
+      - manga
+      - chapter
+    post:
+      consumes:
+      - multipart/form-data
+      description: insert new page for specific chapter
+      parameters:
+      - description: page number
+        in: formData
+        name: page
+        required: true
+        type: integer
+      - description: page image
+        in: formData
+        name: image
+        required: true
+        type: file
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            allOf:
+            - $ref: '#/definitions/dto.SuccessWrapper'
+            - properties:
+                success:
+                  allOf:
+                  - $ref: '#/definitions/dto.SuccessResponse'
+                  - properties:
+                      data:
+                        type: object
+                    type: object
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            allOf:
+            - $ref: '#/definitions/dto.ErrorWrapper'
+            - properties:
+                error:
+                  allOf:
+                  - $ref: '#/definitions/dto.ErrorResponse'
+                  - properties:
+                      details:
+                        type: object
+                    type: object
+              type: object
+      summary: Insert Chapter Page
+      tags:
+      - manga
+      - chapter
+  /chapters/{manga_id}/histories:
+    get:
+      description: get chapters of manga history on current logged-in user
+      parameters:
+      - in: query
+        name: element
+        type: integer
+      - in: query
+        name: page
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/dto.SuccessWrapper'
+            - properties:
+                success:
+                  allOf:
+                  - $ref: '#/definitions/dto.SuccessResponse'
+                  - properties:
+                      data:
+                        items:
+                          $ref: '#/definitions/dto.ChapterResponse'
+                        type: array
+                    type: object
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            allOf:
+            - $ref: '#/definitions/dto.ErrorWrapper'
+            - properties:
+                error:
+                  allOf:
+                  - $ref: '#/definitions/dto.ErrorResponse'
+                  - properties:
+                      details:
+                        type: object
+                    type: object
+              type: object
+      summary: Get Manga History Chapters
+      tags:
+      - manga
+      - chapter
+  /genres:
+    get:
+      description: Get all registered genres
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/dto.SuccessWrapper'
+            - properties:
+                success:
+                  allOf:
+                  - $ref: '#/definitions/dto.SuccessResponse'
+                  - properties:
+                      data:
+                        items:
+                          $ref: '#/definitions/dto.GenreResponse'
+                        type: array
+                    type: object
+              type: object
+      summary: Get All Genres
+      tags:
+      - manga
+      - genre
+    post:
+      consumes:
+      - application/json
+      description: Create new genre
+      parameters:
+      - description: genre create input
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/dto.GenreCreateInput'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/dto.SuccessWrapper'
+            - properties:
+                success:
+                  allOf:
+                  - $ref: '#/definitions/dto.SuccessResponse'
+                  - properties:
+                      data:
+                        type: object
+                    type: object
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            allOf:
+            - $ref: '#/definitions/dto.ErrorWrapper'
+            - properties:
+                error:
+                  allOf:
+                  - $ref: '#/definitions/dto.ErrorResponse'
+                  - properties:
+                      details:
+                        type: object
+                    type: object
+              type: object
+      summary: Create Genre
+      tags:
+      - manga
+      - genre
+  /genres/{genre_id}:
+    delete:
+      description: Delete specific genre by id
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/dto.SuccessWrapper'
+            - properties:
+                success:
+                  allOf:
+                  - $ref: '#/definitions/dto.SuccessResponse'
+                  - properties:
+                      data:
+                        type: object
+                    type: object
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            allOf:
+            - $ref: '#/definitions/dto.ErrorWrapper'
+            - properties:
+                error:
+                  allOf:
+                  - $ref: '#/definitions/dto.ErrorResponse'
+                  - properties:
+                      details:
+                        items:
+                          $ref: '#/definitions/common.FieldError'
+                        type: array
+                    type: object
+              type: object
+      summary: Delete Genre
+      tags:
+      - manga
+      - genre
+    put:
+      consumes:
+      - application/json
+      description: Edit specific genre by id
+      parameters:
+      - description: genre edit input
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/dto.GenreEditInput'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/dto.SuccessWrapper'
+            - properties:
+                success:
+                  allOf:
+                  - $ref: '#/definitions/dto.SuccessResponse'
+                  - properties:
+                      data:
+                        type: object
+                    type: object
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            allOf:
+            - $ref: '#/definitions/dto.ErrorWrapper'
+            - properties:
+                error:
+                  allOf:
+                  - $ref: '#/definitions/dto.ErrorResponse'
+                  - properties:
+                      details:
+                        type: object
+                    type: object
+              type: object
+      summary: Edit Genre
+      tags:
+      - manga
+      - genre
+  /mangas:
+    get:
+      description: Get random manga with limit query
+      parameters:
+      - description: total response manga
+        in: query
+        name: limit
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/dto.SuccessWrapper'
+            - properties:
+                success:
+                  allOf:
+                  - $ref: '#/definitions/dto.SuccessResponse'
+                  - properties:
+                      data:
+                        items:
+                          $ref: '#/definitions/dto.MinimalMangaResponse'
+                        type: array
+                    type: object
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            allOf:
+            - $ref: '#/definitions/dto.ErrorWrapper'
+            - properties:
+                error:
+                  allOf:
+                  - $ref: '#/definitions/dto.ErrorResponse'
+                  - properties:
+                      details:
+                        type: object
+                    type: object
+              type: object
+      summary: Random Manga
+      tags:
+      - manga
+    post:
+      consumes:
+      - application/json
+      description: create new manga
+      parameters:
+      - description: manga create input
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/dto.MangaCreateInput'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            allOf:
+            - $ref: '#/definitions/dto.SuccessWrapper'
+            - properties:
+                success:
+                  allOf:
+                  - $ref: '#/definitions/dto.SuccessResponse'
+                  - properties:
+                      data:
+                        type: object
+                    type: object
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            allOf:
+            - $ref: '#/definitions/dto.ErrorWrapper'
+            - properties:
+                error:
+                  allOf:
+                  - $ref: '#/definitions/dto.ErrorResponse'
+                  - properties:
+                      details:
+                        type: object
+                    type: object
+              type: object
+      summary: Create Manga
+      tags:
+      - manga
+  /mangas/{manga_id/chapters:
+    post:
+      consumes:
+      - application/json
+      description: create chapter for specific manga
+      parameters:
+      - description: chapter create input
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/dto.ChapterCreateInput'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            allOf:
+            - $ref: '#/definitions/dto.SuccessWrapper'
+            - properties:
+                success:
+                  allOf:
+                  - $ref: '#/definitions/dto.SuccessResponse'
+                  - properties:
+                      data:
+                        type: object
+                    type: object
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            allOf:
+            - $ref: '#/definitions/dto.ErrorWrapper'
+            - properties:
+                error:
+                  allOf:
+                  - $ref: '#/definitions/dto.ErrorResponse'
+                  - properties:
+                      details:
+                        type: object
+                    type: object
+              type: object
+      summary: Create Chapter
+      tags:
+      - manga
+      - chapter
+  /mangas/{manga_id}:
+    get:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/dto.SuccessWrapper'
+            - properties:
+                success:
+                  allOf:
+                  - $ref: '#/definitions/dto.SuccessResponse'
+                  - properties:
+                      data:
+                        $ref: '#/definitions/dto.MangaResponse'
+                    type: object
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            allOf:
+            - $ref: '#/definitions/dto.ErrorWrapper'
+            - properties:
+                error:
+                  allOf:
+                  - $ref: '#/definitions/dto.ErrorResponse'
+                  - properties:
+                      details:
+                        type: object
+                    type: object
+              type: object
+      summary: Find Manga By Id
+      tags:
+      - manga
+    put:
+      consumes:
+      - application/json
+      description: Edit specific manga by id
+      parameters:
+      - description: manga edit input
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/dto.MangaEditInput'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/dto.SuccessWrapper'
+            - properties:
+                success:
+                  allOf:
+                  - $ref: '#/definitions/dto.SuccessResponse'
+                  - properties:
+                      data:
+                        type: object
+                    type: object
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            allOf:
+            - $ref: '#/definitions/dto.ErrorWrapper'
+            - properties:
+                error:
+                  allOf:
+                  - $ref: '#/definitions/dto.ErrorResponse'
+                  - properties:
+                      details:
+                        type: object
+                    type: object
+              type: object
+      summary: Edit Manga
+      tags:
+      - manga
+  /mangas/{manga_id}/comments:
+    get:
+      description: Get all comments from specific manga
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/dto.SuccessWrapper'
+            - properties:
+                success:
+                  allOf:
+                  - $ref: '#/definitions/dto.SuccessResponse'
+                  - properties:
+                      data:
+                        items:
+                          $ref: '#/definitions/dto.CommentResponse'
+                        type: array
+                    type: object
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            allOf:
+            - $ref: '#/definitions/dto.ErrorWrapper'
+            - properties:
+                error:
+                  allOf:
+                  - $ref: '#/definitions/dto.ErrorResponse'
+                  - properties:
+                      details:
+                        type: object
+                    type: object
+              type: object
+      summary: Get Manga Comments
+      tags:
+      - manga
+    post:
+      consumes:
+      - application/json
+      description: create comment for specific manga
+      parameters:
+      - description: manga comment create input
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/dto.MangaCommentCreateInput'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            allOf:
+            - $ref: '#/definitions/dto.SuccessWrapper'
+            - properties:
+                success:
+                  allOf:
+                  - $ref: '#/definitions/dto.SuccessResponse'
+                  - properties:
+                      data:
+                        type: object
+                    type: object
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            allOf:
+            - $ref: '#/definitions/dto.ErrorWrapper'
+            - properties:
+                error:
+                  allOf:
+                  - $ref: '#/definitions/dto.ErrorResponse'
+                  - properties:
+                      details:
+                        type: object
+                    type: object
+              type: object
+      summary: Create Manga Comment
+      tags:
+      - manga
+  /mangas/{manga_id}/covers:
+    patch:
+      consumes:
+      - multipart/form-data
+      description: update manga cover image
+      parameters:
+      - description: cover image
+        in: formData
+        name: image
+        required: true
+        type: file
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/dto.SuccessWrapper'
+            - properties:
+                success:
+                  allOf:
+                  - $ref: '#/definitions/dto.SuccessResponse'
+                  - properties:
+                      data:
+                        type: object
+                    type: object
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            allOf:
+            - $ref: '#/definitions/dto.ErrorWrapper'
+            - properties:
+                error:
+                  allOf:
+                  - $ref: '#/definitions/dto.ErrorResponse'
+                  - properties:
+                      details:
+                        type: object
+                    type: object
+              type: object
+      summary: Update Manga Cover
+      tags:
+      - manga
+  /mangas/{manga_id}/favorites:
+    post:
+      consumes:
+      - application/json
+      description: add or remove manga as favorite based on op field
+      parameters:
+      - description: modification input
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/dto.FavoriteMangaModificationInput'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/dto.SuccessWrapper'
+            - properties:
+                success:
+                  allOf:
+                  - $ref: '#/definitions/dto.SuccessResponse'
+                  - properties:
+                      data:
+                        type: object
+                    type: object
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            allOf:
+            - $ref: '#/definitions/dto.ErrorWrapper'
+            - properties:
+                error:
+                  allOf:
+                  - $ref: '#/definitions/dto.ErrorResponse'
+                  - properties:
+                      details:
+                        type: object
+                    type: object
+              type: object
+      summary: Modify Favorite Manga
+      tags:
+      - manga
+  /mangas/{manga_id}/genres:
+    patch:
+      consumes:
+      - application/json
+      description: Modify specific manga's genres
+      parameters:
+      - description: manga's genre edit input
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/dto.MangaGenreEditInput'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/dto.SuccessWrapper'
+            - properties:
+                success:
+                  allOf:
+                  - $ref: '#/definitions/dto.SuccessResponse'
+                  - properties:
+                      data:
+                        type: object
+                    type: object
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            allOf:
+            - $ref: '#/definitions/dto.ErrorWrapper'
+            - properties:
+                error:
+                  allOf:
+                  - $ref: '#/definitions/dto.ErrorResponse'
+                  - properties:
+                      details:
+                        type: object
+                    type: object
+              type: object
+      summary: Edit Manga Genres
+      tags:
+      - manga
+  /mangas/{manga_id}/ratings:
+    get:
+      description: Get all ratings from specific manga
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/dto.SuccessWrapper'
+            - properties:
+                success:
+                  allOf:
+                  - $ref: '#/definitions/dto.SuccessResponse'
+                  - properties:
+                      data:
+                        items:
+                          $ref: '#/definitions/dto.RateResponse'
+                        type: array
+                    type: object
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            allOf:
+            - $ref: '#/definitions/dto.ErrorWrapper'
+            - properties:
+                error:
+                  allOf:
+                  - $ref: '#/definitions/dto.ErrorResponse'
+                  - properties:
+                      details:
+                        type: object
+                    type: object
+              type: object
+      summary: Get Manga Ratings
+      tags:
+      - manga
+    post:
+      consumes:
+      - application/json
+      description: create or update rate for specific manga on current logged-in user
+      parameters:
+      - description: rate create input
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/dto.RateUpsertInput'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            allOf:
+            - $ref: '#/definitions/dto.SuccessWrapper'
+            - properties:
+                success:
+                  allOf:
+                  - $ref: '#/definitions/dto.SuccessResponse'
+                  - properties:
+                      data:
+                        type: object
+                    type: object
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            allOf:
+            - $ref: '#/definitions/dto.ErrorWrapper'
+            - properties:
+                error:
+                  allOf:
+                  - $ref: '#/definitions/dto.ErrorResponse'
+                  - properties:
+                      details:
+                        type: object
+                    type: object
+              type: object
+      summary: Create Manga Rating
+      tags:
+      - manga
+  /mangas/{manga_id}/translates:
+    delete:
+      consumes:
+      - application/json
+      description: delete all translations of specific manga based on languages provided
+      parameters:
+      - description: manga translations delete input
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/dto.MangaTranslationsDeleteInput'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/dto.SuccessWrapper'
+            - properties:
+                success:
+                  allOf:
+                  - $ref: '#/definitions/dto.SuccessResponse'
+                  - properties:
+                      data:
+                        type: object
+                    type: object
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            allOf:
+            - $ref: '#/definitions/dto.ErrorWrapper'
+            - properties:
+                error:
+                  allOf:
+                  - $ref: '#/definitions/dto.ErrorResponse'
+                  - properties:
+                      details:
+                        type: object
+                    type: object
+              type: object
+      summary: Delete Manga Translation
+      tags:
+      - manga
+    post:
+      consumes:
+      - application/json
+      description: create manga translation for specific manga
+      parameters:
+      - description: manga translation insert input
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/dto.MangaTranslationInsertInput'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            allOf:
+            - $ref: '#/definitions/dto.SuccessWrapper'
+            - properties:
+                success:
+                  allOf:
+                  - $ref: '#/definitions/dto.SuccessResponse'
+                  - properties:
+                      data:
+                        type: object
+                    type: object
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            allOf:
+            - $ref: '#/definitions/dto.ErrorWrapper'
+            - properties:
+                error:
+                  allOf:
+                  - $ref: '#/definitions/dto.ErrorResponse'
+                  - properties:
+                      details:
+                        type: object
+                    type: object
+              type: object
+      summary: Insert Manga Translation
+      tags:
+      - manga
+  /mangas/{manga_id}/translates/{language}:
+    get:
+      description: get all specifc manga translations
+      parameters:
+      - description: expected translation language
+        in: path
+        name: language
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/dto.SuccessWrapper'
+            - properties:
+                success:
+                  allOf:
+                  - $ref: '#/definitions/dto.SuccessResponse'
+                  - properties:
+                      data:
+                        $ref: '#/definitions/dto.TranslationResponse'
+                    type: object
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            allOf:
+            - $ref: '#/definitions/dto.ErrorWrapper'
+            - properties:
+                error:
+                  allOf:
+                  - $ref: '#/definitions/dto.ErrorResponse'
+                  - properties:
+                      details:
+                        type: object
+                    type: object
+              type: object
+      summary: Find Manga Translations
+      tags:
+      - manga
+  /mangas/{manga_id}/volumes:
+    delete:
+      consumes:
+      - application/json
+      description: delete specific volumes on manga
+      parameters:
+      - description: volume delete input
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/dto.VolumeDeleteInput'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/dto.SuccessWrapper'
+            - properties:
+                success:
+                  allOf:
+                  - $ref: '#/definitions/dto.SuccessResponse'
+                  - properties:
+                      data:
+                        type: object
+                    type: object
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            allOf:
+            - $ref: '#/definitions/dto.ErrorWrapper'
+            - properties:
+                error:
+                  allOf:
+                  - $ref: '#/definitions/dto.ErrorResponse'
+                  - properties:
+                      details:
+                        type: object
+                    type: object
+              type: object
+      summary: Delete Volume
+      tags:
+      - manga
+    post:
+      consumes:
+      - application/json
+      description: create new volume on specific manga
+      parameters:
+      - description: volume create input
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/dto.VolumeCreateInput'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            allOf:
+            - $ref: '#/definitions/dto.SuccessWrapper'
+            - properties:
+                success:
+                  allOf:
+                  - $ref: '#/definitions/dto.SuccessResponse'
+                  - properties:
+                      data:
+                        type: object
+                    type: object
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            allOf:
+            - $ref: '#/definitions/dto.ErrorWrapper'
+            - properties:
+                error:
+                  allOf:
+                  - $ref: '#/definitions/dto.ErrorResponse'
+                  - properties:
+                      details:
+                        type: object
+                    type: object
+              type: object
+      summary: Create Volume
+      tags:
+      - manga
+  /mangas/favorites:
+    get:
+      description: get current logged-in user manga's favorite
+      parameters:
+      - in: query
+        name: element
+        type: integer
+      - in: query
+        name: page
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/dto.SuccessWrapper'
+            - properties:
+                success:
+                  allOf:
+                  - $ref: '#/definitions/dto.SuccessResponse'
+                  - properties:
+                      data:
+                        items:
+                          $ref: '#/definitions/dto.MangaFavoriteResponse'
+                        type: array
+                    type: object
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            allOf:
+            - $ref: '#/definitions/dto.ErrorWrapper'
+            - properties:
+                error:
+                  allOf:
+                  - $ref: '#/definitions/dto.ErrorResponse'
+                  - properties:
+                      details:
+                        type: object
+                    type: object
+              type: object
+      summary: Get Manga Favorite
+      tags:
+      - manga
+  /mangas/histories:
+    get:
+      description: get current logged-in manga histories
+      parameters:
+      - in: query
+        name: element
+        type: integer
+      - in: query
+        name: page
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/dto.SuccessWrapper'
+            - properties:
+                success:
+                  allOf:
+                  - $ref: '#/definitions/dto.SuccessResponse'
+                  - properties:
+                      data:
+                        items:
+                          $ref: '#/definitions/dto.MangaHistoryResponse'
+                        type: array
+                    type: object
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            allOf:
+            - $ref: '#/definitions/dto.ErrorWrapper'
+            - properties:
+                error:
+                  allOf:
+                  - $ref: '#/definitions/dto.ErrorResponse'
+                  - properties:
+                      details:
+                        type: object
+                    type: object
+              type: object
+      summary: Get Manga Histories
+      tags:
+      - manga
+  /mangas/search:
+    get:
+      consumes:
+      - application/json
+      description: search manga by the body
+      parameters:
+      - in: query
+        name: element
+        type: integer
+      - in: query
+        name: page
+        type: integer
+      - description: search query
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/dto.MangaSearchQuery'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/dto.SuccessWrapper'
+            - properties:
+                success:
+                  allOf:
+                  - $ref: '#/definitions/dto.SuccessResponse'
+                  - properties:
+                      data:
+                        items:
+                          $ref: '#/definitions/dto.MinimalMangaResponse'
+                        type: array
+                    type: object
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            allOf:
+            - $ref: '#/definitions/dto.ErrorWrapper'
+            - properties:
+                error:
+                  allOf:
+                  - $ref: '#/definitions/dto.ErrorResponse'
+                  - properties:
+                      details:
+                        type: object
+                    type: object
+              type: object
+      summary: Search Manga
+      tags:
+      - manga
+  /mangas/translates:
+    delete:
+      consumes:
+      - application/json
+      description: delete specific translations based on the id
+      parameters:
+      - description: translation delete input
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/dto.TranslationDeleteInput'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/dto.SuccessWrapper'
+            - properties:
+                success:
+                  allOf:
+                  - $ref: '#/definitions/dto.SuccessResponse'
+                  - properties:
+                      data:
+                        type: object
+                    type: object
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            allOf:
+            - $ref: '#/definitions/dto.ErrorWrapper'
+            - properties:
+                error:
+                  allOf:
+                  - $ref: '#/definitions/dto.ErrorResponse'
+                  - properties:
+                      details:
+                        type: object
+                    type: object
+              type: object
+      summary: Delete Translations
+      tags:
+      - manga
+  /mangas/translates/{translate_id}:
+    put:
+      consumes:
+      - application/json
+      description: edit specific manga translation
+      parameters:
+      - description: translation edit input
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/dto.TranslationEditInput'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/dto.SuccessWrapper'
+            - properties:
+                success:
+                  allOf:
+                  - $ref: '#/definitions/dto.SuccessResponse'
+                  - properties:
+                      data:
+                        type: object
+                    type: object
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            allOf:
+            - $ref: '#/definitions/dto.ErrorWrapper'
+            - properties:
+                error:
+                  allOf:
+                  - $ref: '#/definitions/dto.ErrorResponse'
+                  - properties:
+                      details:
+                        type: object
+                    type: object
+              type: object
+      summary: Edit Translation
+      tags:
+      - manga
+  /users:
+    get:
+      description: Get all registered users
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/dto.SuccessWrapper'
+            - properties:
+                success:
+                  allOf:
+                  - $ref: '#/definitions/dto.SuccessResponse'
+                  - properties:
+                      data:
+                        items:
+                          $ref: '#/definitions/dto.UserResponse'
+                        type: array
+                    type: object
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            allOf:
+            - $ref: '#/definitions/dto.ErrorWrapper'
+            - properties:
+                error:
+                  allOf:
+                  - $ref: '#/definitions/dto.ErrorResponse'
+                  - properties:
+                      details:
+                        type: object
+                    type: object
+              type: object
+      summary: Get Users
+      tags:
+      - users
+    post:
+      consumes:
+      - application/json
+      description: Create user arbitrarily
+      parameters:
+      - description: add user input
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/dto.AddUserInput'
+      responses:
+        "201":
+          description: Created
+          schema:
+            allOf:
+            - $ref: '#/definitions/dto.SuccessWrapper'
+            - properties:
+                success:
+                  allOf:
+                  - $ref: '#/definitions/dto.SuccessResponse'
+                  - properties:
+                      data:
+                        type: object
+                    type: object
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            allOf:
+            - $ref: '#/definitions/dto.ErrorWrapper'
+            - properties:
+                error:
+                  allOf:
+                  - $ref: '#/definitions/dto.ErrorResponse'
+                  - properties:
+                      details:
+                        items:
+                          $ref: '#/definitions/common.FieldError'
+                        type: array
+                    type: object
+              type: object
+      summary: Add User
+      tags:
+      - users
+    put:
+      consumes:
+      - application/json
+      description: Edit logged-in user's details
+      parameters:
+      - description: user edit input
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/dto.UserEditInput'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/dto.SuccessWrapper'
+            - properties:
+                success:
+                  allOf:
+                  - $ref: '#/definitions/dto.SuccessResponse'
+                  - properties:
+                      data:
+                        type: object
+                    type: object
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            allOf:
+            - $ref: '#/definitions/dto.ErrorWrapper'
+            - properties:
+                error:
+                  allOf:
+                  - $ref: '#/definitions/dto.ErrorResponse'
+                  - properties:
+                      details:
+                        type: object
+                    type: object
+              type: object
+      summary: Edit User
+      tags:
+      - users
+  /users/{user_id}:
+    delete:
+      description: Delete user
+      parameters:
+      - description: user id
+        in: path
+        name: user_id
+        required: true
+        type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/dto.SuccessWrapper'
+            - properties:
+                success:
+                  allOf:
+                  - $ref: '#/definitions/dto.SuccessResponse'
+                  - properties:
+                      data:
+                        type: object
+                    type: object
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            allOf:
+            - $ref: '#/definitions/dto.ErrorWrapper'
+            - properties:
+                error:
+                  allOf:
+                  - $ref: '#/definitions/dto.ErrorResponse'
+                  - properties:
+                      details:
+                        $ref: '#/definitions/common.ParameterError'
+                    type: object
+              type: object
+      summary: Delete User
+      tags:
+      - users
+    put:
+      consumes:
+      - application/json
+      description: Edit user in extended fields (password) without checking
+      parameters:
+      - description: user edit extended input
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/dto.UserEditExtendedInput'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/dto.SuccessWrapper'
+            - properties:
+                success:
+                  allOf:
+                  - $ref: '#/definitions/dto.SuccessResponse'
+                  - properties:
+                      data:
+                        type: object
+                    type: object
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            allOf:
+            - $ref: '#/definitions/dto.ErrorWrapper'
+            - properties:
+                error:
+                  allOf:
+                  - $ref: '#/definitions/dto.ErrorResponse'
+                  - properties:
+                      details:
+                        type: object
+                    type: object
+              type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            allOf:
+            - $ref: '#/definitions/dto.ErrorWrapper'
+            - properties:
+                error:
+                  allOf:
+                  - $ref: '#/definitions/dto.ErrorResponse'
+                  - properties:
+                      details:
+                        type: object
+                    type: object
+              type: object
+      summary: Edit User Extended
+      tags:
+      - users
+  /users/{user_id}/profiles:
+    get:
+      description: Get user's details
+      parameters:
+      - description: user id
+        in: path
+        name: user_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/dto.SuccessWrapper'
+            - properties:
+                success:
+                  allOf:
+                  - $ref: '#/definitions/dto.SuccessResponse'
+                  - properties:
+                      data:
+                        $ref: '#/definitions/dto.ProfileResponse'
+                    type: object
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            allOf:
+            - $ref: '#/definitions/dto.ErrorWrapper'
+            - properties:
+                error:
+                  allOf:
+                  - $ref: '#/definitions/dto.ErrorResponse'
+                  - properties:
+                      details:
+                        $ref: '#/definitions/common.ParameterError'
+                    type: object
+              type: object
+      summary: Get User Profile
+      tags:
+      - users
+    put:
+      consumes:
+      - application/json
+      description: Edit user's profile on extended fields
+      parameters:
+      - description: user profile edit input
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/dto.ProfileEditExtendedInput'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/dto.SuccessWrapper'
+            - properties:
+                success:
+                  allOf:
+                  - $ref: '#/definitions/dto.SuccessResponse'
+                  - properties:
+                      data:
+                        type: object
+                    type: object
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            allOf:
+            - $ref: '#/definitions/dto.ErrorWrapper'
+            - properties:
+                error:
+                  allOf:
+                  - $ref: '#/definitions/dto.ErrorResponse'
+                  - properties:
+                      details:
+                        type: object
+                    type: object
+              type: object
+      summary: Edit User Profile Extended
+      tags:
+      - users
+  /users/change-password:
+    post:
+      consumes:
+      - application/json
+      description: Change logged-in user's password
+      parameters:
+      - description: change password input
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/dto.ChangePasswordInput'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/dto.SuccessWrapper'
+            - properties:
+                success:
+                  allOf:
+                  - $ref: '#/definitions/dto.SuccessResponse'
+                  - properties:
+                      data:
+                        type: object
+                    type: object
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            allOf:
+            - $ref: '#/definitions/dto.ErrorWrapper'
+            - properties:
+                error:
+                  allOf:
+                  - $ref: '#/definitions/dto.ErrorResponse'
+                  - properties:
+                      details:
+                        type: object
+                    type: object
+              type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            allOf:
+            - $ref: '#/definitions/dto.ErrorWrapper'
+            - properties:
+                error:
+                  allOf:
+                  - $ref: '#/definitions/dto.ErrorResponse'
+                  - properties:
+                      details:
+                        type: object
+                    type: object
+              type: object
+      summary: Change Password
+      tags:
+      - users
+  /users/email-verif:
+    post:
+      description: Request for email verification
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/dto.SuccessWrapper'
+            - properties:
+                success:
+                  allOf:
+                  - $ref: '#/definitions/dto.SuccessResponse'
+                  - properties:
+                      data:
+                        type: object
+                    type: object
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            allOf:
+            - $ref: '#/definitions/dto.ErrorWrapper'
+            - properties:
+                error:
+                  allOf:
+                  - $ref: '#/definitions/dto.ErrorResponse'
+                  - properties:
+                      details:
+                        type: object
+                    type: object
+              type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            allOf:
+            - $ref: '#/definitions/dto.ErrorWrapper'
+            - properties:
+                error:
+                  allOf:
+                  - $ref: '#/definitions/dto.ErrorResponse'
+                  - properties:
+                      details:
+                        type: object
+                    type: object
+              type: object
+      summary: Request Verify Email
+      tags:
+      - users
+  /users/email-verif/{token}:
+    get:
+      description: Verify email based on the token
+      parameters:
+      - description: token
+        in: path
+        name: token
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/dto.SuccessWrapper'
+            - properties:
+                success:
+                  allOf:
+                  - $ref: '#/definitions/dto.SuccessResponse'
+                  - properties:
+                      data:
+                        type: object
+                    type: object
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            allOf:
+            - $ref: '#/definitions/dto.ErrorWrapper'
+            - properties:
+                error:
+                  allOf:
+                  - $ref: '#/definitions/dto.ErrorResponse'
+                  - properties:
+                      details:
+                        type: object
+                    type: object
+              type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            allOf:
+            - $ref: '#/definitions/dto.ErrorWrapper'
+            - properties:
+                error:
+                  allOf:
+                  - $ref: '#/definitions/dto.ErrorResponse'
+                  - properties:
+                      details:
+                        type: object
+                    type: object
+              type: object
+      summary: Verify Email
+      tags:
+      - users
+    post:
+      description: Verify email based on the token
+      parameters:
+      - description: token
+        in: path
+        name: token
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/dto.SuccessWrapper'
+            - properties:
+                success:
+                  allOf:
+                  - $ref: '#/definitions/dto.SuccessResponse'
+                  - properties:
+                      data:
+                        type: object
+                    type: object
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            allOf:
+            - $ref: '#/definitions/dto.ErrorWrapper'
+            - properties:
+                error:
+                  allOf:
+                  - $ref: '#/definitions/dto.ErrorResponse'
+                  - properties:
+                      details:
+                        type: object
+                    type: object
+              type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            allOf:
+            - $ref: '#/definitions/dto.ErrorWrapper'
+            - properties:
+                error:
+                  allOf:
+                  - $ref: '#/definitions/dto.ErrorResponse'
+                  - properties:
+                      details:
+                        type: object
+                    type: object
+              type: object
+      summary: Verify Email
+      tags:
+      - users
+  /users/profiles:
+    put:
+      consumes:
+      - application/json
+      description: Edit user logged-in user's profile
+      parameters:
+      - description: profile edit input
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/dto.ProfileEditInput'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/dto.SuccessWrapper'
+            - properties:
+                success:
+                  allOf:
+                  - $ref: '#/definitions/dto.SuccessResponse'
+                  - properties:
+                      data:
+                        type: object
+                    type: object
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            allOf:
+            - $ref: '#/definitions/dto.ErrorWrapper'
+            - properties:
+                error:
+                  allOf:
+                  - $ref: '#/definitions/dto.ErrorResponse'
+                  - properties:
+                      details:
+                        type: object
+                    type: object
+              type: object
+      summary: Edit User Profile
+      tags:
+      - users
+  /users/profiles/image:
+    delete:
+      consumes:
+      - multipart/form-data
+      description: Edit logged-in user profile image
+      parameters:
+      - description: profile's image
+        in: formData
+        name: image
+        required: true
+        type: file
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/dto.SuccessWrapper'
+            - properties:
+                success:
+                  allOf:
+                  - $ref: '#/definitions/dto.SuccessResponse'
+                  - properties:
+                      data:
+                        type: object
+                    type: object
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            allOf:
+            - $ref: '#/definitions/dto.ErrorWrapper'
+            - properties:
+                error:
+                  allOf:
+                  - $ref: '#/definitions/dto.ErrorResponse'
+                  - properties:
+                      details:
+                        type: object
+                    type: object
+              type: object
+      summary: Edit Profile Image
+      tags:
+      - users
+    put:
+      consumes:
+      - multipart/form-data
+      description: Edit logged-in user profile image
+      parameters:
+      - description: profile's image
+        in: formData
+        name: image
+        required: true
+        type: file
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/dto.SuccessWrapper'
+            - properties:
+                success:
+                  allOf:
+                  - $ref: '#/definitions/dto.SuccessResponse'
+                  - properties:
+                      data:
+                        type: object
+                    type: object
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            allOf:
+            - $ref: '#/definitions/dto.ErrorWrapper'
+            - properties:
+                error:
+                  allOf:
+                  - $ref: '#/definitions/dto.ErrorResponse'
+                  - properties:
+                      details:
+                        type: object
+                    type: object
+              type: object
+      summary: Edit Profile Image
+      tags:
+      - users
+  /users/register:
+    post:
+      consumes:
+      - application/json
+      description: Create new user
+      parameters:
+      - description: user registration input
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/dto.UserRegisterInput'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            allOf:
+            - $ref: '#/definitions/dto.SuccessWrapper'
+            - properties:
+                success:
+                  allOf:
+                  - $ref: '#/definitions/dto.SuccessResponse'
+                  - properties:
+                      data:
+                        $ref: '#/definitions/dto.UserResponse'
+                    type: object
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            allOf:
+            - $ref: '#/definitions/dto.ErrorWrapper'
+            - properties:
+                error:
+                  allOf:
+                  - $ref: '#/definitions/dto.ErrorResponse'
+                  - properties:
+                      details:
+                        items:
+                          $ref: '#/definitions/common.FieldError'
+                        type: array
+                    type: object
+              type: object
+      summary: Register
+      tags:
+      - users
+  /users/reset-password:
+    post:
+      consumes:
+      - application/json
+      description: Request to reset password by user's email
+      parameters:
+      - description: change password input
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/dto.ChangePasswordInput'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/dto.SuccessWrapper'
+            - properties:
+                success:
+                  allOf:
+                  - $ref: '#/definitions/dto.SuccessResponse'
+                  - properties:
+                      data:
+                        type: object
+                    type: object
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            allOf:
+            - $ref: '#/definitions/dto.ErrorWrapper'
+            - properties:
+                error:
+                  allOf:
+                  - $ref: '#/definitions/dto.ErrorResponse'
+                  - properties:
+                      details:
+                        type: object
+                    type: object
+              type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            allOf:
+            - $ref: '#/definitions/dto.ErrorWrapper'
+            - properties:
+                error:
+                  allOf:
+                  - $ref: '#/definitions/dto.ErrorResponse'
+                  - properties:
+                      details:
+                        type: object
+                    type: object
+              type: object
+      summary: Request Reset Password
+      tags:
+      - users
+  /users/reset-password/{token}:
+    get:
+      consumes:
+      - application/json
+      description: Reset password after request
+      parameters:
+      - description: reset password input
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/dto.ResetPasswordInput'
+      - description: token
+        in: path
+        name: token
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/dto.SuccessWrapper'
+            - properties:
+                success:
+                  allOf:
+                  - $ref: '#/definitions/dto.SuccessResponse'
+                  - properties:
+                      data:
+                        type: object
+                    type: object
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            allOf:
+            - $ref: '#/definitions/dto.ErrorWrapper'
+            - properties:
+                error:
+                  allOf:
+                  - $ref: '#/definitions/dto.ErrorResponse'
+                  - properties:
+                      details:
+                        type: object
+                    type: object
+              type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            allOf:
+            - $ref: '#/definitions/dto.ErrorWrapper'
+            - properties:
+                error:
+                  allOf:
+                  - $ref: '#/definitions/dto.ErrorResponse'
+                  - properties:
+                      details:
+                        type: object
+                    type: object
+              type: object
+      summary: Reset Password
+      tags:
+      - users
+    post:
+      consumes:
+      - application/json
+      description: Reset password after request
+      parameters:
+      - description: reset password input
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/dto.ResetPasswordInput'
+      - description: token
+        in: path
+        name: token
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/dto.SuccessWrapper'
+            - properties:
+                success:
+                  allOf:
+                  - $ref: '#/definitions/dto.SuccessResponse'
+                  - properties:
+                      data:
+                        type: object
+                    type: object
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            allOf:
+            - $ref: '#/definitions/dto.ErrorWrapper'
+            - properties:
+                error:
+                  allOf:
+                  - $ref: '#/definitions/dto.ErrorResponse'
+                  - properties:
+                      details:
+                        type: object
+                    type: object
+              type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            allOf:
+            - $ref: '#/definitions/dto.ErrorWrapper'
+            - properties:
+                error:
+                  allOf:
+                  - $ref: '#/definitions/dto.ErrorResponse'
+                  - properties:
+                      details:
+                        type: object
+                    type: object
+              type: object
+      summary: Reset Password
+      tags:
+      - users
+  /volumes/{volume_id}:
+    get:
+      description: Get specific volume details with the chapters associated with it
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/dto.SuccessWrapper'
+            - properties:
+                success:
+                  allOf:
+                  - $ref: '#/definitions/dto.SuccessResponse'
+                  - properties:
+                      data:
+                        $ref: '#/definitions/dto.VolumeResponse'
+                    type: object
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            allOf:
+            - $ref: '#/definitions/dto.ErrorWrapper'
+            - properties:
+                error:
+                  allOf:
+                  - $ref: '#/definitions/dto.ErrorResponse'
+                  - properties:
+                      details:
+                        type: object
+                    type: object
+              type: object
+      summary: Find Volume Details
+      tags:
+      - manga
+      - chapter
 swagger: "2.0"

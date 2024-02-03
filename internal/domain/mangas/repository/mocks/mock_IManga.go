@@ -115,17 +115,17 @@ func (_c *MangaMock_CreateVolume_Call) RunAndReturn(run func(*mangas.Volume) err
 	return _c
 }
 
-// DeleteVolume provides a mock function with given fields: mangaId, volume
-func (_m *MangaMock) DeleteVolume(mangaId string, volume uint32) error {
-	ret := _m.Called(mangaId, volume)
+// DeleteVolume provides a mock function with given fields: mangaId, volumes
+func (_m *MangaMock) DeleteVolume(mangaId string, volumes []uint32) error {
+	ret := _m.Called(mangaId, volumes)
 
 	if len(ret) == 0 {
 		panic("no return value specified for DeleteVolume")
 	}
 
 	var r0 error
-	if rf, ok := ret.Get(0).(func(string, uint32) error); ok {
-		r0 = rf(mangaId, volume)
+	if rf, ok := ret.Get(0).(func(string, []uint32) error); ok {
+		r0 = rf(mangaId, volumes)
 	} else {
 		r0 = ret.Error(0)
 	}
@@ -140,14 +140,14 @@ type MangaMock_DeleteVolume_Call struct {
 
 // DeleteVolume is a helper method to define mock.On call
 //   - mangaId string
-//   - volume uint32
-func (_e *MangaMock_Expecter) DeleteVolume(mangaId interface{}, volume interface{}) *MangaMock_DeleteVolume_Call {
-	return &MangaMock_DeleteVolume_Call{Call: _e.mock.On("DeleteVolume", mangaId, volume)}
+//   - volumes []uint32
+func (_e *MangaMock_Expecter) DeleteVolume(mangaId interface{}, volumes interface{}) *MangaMock_DeleteVolume_Call {
+	return &MangaMock_DeleteVolume_Call{Call: _e.mock.On("DeleteVolume", mangaId, volumes)}
 }
 
-func (_c *MangaMock_DeleteVolume_Call) Run(run func(mangaId string, volume uint32)) *MangaMock_DeleteVolume_Call {
+func (_c *MangaMock_DeleteVolume_Call) Run(run func(mangaId string, volumes []uint32)) *MangaMock_DeleteVolume_Call {
 	_c.Call.Run(func(args mock.Arguments) {
-		run(args[0].(string), args[1].(uint32))
+		run(args[0].(string), args[1].([]uint32))
 	})
 	return _c
 }
@@ -157,7 +157,7 @@ func (_c *MangaMock_DeleteVolume_Call) Return(_a0 error) *MangaMock_DeleteVolume
 	return _c
 }
 
-func (_c *MangaMock_DeleteVolume_Call) RunAndReturn(run func(string, uint32) error) *MangaMock_DeleteVolume_Call {
+func (_c *MangaMock_DeleteVolume_Call) RunAndReturn(run func(string, []uint32) error) *MangaMock_DeleteVolume_Call {
 	_c.Call.Return(run)
 	return _c
 }

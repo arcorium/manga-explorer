@@ -16,7 +16,7 @@ type InternalPage struct {
 }
 
 type PageCreateInput struct {
-	ChapterId string `uri:"chapter_id" binding:"required,uuid4"`
+	ChapterId string `uri:"chapter_id" binding:"required,uuid4" swaggerignore:"true"`
 	Page      InternalPage
 	//InternalPage
 }
@@ -26,7 +26,7 @@ func (p *PageCreateInput) ConstructURI(ctx *gin.Context) {
 }
 
 type PageDeleteInput struct {
-	ChapterId string   `uri:"chapter_id" binding:"required,uuid4"`
+	ChapterId string   `uri:"chapter_id" binding:"required,uuid4" swaggerignore:"true"`
 	Pages     []uint16 `json:"pages" binding:"required"`
 }
 

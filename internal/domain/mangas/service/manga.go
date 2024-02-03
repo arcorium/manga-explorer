@@ -25,12 +25,12 @@ type IManga interface {
 	FindMangaFavorites(userId string, query *dto2.PagedQueryInput) ([]dto.MangaFavoriteResponse, *dto2.ResponsePage, status.Object)
 	ListMangas(query *dto2.PagedQueryInput) ([]dto.MinimalMangaResponse, *dto2.ResponsePage, status.Object)
 	SearchMangas(query *dto.MangaSearchQuery) ([]dto.MinimalMangaResponse, *dto2.ResponsePage, status.Object)
-	InsertMangaTranslations(input *dto.MangaInsertTranslationInput) status.Object
+	InsertMangaTranslations(input *dto.MangaTranslationInsertInput) status.Object
 	FindMangaTranslations(mangaId string) ([]dto.TranslationResponse, status.Object)
 	FindSpecificMangaTranslation(mangaId string, language common.Language) (dto.TranslationResponse, status.Object)
-	DeleteMangaTranslations(input *dto.TranslationMangaDeleteInput) status.Object
+	DeleteMangaTranslations(input *dto.MangaTranslationsDeleteInput) status.Object
 	DeleteTranslations(input *dto.TranslationDeleteInput) status.Object
-	UpdateTranslation(input *dto.TranslationUpdateInput) status.Object
+	UpdateTranslation(input *dto.TranslationEditInput) status.Object
 	// FindMangaByIds find mangas based on the ids
 	FindMangaByIds(mangaId ...string) ([]dto.MangaResponse, status.Object)
 	// FindRandomMangas find random based mangas and will return n manga count. n is limit parameter
@@ -39,6 +39,6 @@ type IManga interface {
 	FindMangaComments(mangaId string) ([]dto.CommentResponse, status.Object)
 	// FindMangaRatings find all manga ratings
 	FindMangaRatings(mangaId string) ([]dto.RateResponse, status.Object)
-	AddFavoriteManga(input *dto.FavoriteMangaInput) status.Object
-	RemoveFavoriteManga(input *dto.FavoriteMangaInput) status.Object
+	AddFavoriteManga(input *dto.FavoriteMangaModificationInput) status.Object
+	RemoveFavoriteManga(input *dto.FavoriteMangaModificationInput) status.Object
 }

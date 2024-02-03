@@ -29,7 +29,7 @@ func (m mangaGenreService) DeleteGenre(genreId string) status.Object {
 	return status.ConditionalRepository(err, status.DELETED, opt.New(status.GENRE_NOT_FOUND))
 }
 
-func (m mangaGenreService) UpdateGenre(input *dto.GenreUpdateInput) status.Object {
+func (m mangaGenreService) UpdateGenre(input *dto.GenreEditInput) status.Object {
 	updatedGenre := mapper.MapGenreUpdateInput(input)
 	err := m.genreRepo.UpdateGenre(&updatedGenre)
 	return status.ConditionalRepository(err, status.UPDATED, opt.New(status.GENRE_NOT_FOUND))

@@ -95,6 +95,6 @@ func MapMangaGenreEditInput(input *dto.MangaGenreEditInput) (additionals []manga
 	return additionals, removes
 }
 
-func MapFavoriteMangaInput(input *dto.FavoriteMangaInput) mangas.MangaFavorite {
+func MapFavoriteMangaInput(input *dto.FavoriteMangaModificationInput) mangas.MangaFavorite {
 	return mangas.NewFavorite(input.UserId, input.MangaId)
 }

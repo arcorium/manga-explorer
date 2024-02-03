@@ -37,13 +37,13 @@ func (v *VerifyEmailInput) ConstructURI(ctx *gin.Context) {
 	v.Token = ctx.Param("token")
 }
 
-type UserUpdateInput struct {
-	UserId   string `json:"-"`
+type UserEditInput struct {
+	UserId   string `json:"-" swaggerignore:"true"`
 	Username string `json:"username" binding:"required,gt=5"`
 	Email    string `json:"email" binding:"required,email"`
 }
 
-func (u *UserUpdateInput) Status() status.Object {
+func (u *UserEditInput) Status() status.Object {
 	if len(u.Username) == 0 && len(u.Email) == 0 {
 		return status.ErrorMessage("There is should be at least one field to be updated")
 	}
@@ -51,13 +51,13 @@ func (u *UserUpdateInput) Status() status.Object {
 }
 
 type ChangePasswordInput struct {
-	UserId       string `json:"-"`
+	UserId       string `json:"-" swaggerignore:"true"`
 	LastPassword string `json:"last_password" binding:"required"`
 	NewPassword  string `json:"new_password" binding:"required,gte=7"`
 }
 
 type ResetPasswordInput struct {
-	Token       string `uri:"token" binding:"required"`
+	Token       string `uri:"token" binding:"required" swaggerignore:"true"`
 	NewPassword string `json:"new_password" binding:"required,gte=7"`
 }
 
@@ -65,35 +65,35 @@ func (r *ResetPasswordInput) ConstructURI(ctx *gin.Context) {
 	r.Token = ctx.Param("token")
 }
 
-type UserUpdateExtendedInput struct {
-	UserId   string `uri:"id" binding:"required"`
+type UserEditExtendedInput struct {
+	UserId   string `uri:"id" binding:"required,uuid4"`
 	Username string `json:"username"`
-	Email    string `json:"email" binding:"email"`
+	Email    string `json:"email" binding:"omitempty,email"`
 	Password string `json:"password"`
 }
 
-func (u *UserUpdateExtendedInput) ConstructURI(ctx *gin.Context) {
+func (u *UserEditExtendedInput) ConstructURI(ctx *gin.Context) {
 	u.UserId = ctx.Param("id")
 }
 
-type ProfileUpdateExtendedInput struct {
-	UserId    string `uri:"id" binding:"required"`
+type ProfileEditExtendedInput struct {
+	UserId    string `uri:"id" binding:"required,uuid4" swaggerignore:"true"`
 	FirstName string `json:"first_name"`
 	LastName  string `json:"last_name"`
 	Bio       string `json:"bio"`
 	PhotoURL  string `json:"photo_url"`
 }
 
-func (p *ProfileUpdateExtendedInput) ConstructURI(ctx *gin.Context) {
+func (p *ProfileEditExtendedInput) ConstructURI(ctx *gin.Context) {
 	p.UserId = ctx.Param("id")
 }
 
 type AddUserInput struct {
 	Username  string `json:"username"`
-	Email     string `json:"email" binding:"email"`
-	Password  string `json:"password"`
+	Email     string `json:"email" binding:"required,email"`
+	Password  string `json:"password" binding:"required"`
 	Verified  bool   `json:"verified"`
-	Role      string `json:"role" binding:"oneof= admin user"`
+	Role      string `json:"role" binding:"required,oneof= admin user"`
 	FirstName string `json:"first_name"`
 	LastName  string `json:"last_name"`
 	Bio       string `json:"bio"`

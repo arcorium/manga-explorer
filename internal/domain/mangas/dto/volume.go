@@ -10,7 +10,7 @@ type VolumeResponse struct {
 }
 
 type VolumeCreateInput struct {
-	MangaId     string `uri:"manga_id" binding:"required,uuid4"`
+	MangaId     string `uri:"manga_id" binding:"required,uuid4" swaggerignore:"true"`
 	Title       string `json:"title"`
 	Description string `json:"desc"`
 	Number      uint32 `json:"number" binding:"required"`
@@ -21,6 +21,6 @@ func (c *VolumeCreateInput) ConstructURI(ctx *gin.Context) {
 }
 
 type VolumeDeleteInput struct {
-	MangaId string `uri:"manga_id" binding:"required,uuid4"`
-	Volume  uint32 `uri:"volume" binding:"required"`
+	MangaId string   `uri:"manga_id" binding:"required,uuid4" swaggerignore:"true"`
+	Volume  []uint32 `json:"volumes" binding:"required"`
 }

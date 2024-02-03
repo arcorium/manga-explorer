@@ -61,8 +61,8 @@ type MangaCreateInput struct {
 }
 
 type MangaCoverUpdateInput struct {
-	MangaId string                `uri:"manga_id" binding:"required,uuid4"`
-	Image   *multipart.FileHeader `form:"image" binding:"required"`
+	MangaId string                `uri:"manga_id" binding:"required,uuid4" swaggerignore:"true"`
+	Image   *multipart.FileHeader `form:"image" binding:"required" swaggerignore:"true"`
 }
 
 func (c *MangaCoverUpdateInput) ConstructURI(ctx *gin.Context) {
@@ -70,7 +70,7 @@ func (c *MangaCoverUpdateInput) ConstructURI(ctx *gin.Context) {
 }
 
 type MangaEditInput struct {
-	MangaId         string         `uri:"manga_id" binding:"required,uuid4"`
+	MangaId         string         `uri:"manga_id" binding:"required,uuid4" swaggerignore:"true"`
 	Status          string         `json:"status" binding:"required,manga_status"`
 	Origin          common.Country `json:"origin" binding:"required,iso3166_1_alpha3|iso3166_1_alpha2"`
 	Title           string         `json:"title" binding:"required,min=1"`
@@ -79,7 +79,7 @@ type MangaEditInput struct {
 }
 
 type MangaGenreEditInput struct {
-	MangaId       string   `uri:"manga_id" binding:"required,uuid4"`
+	MangaId       string   `uri:"manga_id" binding:"required,uuid4" swaggerignore:"true"`
 	AddGenres     []string `json:"adds" binding:"omitempty,dive,uuid4"`
 	RemovedGenres []string `json:"removes" binding:"omitempty,dive,uuid4"`
 }
@@ -99,15 +99,19 @@ type MangaSearchQuery struct {
 	Origin common.IncludeArray[common.Country] `json:"origin"`
 }
 
-type FavoriteMangaInput struct {
+type FavoriteMangaModificationInput struct {
 	Operator string `json:"op" binding:"required,oneof=add remove"`
 	UserId   string `json:"-"`
-	MangaId  string `json:"manga_id" binding:"required,uuid4"`
+	MangaId  string `uri:"manga_id" binding:"required,uuid4" swaggerignore:"true"`
+}
+
+func (f *FavoriteMangaModificationInput) ConstructURI(ctx *gin.Context) {
+	f.MangaId = ctx.Param("manga_id")
 }
 
 type MangaChapterHistoriesFindInput struct {
-	UserId  string `json:"-"`
-	MangaId string `uri:"manga_id" binding:"required,uuid4"`
+	UserId  string `json:"-" swaggerignore:"true"`
+	MangaId string `uri:"manga_id" binding:"required,uuid4" swaggerignore:"true"`
 	dto.PagedQueryInput
 }
 

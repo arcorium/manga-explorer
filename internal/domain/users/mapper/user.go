@@ -22,7 +22,7 @@ func MapUserRegisterInput(input *dto.UserRegisterInput) (users.User, error) {
 }
 
 // MapUserUpdateInput Upsert user for update except password
-func MapUserUpdateInput(input *dto.UserUpdateInput) users.User {
+func MapUserUpdateInput(input *dto.UserEditInput) users.User {
 	return users.User{
 		Id:        input.UserId,
 		Username:  input.Username,
@@ -70,7 +70,7 @@ func MapAddUserInput(input *dto.AddUserInput) (users.User, error) {
 	return users.NewUser(input.Username, input.Email, input.Password, role)
 }
 
-func MapUserUpdateExtendedInput(input *dto.UserUpdateExtendedInput) (users.User, error) {
+func MapUserUpdateExtendedInput(input *dto.UserEditExtendedInput) (users.User, error) {
 	user := users.User{
 		Id:        input.UserId,
 		Username:  input.Username,

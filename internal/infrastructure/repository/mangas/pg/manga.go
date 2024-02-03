@@ -24,13 +24,13 @@ func (m mangaRepository) excludeAllColumns(query *bun.SelectQuery) *bun.SelectQu
 	return query.ExcludeColumn("*")
 }
 
-func (m mangaRepository) DeleteVolume(mangaId string, volume uint32) error {
+func (m mangaRepository) DeleteVolume(mangaId string, volumes []uint32) error {
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second*5)
 	defer cancel()
 
 	res, err := m.db.NewDelete().
 		Model((*mangas.Volume)(nil)).
-		Where("manga_id = ? AND number = ?", mangaId, volume).
+		Where("manga_id = ? AND number IN (?)", mangaId, bun.In(volumes)).
 		Exec(ctx)
 
 	return util.CheckSqlResult(res, err)

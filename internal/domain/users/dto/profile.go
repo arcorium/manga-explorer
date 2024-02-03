@@ -16,14 +16,14 @@ type ProfileResponse struct {
 	ProfileResponses InternalProfileResponse `json:"profile"`
 }
 
-type ProfileUpdateInput struct {
-	UserId    string `json:"-"`
+type ProfileEditInput struct {
+	UserId    string `json:"-" swaggerignore:"true"`
 	FirstName string `json:"first_name" binding:"required,gte=5"`
 	LastName  string `json:"last_name" binding:"required"`
 	Bio       string `json:"bio" binding:"required"`
 }
 
 type ProfileImageUpdateInput struct {
-	UserId string                `json:"-" form:"-" binding:"required,uuid4"`
-	Image  *multipart.FileHeader `form:"image" binding:"required"`
+	UserId string                `json:"-" form:"-" binding:"required,uuid4" swaggerignore:"true"`
+	Image  *multipart.FileHeader `form:"image" binding:"required" swaggerignore:"true"`
 }

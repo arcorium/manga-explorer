@@ -8,14 +8,14 @@ type GenreResponse struct {
 }
 
 type GenreCreateInput struct {
-	Name string `json:"name"`
+	Name string `json:"name" binding:"required"`
 }
 
-type GenreUpdateInput struct {
-	Id   string `uri:"genre_id" binding:"required,uuid4"`
+type GenreEditInput struct {
+	Id   string `uri:"genre_id" binding:"required,uuid4" swaggerignore:"true"`
 	Name string `json:"new_name" binding:"required"`
 }
 
-func (g *GenreUpdateInput) ConstructURI(ctx *gin.Context) {
+func (g *GenreEditInput) ConstructURI(ctx *gin.Context) {
 	g.Id = ctx.Param("genre_id")
 }

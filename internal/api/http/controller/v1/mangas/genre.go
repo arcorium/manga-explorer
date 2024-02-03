@@ -18,11 +18,27 @@ type GenreController struct {
 	genreService service.IGenre
 }
 
+// @Summary		Get All Genres
+// @Description	Get all registered genres
+// @Tags			manga, genre
+// @Produce		json
+// @Success		200	{object}	dto.SuccessWrapper{success=dto.SuccessResponse{data=[]dto.GenreResponse}}
+// @Router			/genres [get]
 func (m GenreController) ListGenre(ctx *gin.Context) {
 	genres, stat := m.genreService.ListGenre()
 	resp.Conditional(ctx, stat, genres, nil)
 }
 
+// @Summary		Create Genre
+// @Description	Create new genre
+// @Tags			manga, genre
+// @Accept			json
+// @Produce		json
+// @Param			input	body		dto.GenreCreateInput	true	"genre create input"
+// @Success		200		{object}	dto.SuccessWrapper{success=dto.SuccessResponse{data=nil}}
+// @Failure		400		{object}	dto.ErrorWrapper{error=dto.ErrorResponse{details=[]common.FieldError}}
+// @Failure		400		{object}	dto.ErrorWrapper{error=dto.ErrorResponse{details=nil}}
+// @Router			/genres [post]
 func (m GenreController) CreateGenre(ctx *gin.Context) {
 	genreInput := dto.GenreCreateInput{}
 	stat, fieldsErr := httputil.BindJson(ctx, &genreInput)
@@ -35,8 +51,19 @@ func (m GenreController) CreateGenre(ctx *gin.Context) {
 	resp.Conditional(ctx, stat, nil, nil)
 }
 
-func (m GenreController) UpdateGenre(ctx *gin.Context) {
-	input := dto.GenreUpdateInput{}
+// @Summary		Edit Genre
+// @Description	Edit specific genre by id
+// @Tags			manga, genre
+// @Accept			json
+// @Produce		json
+// @Param			input		body		dto.GenreEditInput	true	"genre edit input"
+// @Param			genre_id	path		uuid.UUID			true	"genre id"
+// @Success		200			{object}	dto.SuccessWrapper{success=dto.SuccessResponse{data=nil}}
+// @Failure		400			{object}	dto.ErrorWrapper{error=dto.ErrorResponse{details=[]common.FieldError}}
+// @Failure		400			{object}	dto.ErrorWrapper{error=dto.ErrorResponse{details=nil}}
+// @Router			/genres/{genre_id} [put]
+func (m GenreController) EditGenre(ctx *gin.Context) {
+	input := dto.GenreEditInput{}
 	input.ConstructURI(ctx)
 	stat, fieldErrors := httputil.BindJson(ctx, &input)
 	if stat.IsError() {
@@ -48,6 +75,14 @@ func (m GenreController) UpdateGenre(ctx *gin.Context) {
 	resp.Conditional(ctx, stat, nil, nil)
 }
 
+// @Summary		Delete Genre
+// @Description	Delete specific genre by id
+// @Tags			manga, genre
+// @Produce		json
+// @Param			genre_id	path		uuid.UUID	true	"genre id"
+// @Success		200			{object}	dto.SuccessWrapper{success=dto.SuccessResponse{data=nil}}
+// @Failure		400			{object}	dto.ErrorWrapper{error=dto.ErrorResponse{details=[]common.FieldError}}
+// @Router			/genres/{genre_id} [delete]
 func (m GenreController) DeleteGenre(ctx *gin.Context) {
 	genreId := ctx.Param("genre_id")
 	if len(genreId) == 0 {

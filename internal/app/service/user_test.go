@@ -813,7 +813,7 @@ func Test_userService_ResetPassword(t *testing.T) {
 }
 
 func Test_userService_UpdateProfile(t *testing.T) {
-	input := &dto.ProfileUpdateInput{
+	input := &dto.ProfileEditInput{
 		UserId:    uuid.NewString(),
 		FirstName: util.GenerateRandomString(10),
 		LastName:  util.GenerateRandomString(10),
@@ -832,7 +832,7 @@ func Test_userService_UpdateProfile(t *testing.T) {
 
 	u := newUserServiceMocked(mockedUserRepo, mockedVerifService, mockedAuthService, mockedMailService, mockedFileService)
 	type args struct {
-		input *dto.ProfileUpdateInput
+		input *dto.ProfileEditInput
 	}
 	tests := []struct {
 		name string
@@ -849,7 +849,7 @@ func Test_userService_UpdateProfile(t *testing.T) {
 		{
 			name: "Failed",
 			args: args{
-				input: &dto.ProfileUpdateInput{},
+				input: &dto.ProfileEditInput{},
 			},
 			want: status.Error(status.PROFILE_UPDATE_FAILED),
 		},
@@ -864,7 +864,7 @@ func Test_userService_UpdateProfile(t *testing.T) {
 }
 
 func Test_userService_UpdateProfileExtended(t *testing.T) {
-	input := &dto.ProfileUpdateExtendedInput{
+	input := &dto.ProfileEditExtendedInput{
 		UserId:    uuid.NewString(),
 		FirstName: util.GenerateRandomString(10),
 		LastName:  util.GenerateRandomString(10),
@@ -884,7 +884,7 @@ func Test_userService_UpdateProfileExtended(t *testing.T) {
 
 	u := newUserServiceMocked(mockedUserRepo, mockedVerifService, mockedAuthService, mockedMailService, mockedFileService)
 	type args struct {
-		input *dto.ProfileUpdateExtendedInput
+		input *dto.ProfileEditExtendedInput
 	}
 	tests := []struct {
 		name string
@@ -901,7 +901,7 @@ func Test_userService_UpdateProfileExtended(t *testing.T) {
 		{
 			name: "Failed",
 			args: args{
-				input: &dto.ProfileUpdateExtendedInput{},
+				input: &dto.ProfileEditExtendedInput{},
 			},
 			want: status.Error(status.PROFILE_UPDATE_FAILED),
 		},
@@ -982,7 +982,7 @@ func Test_userService_UpdateProfileImage(t *testing.T) {
 }
 
 func Test_userService_UpdateUser(t *testing.T) {
-	input := &dto.UserUpdateInput{
+	input := &dto.UserEditInput{
 		UserId:   uuid.NewString(),
 		Username: util.GenerateRandomString(10),
 		Email:    "asdadaw@gmail.com",
@@ -1001,7 +1001,7 @@ func Test_userService_UpdateUser(t *testing.T) {
 	u := newUserServiceMocked(mockedUserRepo, mockedVerifService, mockedAuthService, mockedMailService, mockedFileService)
 
 	type args struct {
-		input *dto.UserUpdateInput
+		input *dto.UserEditInput
 	}
 	tests := []struct {
 		name string
@@ -1018,7 +1018,7 @@ func Test_userService_UpdateUser(t *testing.T) {
 		{
 			name: "Update failed",
 			args: args{
-				input: &dto.UserUpdateInput{},
+				input: &dto.UserEditInput{},
 			},
 			want: status.Error(status.USER_UPDATE_FAILED),
 		},
@@ -1033,7 +1033,7 @@ func Test_userService_UpdateUser(t *testing.T) {
 }
 
 func Test_userService_UpdateUserExtended(t *testing.T) {
-	input := &dto.UserUpdateExtendedInput{
+	input := &dto.UserEditExtendedInput{
 		UserId:   uuid.NewString(),
 		Username: util.GenerateRandomString(10),
 		Email:    "asdadaw@gmail.com",
@@ -1053,7 +1053,7 @@ func Test_userService_UpdateUserExtended(t *testing.T) {
 
 	u := newUserServiceMocked(mockedUserRepo, mockedVerifService, mockedAuthService, mockedMailService, mockedFileService)
 	type args struct {
-		input *dto.UserUpdateExtendedInput
+		input *dto.UserEditExtendedInput
 	}
 	tests := []struct {
 		name string
@@ -1070,7 +1070,7 @@ func Test_userService_UpdateUserExtended(t *testing.T) {
 		{
 			name: "Update failed",
 			args: args{
-				input: &dto.UserUpdateExtendedInput{},
+				input: &dto.UserEditExtendedInput{},
 			},
 			want: status.Error(status.PROFILE_UPDATE_FAILED),
 		},
@@ -1078,7 +1078,7 @@ func Test_userService_UpdateUserExtended(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			if got := u.UpdateUserExtended(tt.args.input); !reflect.DeepEqual(got, tt.want) {
-				t.Errorf("UpdateUserExtended() = %v, want %v", got, tt.want)
+				t.Errorf("EditUserExtended() = %v, want %v", got, tt.want)
 			}
 		})
 	}

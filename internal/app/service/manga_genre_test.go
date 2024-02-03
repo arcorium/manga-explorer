@@ -173,12 +173,12 @@ func Test_mangaGenreService_UpdateGenre(t *testing.T) {
 	mockedGenreRepo := genreRepoMock.NewGenreMock(t)
 	mockedGenreRepo.EXPECT().UpdateGenre(&updatedGenre).Return(nil)
 	mockedGenreRepo.EXPECT().UpdateGenre(&badGenre).Return(sql.ErrNoRows)
-	//mockedGenreRepo.EXPECT().UpdateGenre(mock.AnythingOfType("*mangas.Genre")).Return(simpleError)
+	//mockedGenreRepo.EXPECT().EditGenre(mock.AnythingOfType("*mangas.Genre")).Return(simpleError)
 
 	m := NewGenreService(mockedGenreRepo)
 
 	type args struct {
-		input *dto.GenreUpdateInput
+		input *dto.GenreEditInput
 	}
 	tests := []struct {
 		name string
@@ -188,7 +188,7 @@ func Test_mangaGenreService_UpdateGenre(t *testing.T) {
 		{
 			name: "Normal",
 			args: args{
-				input: &dto.GenreUpdateInput{
+				input: &dto.GenreEditInput{
 					Id:   updatedGenre.Id,
 					Name: updatedGenre.Name,
 				},
@@ -198,7 +198,7 @@ func Test_mangaGenreService_UpdateGenre(t *testing.T) {
 		{
 			name: "Genre not found",
 			args: args{
-				input: &dto.GenreUpdateInput{
+				input: &dto.GenreEditInput{
 					Id:   badGenre.Id,
 					Name: badGenre.Name,
 				},
@@ -209,7 +209,7 @@ func Test_mangaGenreService_UpdateGenre(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			if got := m.UpdateGenre(tt.args.input); !reflect.DeepEqual(got, tt.want) {
-				t.Errorf("UpdateGenre() = %v, want %v", got, tt.want)
+				t.Errorf("EditGenre() = %v, want %v", got, tt.want)
 			}
 		})
 	}

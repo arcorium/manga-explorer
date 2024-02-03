@@ -6,35 +6,25 @@ import (
 	"manga-explorer/internal/common/status"
 )
 
-type SuccessWrapper[T any] struct {
-	Internal T `json:"success"`
-}
-
-type ErrorWrapper[T any] struct {
-	Internal T `json:"error"`
-}
-
 // Success Used to set common.Response as response for success response
 func Success(ctx *gin.Context, status status.Object, data any, page *dto.ResponsePage) {
-	res := SuccessWrapper[dto.SuccessResponse]{Internal: dto.NewSuccessResponse(status.Code, data, page)}
+	res := dto.NewSuccessResponse(status.Code, data, page)
 	ctx.JSON(HttpCodeFromError(status), res)
 }
 
 func SuccessMessage(ctx *gin.Context, status status.Object, message string) {
-	res := SuccessWrapper[dto.SuccessResponse]{Internal: dto.NewSuccessResponse(status.Code, struct {
-		Message string `json:"message"`
-	}{message}, nil)}
+	res := dto.NewSuccessResponse(status.Code, dto.MessageData{Message: message}, nil)
 	ctx.JSON(HttpCodeFromError(status), res)
 }
 
 // ErrorDetailed Used to set common.Response as response for bad response
-func ErrorDetailed[T any](ctx *gin.Context, status status.Object, details T) {
-	res := ErrorWrapper[dto.ErrorResponse]{Internal: dto.NewErrorResponse(status, details)}
+func ErrorDetailed(ctx *gin.Context, status status.Object, details any) {
+	res := dto.ErrorWrapper{Internal: dto.NewErrorResponse(status, details)}
 	ctx.JSON(HttpCodeFromError(status), res)
 }
 
 func Error(ctx *gin.Context, status status.Object) {
-	res := ErrorWrapper[dto.ErrorResponse]{Internal: dto.NewErrorResponse(status, nil)}
+	res := dto.ErrorWrapper{Internal: dto.NewErrorResponse(status, nil)}
 	ctx.JSON(HttpCodeFromError(status), res)
 
 }

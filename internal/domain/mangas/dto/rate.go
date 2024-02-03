@@ -13,8 +13,8 @@ type RateResponse struct {
 }
 
 type RateUpsertInput struct {
-	UserId  string `json:"-"`
-	MangaId string `uri:"manga_id" binding:"required,uuid4"`
+	UserId  string `json:"-" swaggerignore:"true"`
+	MangaId string `uri:"manga_id" binding:"required,uuid4" swaggerignore:"true"`
 	Rate    uint8  `json:"rate" binding:"required,lte=10"`
 }
 

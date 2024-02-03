@@ -47,7 +47,7 @@ func MapAddProfileInput(user *users.User, input *dto.AddUserInput) users.Profile
 	}
 }
 
-func MapProfileUpdateExtendedInput(input *dto.ProfileUpdateExtendedInput) users.Profile {
+func MapProfileUpdateExtendedInput(input *dto.ProfileEditExtendedInput) users.Profile {
 	return users.Profile{
 		UserId:    input.UserId,
 		FirstName: input.FirstName,
@@ -58,7 +58,7 @@ func MapProfileUpdateExtendedInput(input *dto.ProfileUpdateExtendedInput) users.
 	}
 }
 
-func MapProfileUpdateInput(input *dto.ProfileUpdateInput) users.Profile {
+func MapProfileUpdateInput(input *dto.ProfileEditInput) users.Profile {
 	return users.Profile{
 		UserId:    input.UserId,
 		FirstName: input.FirstName,

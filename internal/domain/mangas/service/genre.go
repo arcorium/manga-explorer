@@ -11,7 +11,7 @@ type IGenre interface {
 	// DeleteGenre delete genre by the id
 	DeleteGenre(genreId string) status.Object
 	// UpdateGenre update genre name
-	UpdateGenre(input *dto.GenreUpdateInput) status.Object
+	UpdateGenre(input *dto.GenreEditInput) status.Object
 	// ListGenre get all available genres
 	ListGenre() ([]dto.GenreResponse, status.Object)
 }

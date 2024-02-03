@@ -18,7 +18,7 @@ func MapCreateTranslateInput(input *dto.InternalTranslation, mangaId string) man
 	return mangas.NewTranslation(mangaId, input.Title, input.Description, input.Lang.ParseLang())
 }
 
-func MapInsertTranslateInput(input *dto.MangaInsertTranslationInput) []mangas.Translation {
+func MapInsertTranslateInput(input *dto.MangaTranslationInsertInput) []mangas.Translation {
 	result := make([]mangas.Translation, 0, len(input.Translations))
 
 	for i := 0; i < len(input.Translations); i++ {
@@ -27,7 +27,7 @@ func MapInsertTranslateInput(input *dto.MangaInsertTranslationInput) []mangas.Tr
 	return result
 }
 
-func MapTranslationUpdateInput(input *dto.TranslationUpdateInput) mangas.Translation {
+func MapTranslationUpdateInput(input *dto.TranslationEditInput) mangas.Translation {
 	return mangas.Translation{
 		Id:          input.TranslationId,
 		Language:    input.Lang.ParseLang(),

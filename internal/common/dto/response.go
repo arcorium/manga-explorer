@@ -18,12 +18,18 @@ func NewErrorResponse(stat status.Object, details any) ErrorResponse {
 	}
 }
 
-func NewSuccessResponse(Code uint, data any, page *ResponsePage) SuccessResponse {
-	return SuccessResponse{
-		Code: Code,
-		Data: data,
-		Page: page,
+func NewSuccessResponse(Code uint, data any, page *ResponsePage) SuccessWrapper {
+	return SuccessWrapper{
+		Internal: SuccessResponse{
+			Code: Code,
+			Data: data,
+			Page: page,
+		},
 	}
+}
+
+type SuccessWrapper struct {
+	Internal SuccessResponse `json:"success"`
 }
 
 type ErrorResponse struct {
@@ -32,10 +38,19 @@ type ErrorResponse struct {
 	Details any    `json:"details,omitempty"`
 }
 
+// MessageData could be used to substitute generic type on response as data
+type MessageData struct {
+	Message string `json:"message"`
+}
+
 type SuccessResponse struct {
 	Code uint          `json:"code"`
 	Data any           `json:"data,omitempty"`
 	Page *ResponsePage `json:"page,omitempty"`
+}
+
+type ErrorWrapper struct {
+	Internal ErrorResponse `json:"error"`
 }
 
 type ResponsePage struct {

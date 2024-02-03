@@ -21,13 +21,13 @@ type ChapterResponse struct {
 }
 
 type ChapterCreateInput struct {
-	MangaId      string          `uri:"manga_id" binding:"required,uuid4"`
+	MangaId      string          `uri:"manga_id" binding:"required,uuid4" swaggerignore:"true"`
 	VolumeId     string          `json:"volume_id" binding:"required,uuid4"`
 	Language     common.Language `json:"language" binding:"required,language"`
 	Title        string          `json:"title" binding:"required"`
 	Chapter      uint64          `json:"chapter" binding:"required,min=1"`
 	PublishDate  time.Time       `json:"publish_date"`
-	TranslatorId string          `json:"-"`
+	TranslatorId string          `json:"-" swaggerignore:"true"`
 }
 
 func (c *ChapterCreateInput) ConstructURI(ctx *gin.Context) {
@@ -35,7 +35,7 @@ func (c *ChapterCreateInput) ConstructURI(ctx *gin.Context) {
 }
 
 type ChapterEditInput struct {
-	ChapterId   string          `uri:"chapter_id" binding:"required,uuid4"`
+	ChapterId   string          `uri:"chapter_id" binding:"required,uuid4" swaggerignore:"true"`
 	VolumeId    string          `json:"volume_id" binding:"required,uuid4"`
 	Title       string          `json:"title" binding:"required"`
 	Language    common.Language `json:"language" binding:"required,language"`

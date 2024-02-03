@@ -12,8 +12,6 @@ RUN go mod download
 
 RUN make build
 
-RUN make migrate
-
 #FROM builder AS test-runner
 
 #RUN make prepare.test
@@ -22,8 +20,7 @@ RUN make migrate
 
 FROM alpine AS runner
 
-COPY --from=builder /app/build/server /app/
-COPY --from=builder /app/.env /app/
+COPY --from=builder /app/build/ /app/.env /app/
 
 WORKDIR /app
 
@@ -31,4 +28,4 @@ ENV GIN_MODE=release
 
 EXPOSE 9999
 
-ENTRYPOINT ["./server"]
+ENTRYPOINT ["sh", "-c", "./migrate --env --special --no-ssl && ./server"]

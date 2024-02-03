@@ -173,7 +173,7 @@ func (_c *GenreMock_ListGenre_Call) RunAndReturn(run func() ([]dto.GenreResponse
 }
 
 // UpdateGenre provides a mock function with given fields: input
-func (_m *GenreMock) UpdateGenre(input *dto.GenreUpdateInput) status.Object {
+func (_m *GenreMock) UpdateGenre(input *dto.GenreEditInput) status.Object {
 	ret := _m.Called(input)
 
 	if len(ret) == 0 {
@@ -181,7 +181,7 @@ func (_m *GenreMock) UpdateGenre(input *dto.GenreUpdateInput) status.Object {
 	}
 
 	var r0 status.Object
-	if rf, ok := ret.Get(0).(func(*dto.GenreUpdateInput) status.Object); ok {
+	if rf, ok := ret.Get(0).(func(*dto.GenreEditInput) status.Object); ok {
 		r0 = rf(input)
 	} else {
 		r0 = ret.Get(0).(status.Object)
@@ -196,14 +196,14 @@ type GenreMock_UpdateGenre_Call struct {
 }
 
 // UpdateGenre is a helper method to define mock.On call
-//   - input *dto.GenreUpdateInput
+//   - input *dto.GenreEditInput
 func (_e *GenreMock_Expecter) UpdateGenre(input interface{}) *GenreMock_UpdateGenre_Call {
 	return &GenreMock_UpdateGenre_Call{Call: _e.mock.On("UpdateGenre", input)}
 }
 
-func (_c *GenreMock_UpdateGenre_Call) Run(run func(input *dto.GenreUpdateInput)) *GenreMock_UpdateGenre_Call {
+func (_c *GenreMock_UpdateGenre_Call) Run(run func(input *dto.GenreEditInput)) *GenreMock_UpdateGenre_Call {
 	_c.Call.Run(func(args mock.Arguments) {
-		run(args[0].(*dto.GenreUpdateInput))
+		run(args[0].(*dto.GenreEditInput))
 	})
 	return _c
 }
@@ -213,7 +213,7 @@ func (_c *GenreMock_UpdateGenre_Call) Return(_a0 status.Object) *GenreMock_Updat
 	return _c
 }
 
-func (_c *GenreMock_UpdateGenre_Call) RunAndReturn(run func(*dto.GenreUpdateInput) status.Object) *GenreMock_UpdateGenre_Call {
+func (_c *GenreMock_UpdateGenre_Call) RunAndReturn(run func(*dto.GenreEditInput) status.Object) *GenreMock_UpdateGenre_Call {
 	_c.Call.Return(run)
 	return _c
 }

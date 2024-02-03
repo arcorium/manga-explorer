@@ -16,15 +16,13 @@ import (
 	"syscall"
 )
 
-// @title           Manga Explorer API
-// @version         1.0
-// @description     Simple manga explorer used to read manga and save the manga
-
-// @contact.name    arcorium
-// @contact.url     github.com/arcorium
-// @contact.email   arcorium.l@gmail.com
-
-// @BasePath        /api/v1
+// @title			Manga Explorer API
+// @version		1.0
+// @description	Simple manga reader app with rate, favorite and comment features
+// @contact.name	arcorium
+// @contact.url	github.com/arcorium
+// @contact.email	arcorium.l@gmail.com
+// @BasePath		/api/v1
 func main() {
 	config, err := common.LoadConfig()
 	if err != nil {
@@ -65,7 +63,8 @@ func main() {
 	authRoute := route.NewAuthRoute()
 	userRoute := route.NewUserRoute()
 	mangaRoute := route.NewMangaRoute()
-	router.Routes(authRoute, userRoute, mangaRoute)
+	swaggerRoute := route.NewSwaggerRoute()
+	router.Routes(authRoute, userRoute, mangaRoute, swaggerRoute)
 
 	run(config, engine)
 }

@@ -15,3 +15,9 @@ type SignedNumber interface {
 type FloatingNumber interface {
 	~float32 | ~float64
 }
+
+type Enum[T any] interface {
+	String() string
+	Underlying() T
+	Validate() error
+}

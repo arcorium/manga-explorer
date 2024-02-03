@@ -24,5 +24,5 @@ type IManga interface {
 	// ListMangas Get all manga based on the offset and limit, set limit and offset both to 0 to get all the mangas
 	ListMangas(parameter repository.QueryParameter) (repository.PagedQueryResult[[]mangas.Manga], error)
 	CreateVolume(volume *mangas.Volume) error
-	DeleteVolume(mangaId string, volume uint32) error
+	DeleteVolume(mangaId string, volumes []uint32) error
 }

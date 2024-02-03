@@ -163,7 +163,7 @@ func (m mangaService) EditMangaGenres(input *mangaDto.MangaGenreEditInput) statu
 	return status.ConditionalRepositoryE(err, status.UPDATED, opt.New(status.MANGA_UPDATE_FAILED), opt.New(status.MANGA_UPDATE_FAILED))
 }
 
-func (m mangaService) InsertMangaTranslations(input *mangaDto.MangaInsertTranslationInput) status.Object {
+func (m mangaService) InsertMangaTranslations(input *mangaDto.MangaTranslationInsertInput) status.Object {
 	translates := mapper.MapInsertTranslateInput(input)
 
 	err := m.translationRepo.Create(translates)
@@ -186,7 +186,7 @@ func (m mangaService) FindSpecificMangaTranslation(mangaId string, language comm
 
 }
 
-func (m mangaService) DeleteMangaTranslations(input *mangaDto.TranslationMangaDeleteInput) status.Object {
+func (m mangaService) DeleteMangaTranslations(input *mangaDto.MangaTranslationsDeleteInput) status.Object {
 	err := m.translationRepo.DeleteMangaSpecific(input.MangaId, input.Languages)
 	return status.ConditionalRepository(err, status.DELETED, opt.New(status.MANGA_HAS_NO_TRANSLATIONS))
 }
@@ -196,7 +196,7 @@ func (m mangaService) DeleteTranslations(input *mangaDto.TranslationDeleteInput)
 	return status.ConditionalRepository(err, status.DELETED, opt.New(status.MANGA_TRANSLATION_NOT_FOUND))
 }
 
-func (m mangaService) UpdateTranslation(input *mangaDto.TranslationUpdateInput) status.Object {
+func (m mangaService) UpdateTranslation(input *mangaDto.TranslationEditInput) status.Object {
 	translate := mapper.MapTranslationUpdateInput(input)
 
 	err := m.translationRepo.Update(&translate)
@@ -219,14 +219,14 @@ func (m mangaService) FindMangaFavorites(userId string, query *commonDto.PagedQu
 	return responses, &pages, status.ConditionalRepository(err, status.SUCCESS, opt.New(status.SUCCESS))
 }
 
-func (m mangaService) AddFavoriteManga(input *mangaDto.FavoriteMangaInput) status.Object {
+func (m mangaService) AddFavoriteManga(input *mangaDto.FavoriteMangaModificationInput) status.Object {
 	model := mapper.MapFavoriteMangaInput(input)
 
 	err := m.mangaRepo.InsertMangaFavorite(&model)
 	return status.ConditionalRepositoryE(err, status.CREATED, opt.New(status.MANGA_UPDATE_FAILED), opt.New(status.MANGA_UPDATE_FAILED))
 }
 
-func (m mangaService) RemoveFavoriteManga(input *mangaDto.FavoriteMangaInput) status.Object {
+func (m mangaService) RemoveFavoriteManga(input *mangaDto.FavoriteMangaModificationInput) status.Object {
 	model := mapper.MapFavoriteMangaInput(input)
 
 	err := m.mangaRepo.RemoveMangaFavorite(&model)

@@ -5,7 +5,6 @@ import (
 	"net/http"
 )
 
-// TODO: Perfect this
 func HttpCodeFromError(err status.Object) int {
 	switch status.Code(err.Code) {
 	case status.SUCCESS, status.UPDATED, status.DELETED:

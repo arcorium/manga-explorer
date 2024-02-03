@@ -4,5 +4,3 @@ script/
 build/
 *.iml
 .env
-test.env
-*.exe

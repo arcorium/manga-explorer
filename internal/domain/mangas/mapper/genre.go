@@ -23,7 +23,7 @@ func MapGenreCreateInput(input dto.GenreCreateInput) mangas.Genre {
 	}
 }
 
-func MapGenreUpdateInput(input *dto.GenreUpdateInput) mangas.Genre {
+func MapGenreUpdateInput(input *dto.GenreEditInput) mangas.Genre {
 	return mangas.Genre{
 		Id:        input.Id,
 		Name:      input.Name,

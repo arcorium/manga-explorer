@@ -37,8 +37,8 @@ func (u userRoute) V1Route(config *Config, router gin.IRouter) {
 	user.PATCH("/profiles/image", userController.UpdateProfileImage)
 	user.DELETE("/profiles/image", userController.UpdateProfileImage)
 	// Admin
-	admin.PUT("/:id", userController.UpdateUserExtended)
-	admin.PUT("/:id/profiles", userController.UpdateUserProfileExtended)
+	admin.PUT("/:id", userController.EditUserExtended)
+	admin.PUT("/:id/profiles", userController.EditUserProfileExtended)
 	admin.POST("/", userController.AddUser)
 	admin.DELETE("/:id", userController.DeleteUser)
 	admin.GET("/", userController.GetUsers)
