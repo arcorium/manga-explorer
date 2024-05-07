@@ -1,52 +1,52 @@
 package file
 
 import (
-	"errors"
-	"fmt"
-	"manga-explorer/internal/util"
-	"strings"
+  "errors"
+  "fmt"
+  "manga-explorer/internal/util"
+  "strings"
 )
 
 type AssetType string
 
 const (
-	MangaAsset   AssetType = "mangas"
-	CoverAsset             = "covers"
-	ProfileAsset           = "profiles"
-	UnknownAsset           = ""
+  MangaAsset   AssetType = "mangas"
+  CoverAsset             = "covers"
+  ProfileAsset           = "profiles"
+  UnknownAsset           = ""
 )
 
 var ErrNoFormat = errors.New("file has no format")
 
 func ParseFileFormat(filename string) (Format, error) {
-	split := strings.Split(filename, ".")
-	if len(split) <= 1 {
-		return FormatUnknown, ErrNoFormat
-	}
-	return Format(split[len(split)-1]), nil
+  split := strings.Split(filename, ".")
+  if len(split) <= 1 {
+    return FormatUnknown, ErrNoFormat
+  }
+  return Format(split[len(split)-1]), nil
 }
 
 type Format string
 
 const (
-	FormatJPG     Format = "jpg"
-	FormatJPEG           = "jpeg"
-	FormatPNG            = "png"
-	FormatUnknown        = ""
+  FormatJPG     Format = "jpg"
+  FormatJPEG           = "jpeg"
+  FormatPNG            = "png"
+  FormatUnknown        = ""
 )
 
 func (f Format) String() string {
-	return string(f)
+  return string(f)
 }
 
 func (f Format) Filename(name string) Name {
-	return Name(fmt.Sprintf("%s.%s", name, f.String()))
+  return Name(fmt.Sprintf("%s.%s", name, f.String()))
 }
 
 func (f Format) Validate() bool {
-	return util.IsOneOf(f, FormatJPG, FormatJPEG, FormatPNG)
+  return util.IsOneOf(f, FormatJPG, FormatJPEG, FormatPNG)
 }
 
 func (a AssetType) String() string {
-	return string(a)
+  return string(a)
 }

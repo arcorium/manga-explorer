@@ -1,24 +1,24 @@
 package users
 
 import (
-	"github.com/gin-gonic/gin"
-	"manga-explorer/internal/common"
-	"manga-explorer/internal/common/constant"
-	"manga-explorer/internal/common/status"
-	"manga-explorer/internal/domain/users/dto"
-	"manga-explorer/internal/domain/users/service"
-	"manga-explorer/internal/util"
-	"manga-explorer/internal/util/httputil"
-	"manga-explorer/internal/util/httputil/resp"
-	"net/http"
+  "github.com/gin-gonic/gin"
+  "manga-explorer/internal/common"
+  "manga-explorer/internal/common/constant"
+  "manga-explorer/internal/common/status"
+  "manga-explorer/internal/domain/users/dto"
+  "manga-explorer/internal/domain/users/service"
+  "manga-explorer/internal/util"
+  "manga-explorer/internal/util/httputil"
+  "manga-explorer/internal/util/httputil/resp"
+  "net/http"
 )
 
 func NewUserController(userService service.IUser) UserController {
-	return UserController{userService: userService}
+  return UserController{userService: userService}
 }
 
 type UserController struct {
-	userService service.IUser
+  userService service.IUser
 }
 
 // GetUserProfile Get user profile
@@ -32,25 +32,25 @@ type UserController struct {
 //	@Failure		400		{object}	dto.ErrorWrapper{error=dto.ErrorResponse{details=common.ParameterError}}
 //	@Router			/users/{user_id}/profiles [get]
 func (u *UserController) GetUserProfile(ctx *gin.Context) {
-	id := ctx.Param("id")
-	if len(id) == 0 {
-		claims, stat := common.GetClaims(ctx)
-		if stat.IsError() {
-			resp.Error(ctx, stat)
-			return
-		}
-		id = claims.UserId
-	}
+  id := ctx.Param("id")
+  if len(id) == 0 {
+    claims, stat := common.GetClaims(ctx)
+    if stat.IsError() {
+      resp.Error(ctx, stat)
+      return
+    }
+    id = claims.UserId
+  }
 
-	// Response
-	if !util.IsUUID(id) {
-		stat := status.Error(status.BAD_PARAMETER_ERROR)
-		resp.ErrorDetailed(ctx, stat, common.NewParameterError("id", "should be an UUID type"))
-		return
-	}
+  // Response
+  if !util.IsUUID(id) {
+    stat := status.Error(status.BAD_PARAMETER_ERROR)
+    resp.ErrorDetailed(ctx, stat, common.NewParameterError("id", "should be an UUID type"))
+    return
+  }
 
-	usr, cerr := u.userService.FindUserProfileById(id)
-	resp.Conditional(ctx, cerr, usr, nil)
+  usr, cerr := u.userService.FindUserProfileById(id)
+  resp.Conditional(ctx, cerr, usr, nil)
 }
 
 // GetUsers Get all registered users
@@ -63,8 +63,8 @@ func (u *UserController) GetUserProfile(ctx *gin.Context) {
 //	@Failure		400	{object}	dto.ErrorWrapper{error=dto.ErrorResponse{details=nil}}
 //	@Router			/users [get]
 func (u *UserController) GetUsers(ctx *gin.Context) {
-	res, stat := u.userService.GetAllUsers()
-	resp.Conditional(ctx, stat, res, nil)
+  res, stat := u.userService.GetAllUsers()
+  resp.Conditional(ctx, stat, res, nil)
 }
 
 // AddUser Add new user
@@ -80,15 +80,15 @@ func (u *UserController) GetUsers(ctx *gin.Context) {
 //	@Failure		400		{object}	dto.ErrorWrapper{error=dto.ErrorResponse{details=[]common.FieldError}}
 //	@Router			/users [post]
 func (u *UserController) AddUser(ctx *gin.Context) {
-	input := dto.AddUserInput{}
-	stat, fieldsErr := httputil.BindJson(ctx, &input)
-	if stat.IsError() {
-		resp.ErrorDetailed(ctx, stat, fieldsErr)
-		return
-	}
+  input := dto.AddUserInput{}
+  stat, fieldsErr := httputil.BindJson(ctx, &input)
+  if stat.IsError() {
+    resp.ErrorDetailed(ctx, stat, fieldsErr)
+    return
+  }
 
-	stat = u.userService.AddUser(&input)
-	resp.Conditional(ctx, stat, nil, nil)
+  stat = u.userService.AddUser(&input)
+  resp.Conditional(ctx, stat, nil, nil)
 }
 
 // Register create new user
@@ -105,20 +105,20 @@ func (u *UserController) AddUser(ctx *gin.Context) {
 //	@Failure		400		{object}	dto.ErrorWrapper{error=dto.ErrorResponse{details=[]common.FieldError}}
 //	@Router			/users/register [post]
 func (u *UserController) Register(ctx *gin.Context) {
-	input := dto.UserRegisterInput{}
-	stat, fieldsErr := httputil.BindJson(ctx, &input)
-	if stat.IsError() {
-		resp.ErrorDetailed(ctx, stat, fieldsErr)
-		return
-	}
+  input := dto.UserRegisterInput{}
+  stat, fieldsErr := httputil.BindJson(ctx, &input)
+  if stat.IsError() {
+    resp.ErrorDetailed(ctx, stat, fieldsErr)
+    return
+  }
 
-	userResponse, stat := u.userService.RegisterUser(&input)
-	if stat.IsError() {
-		resp.Error(ctx, stat)
-		return
-	}
+  userResponse, stat := u.userService.RegisterUser(&input)
+  if stat.IsError() {
+    resp.Error(ctx, stat)
+    return
+  }
 
-	resp.Success(ctx, stat, userResponse, nil)
+  resp.Success(ctx, stat, userResponse, nil)
 }
 
 // DeleteUser delete user by the id
@@ -131,21 +131,21 @@ func (u *UserController) Register(ctx *gin.Context) {
 //	@Failure		400		{object}	dto.ErrorWrapper{error=dto.ErrorResponse{details=common.ParameterError}}
 //	@Router			/users/{user_id} [delete]
 func (u *UserController) DeleteUser(ctx *gin.Context) {
-	id := ctx.Param("id")
-	if len(id) == 0 {
-		resp.ErrorDetailed(ctx, status.Error(status.BAD_QUERY_ERROR), common.NewNotPresentParameter("id"))
-		return
-	}
+  id := ctx.Param("id")
+  if len(id) == 0 {
+    resp.ErrorDetailed(ctx, status.Error(status.BAD_QUERY_ERROR), common.NewNotPresentParameter("id"))
+    return
+  }
 
-	// Response
-	if !util.IsUUID(id) {
-		stat := status.Error(status.BAD_PARAMETER_ERROR)
-		resp.ErrorDetailed(ctx, stat, common.NewParameterError("id", "should be an UUID type"))
-		return
-	}
+  // Response
+  if !util.IsUUID(id) {
+    stat := status.Error(status.BAD_PARAMETER_ERROR)
+    resp.ErrorDetailed(ctx, stat, common.NewParameterError("id", "should be an UUID type"))
+    return
+  }
 
-	stat := u.userService.DeleteUser(id)
-	resp.Conditional(ctx, stat, nil, nil)
+  stat := u.userService.DeleteUser(id)
+  resp.Conditional(ctx, stat, nil, nil)
 }
 
 // EditUser Edit logged-in user's details
@@ -161,27 +161,27 @@ func (u *UserController) DeleteUser(ctx *gin.Context) {
 //	@Failure		400		{object}	dto.ErrorWrapper{error=dto.ErrorResponse{details=nil}}
 //	@Router			/users [put]
 func (u *UserController) EditUser(ctx *gin.Context) {
-	input := dto.UserEditInput{}
-	stat, fieldsErr := httputil.BindJson(ctx, &input)
-	if stat.IsError() {
-		resp.ErrorDetailed(ctx, stat, fieldsErr)
-		return
-	}
+  input := dto.UserEditInput{}
+  stat, fieldsErr := httputil.BindJson(ctx, &input)
+  if stat.IsError() {
+    resp.ErrorDetailed(ctx, stat, fieldsErr)
+    return
+  }
 
-	if stat = input.Status(); stat.IsError() {
-		resp.Error(ctx, stat)
-		return
-	}
+  if stat = input.Status(); stat.IsError() {
+    resp.Error(ctx, stat)
+    return
+  }
 
-	claims, stat := common.GetClaims(ctx)
-	if stat.IsError() {
-		resp.Error(ctx, stat)
-		return
-	}
-	input.UserId = claims.UserId
+  claims, stat := common.GetClaims(ctx)
+  if stat.IsError() {
+    resp.Error(ctx, stat)
+    return
+  }
+  input.UserId = claims.UserId
 
-	stat = u.userService.UpdateUser(&input)
-	resp.Conditional(ctx, stat, nil, nil)
+  stat = u.userService.UpdateUser(&input)
+  resp.Conditional(ctx, stat, nil, nil)
 }
 
 // EditUserExtended Edit user in extended fields (password) without checking
@@ -199,16 +199,16 @@ func (u *UserController) EditUser(ctx *gin.Context) {
 //	@Failure		500		{object}	dto.ErrorWrapper{error=dto.ErrorResponse{details=nil}}
 //	@Router			/users/{user_id} [put]
 func (u *UserController) EditUserExtended(ctx *gin.Context) {
-	input := dto.UserEditExtendedInput{}
-	input.ConstructURI(ctx)
-	stat, fieldsErr := httputil.BindJson(ctx, &input)
-	if stat.IsError() {
-		resp.ErrorDetailed(ctx, stat, fieldsErr)
-		return
-	}
+  input := dto.UserEditExtendedInput{}
+  input.ConstructURI(ctx)
+  stat, fieldsErr := httputil.BindJson(ctx, &input)
+  if stat.IsError() {
+    resp.ErrorDetailed(ctx, stat, fieldsErr)
+    return
+  }
 
-	stat = u.userService.UpdateUserExtended(&input)
-	resp.Conditional(ctx, stat, nil, nil)
+  stat = u.userService.UpdateUserExtended(&input)
+  resp.Conditional(ctx, stat, nil, nil)
 }
 
 // EditUserProfile Edit user logged-in user's profile
@@ -224,22 +224,22 @@ func (u *UserController) EditUserExtended(ctx *gin.Context) {
 //	@Failure		400		{object}	dto.ErrorWrapper{error=dto.ErrorResponse{details=nil}}
 //	@Router			/users/profiles [put]
 func (u *UserController) EditUserProfile(ctx *gin.Context) {
-	input := dto.ProfileEditInput{}
-	stat, fieldsErr := httputil.BindJson(ctx, &input)
-	if stat.IsError() {
-		resp.ErrorDetailed(ctx, stat, fieldsErr)
-		return
-	}
+  input := dto.ProfileEditInput{}
+  stat, fieldsErr := httputil.BindJson(ctx, &input)
+  if stat.IsError() {
+    resp.ErrorDetailed(ctx, stat, fieldsErr)
+    return
+  }
 
-	claims, stat := common.GetClaims(ctx)
-	if stat.IsError() {
-		resp.Error(ctx, stat)
-		return
-	}
-	input.UserId = claims.UserId
+  claims, stat := common.GetClaims(ctx)
+  if stat.IsError() {
+    resp.Error(ctx, stat)
+    return
+  }
+  input.UserId = claims.UserId
 
-	stat = u.userService.UpdateProfile(&input)
-	resp.Conditional(ctx, stat, nil, nil)
+  stat = u.userService.UpdateProfile(&input)
+  resp.Conditional(ctx, stat, nil, nil)
 }
 
 // EditUserProfileExtended edit user's profile on extended fields
@@ -258,16 +258,16 @@ func (u *UserController) EditUserProfile(ctx *gin.Context) {
 //	@Failure		400		{object}	dto.ErrorWrapper{error=dto.ErrorResponse{details=nil}}
 //	@Router			/users/{user_id}/profiles [put]
 func (u *UserController) EditUserProfileExtended(ctx *gin.Context) {
-	input := dto.ProfileEditExtendedInput{}
-	input.ConstructURI(ctx)
-	stat, fieldsErr := httputil.BindJson(ctx, &input)
-	if stat.IsError() {
-		resp.ErrorDetailed(ctx, stat, fieldsErr)
-		return
-	}
+  input := dto.ProfileEditExtendedInput{}
+  input.ConstructURI(ctx)
+  stat, fieldsErr := httputil.BindJson(ctx, &input)
+  if stat.IsError() {
+    resp.ErrorDetailed(ctx, stat, fieldsErr)
+    return
+  }
 
-	stat = u.userService.UpdateProfileExtended(&input)
-	resp.Conditional(ctx, stat, nil, nil)
+  stat = u.userService.UpdateProfileExtended(&input)
+  resp.Conditional(ctx, stat, nil, nil)
 }
 
 // UpdateProfileImage Edit logged-in user profile image
@@ -285,28 +285,28 @@ func (u *UserController) EditUserProfileExtended(ctx *gin.Context) {
 //
 //	@Router			/users/profiles/image [delete]
 func (u *UserController) UpdateProfileImage(ctx *gin.Context) {
-	input := dto.ProfileImageUpdateInput{}
+  input := dto.ProfileImageUpdateInput{}
 
-	claims, stat := common.GetClaims(ctx)
-	if stat.IsError() {
-		resp.Error(ctx, stat)
-		return
-	}
+  claims, stat := common.GetClaims(ctx)
+  if stat.IsError() {
+    resp.Error(ctx, stat)
+    return
+  }
 
-	if ctx.Request.Method == http.MethodDelete {
-		stat = u.userService.DeleteProfileImage(claims.UserId)
-	} else if ctx.Request.Method == http.MethodPut {
-		var fieldErrors []common.FieldError
-		input.UserId = claims.UserId
-		stat, fieldErrors = httputil.BindMultipartForm(ctx, &input)
-		if stat.IsError() {
-			resp.ErrorDetailed(ctx, stat, fieldErrors)
-			return
-		}
+  if ctx.Request.Method == http.MethodDelete {
+    stat = u.userService.DeleteProfileImage(claims.UserId)
+  } else if ctx.Request.Method == http.MethodPut {
+    var fieldErrors []common.FieldError
+    input.UserId = claims.UserId
+    stat, fieldErrors = httputil.BindMultipartForm(ctx, &input)
+    if stat.IsError() {
+      resp.ErrorDetailed(ctx, stat, fieldErrors)
+      return
+    }
 
-		stat = u.userService.UpdateProfileImage(&input)
-	}
-	resp.Conditional(ctx, stat, nil, nil)
+    stat = u.userService.UpdateProfileImage(&input)
+  }
+  resp.Conditional(ctx, stat, nil, nil)
 }
 
 // @Summary		Change Password
@@ -321,22 +321,22 @@ func (u *UserController) UpdateProfileImage(ctx *gin.Context) {
 // @Failure		500		{object}	dto.ErrorWrapper{error=dto.ErrorResponse{details=nil}}
 // @Router			/users/change-password [post]
 func (u *UserController) ChangePassword(ctx *gin.Context) {
-	input := dto.ChangePasswordInput{}
-	stat, fieldsErr := httputil.BindJson(ctx, &input)
-	if stat.IsError() {
-		resp.ErrorDetailed(ctx, stat, fieldsErr)
-		return
-	}
+  input := dto.ChangePasswordInput{}
+  stat, fieldsErr := httputil.BindJson(ctx, &input)
+  if stat.IsError() {
+    resp.ErrorDetailed(ctx, stat, fieldsErr)
+    return
+  }
 
-	claims, stat := common.GetClaims(ctx)
-	if stat.IsError() {
-		resp.Error(ctx, stat)
-		return
-	}
-	input.UserId = claims.UserId
+  claims, stat := common.GetClaims(ctx)
+  if stat.IsError() {
+    resp.Error(ctx, stat)
+    return
+  }
+  input.UserId = claims.UserId
 
-	stat = u.userService.ChangePassword(&input)
-	resp.Conditional(ctx, stat, nil, nil)
+  stat = u.userService.ChangePassword(&input)
+  resp.Conditional(ctx, stat, nil, nil)
 }
 
 // @Summary		Request Reset Password
@@ -351,19 +351,19 @@ func (u *UserController) ChangePassword(ctx *gin.Context) {
 // @Failure		500		{object}	dto.ErrorWrapper{error=dto.ErrorResponse{details=nil}}
 // @Router			/users/reset-password [post]
 func (u *UserController) RequestResetPassword(ctx *gin.Context) {
-	input := dto.ResetPasswordRequestInput{}
-	stat, fieldsErr := httputil.BindJson(ctx, &input)
-	if stat.IsError() {
-		resp.ErrorDetailed(ctx, stat, fieldsErr)
-		return
-	}
+  input := dto.ResetPasswordRequestInput{}
+  stat, fieldsErr := httputil.BindJson(ctx, &input)
+  if stat.IsError() {
+    resp.ErrorDetailed(ctx, stat, fieldsErr)
+    return
+  }
 
-	stat = u.userService.RequestResetPassword(&input)
-	if stat.IsError() {
-		resp.Error(ctx, stat)
-		return
-	}
-	resp.SuccessMessage(ctx, stat, constant.MSG_SUCCESS_REQUEST_RESET_PASSWORD)
+  stat = u.userService.RequestResetPassword(&input)
+  if stat.IsError() {
+    resp.Error(ctx, stat)
+    return
+  }
+  resp.SuccessMessage(ctx, stat, constant.MSG_SUCCESS_REQUEST_RESET_PASSWORD)
 }
 
 // @Summary		Reset Password
@@ -380,17 +380,17 @@ func (u *UserController) RequestResetPassword(ctx *gin.Context) {
 // @Router			/users/reset-password/{token} [post]
 // @Router			/users/reset-password/{token} [get]
 func (u *UserController) ResetPassword(ctx *gin.Context) {
-	input := dto.ResetPasswordInput{}
-	input.ConstructURI(ctx)
-	stat, fieldsErr := httputil.BindJson(ctx, &input)
-	if stat.IsError() {
-		resp.ErrorDetailed(ctx, stat, fieldsErr)
-		return
-	}
+  input := dto.ResetPasswordInput{}
+  input.ConstructURI(ctx)
+  stat, fieldsErr := httputil.BindJson(ctx, &input)
+  if stat.IsError() {
+    resp.ErrorDetailed(ctx, stat, fieldsErr)
+    return
+  }
 
-	// Reset user password
-	stat = u.userService.ResetPassword(&input)
-	resp.Conditional(ctx, stat, nil, nil)
+  // Reset user password
+  stat = u.userService.ResetPassword(&input)
+  resp.Conditional(ctx, stat, nil, nil)
 }
 
 // @Summary		Request Verify Email
@@ -403,16 +403,16 @@ func (u *UserController) ResetPassword(ctx *gin.Context) {
 // @Failure		500	{object}	dto.ErrorWrapper{error=dto.ErrorResponse{details=nil}}
 // @Router			/users/email-verif [post]
 func (u *UserController) RequestVerifyEmail(ctx *gin.Context) {
-	input := dto.VerifEmailRequestInput{}
-	claims, stat := common.GetClaims(ctx)
-	if stat.IsError() {
-		resp.Error(ctx, stat)
-		return
-	}
-	input.UserId = claims.UserId
+  input := dto.VerifEmailRequestInput{}
+  claims, stat := common.GetClaims(ctx)
+  if stat.IsError() {
+    resp.Error(ctx, stat)
+    return
+  }
+  input.UserId = claims.UserId
 
-	stat = u.userService.RequestEmailVerification(&input)
-	resp.Conditional(ctx, stat, nil, nil)
+  stat = u.userService.RequestEmailVerification(&input)
+  resp.Conditional(ctx, stat, nil, nil)
 }
 
 // @Summary		Verify Email
@@ -427,9 +427,9 @@ func (u *UserController) RequestVerifyEmail(ctx *gin.Context) {
 // @Router			/users/email-verif/{token} [post]
 // @Router			/users/email-verif/{token} [get]
 func (u *UserController) VerifyEmail(ctx *gin.Context) {
-	input := dto.VerifyEmailInput{}
-	input.ConstructURI(ctx)
+  input := dto.VerifyEmailInput{}
+  input.ConstructURI(ctx)
 
-	stat := u.userService.VerifyEmail(&input)
-	resp.Conditional(ctx, stat, nil, nil)
+  stat := u.userService.VerifyEmail(&input)
+  resp.Conditional(ctx, stat, nil, nil)
 }

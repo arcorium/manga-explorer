@@ -1,183 +1,183 @@
 package pg
 
 import (
-	"context"
-	"manga-explorer/internal/domain/users"
-	"manga-explorer/internal/domain/users/repository"
-	"manga-explorer/internal/util"
-	"time"
+  "context"
+  "manga-explorer/internal/domain/users"
+  "manga-explorer/internal/domain/users/repository"
+  "manga-explorer/internal/util"
+  "time"
 
-	"github.com/uptrace/bun"
+  "github.com/uptrace/bun"
 )
 
 func NewUser(db bun.IDB) repository.IUser {
-	return &UserRepository{db: db}
+  return &UserRepository{db: db}
 }
 
 type UserRepository struct {
-	db bun.IDB
+  db bun.IDB
 }
 
 func (u UserRepository) GetAllUsers() ([]users.User, error) {
-	ctx, cancel := context.WithTimeout(context.Background(), time.Second*5)
-	defer cancel()
+  ctx, cancel := context.WithTimeout(context.Background(), time.Second*5)
+  defer cancel()
 
-	var result []users.User
+  var result []users.User
 
-	err := u.db.NewSelect().
-		Model(&result).
-		Scan(ctx)
+  err := u.db.NewSelect().
+    Model(&result).
+    Scan(ctx)
 
-	return util.CheckSliceResult(result, err).Unwrap()
+  return util.CheckSliceResult(result, err).Unwrap()
 }
 
 func (u UserRepository) CreateProfile(profile *users.Profile) error {
-	ctx, cancel := context.WithTimeout(context.Background(), time.Second*5)
-	defer cancel()
+  ctx, cancel := context.WithTimeout(context.Background(), time.Second*5)
+  defer cancel()
 
-	res, err := u.db.NewInsert().
-		Model(profile).
-		Returning("NULL").
-		Exec(ctx)
-	return util.CheckSqlResult(res, err)
+  res, err := u.db.NewInsert().
+    Model(profile).
+    Returning("NULL").
+    Exec(ctx)
+  return util.CheckSqlResult(res, err)
 }
 
 func (u UserRepository) UpdateProfileByUserId(profile *users.Profile) error {
-	ctx, cancel := context.WithTimeout(context.Background(), time.Second*5)
-	defer cancel()
+  ctx, cancel := context.WithTimeout(context.Background(), time.Second*5)
+  defer cancel()
 
-	query := u.db.NewUpdate().
-		Model(profile).
-		OmitZero().
-		ExcludeColumn("user_id").
-		Where("user_id = ?", profile.UserId)
+  query := u.db.NewUpdate().
+    Model(profile).
+    OmitZero().
+    ExcludeColumn("user_id").
+    Where("user_id = ?", profile.UserId)
 
-	res, err := query.
-		Exec(ctx)
+  res, err := query.
+    Exec(ctx)
 
-	return util.CheckSqlResult(res, err)
+  return util.CheckSqlResult(res, err)
 }
 
 func (u UserRepository) UpdateProfile(profile *users.Profile) error {
-	ctx, cancel := context.WithTimeout(context.Background(), time.Second*5)
-	defer cancel()
+  ctx, cancel := context.WithTimeout(context.Background(), time.Second*5)
+  defer cancel()
 
-	query := u.db.NewUpdate().
-		Model(profile).
-		OmitZero().
-		ExcludeColumn("user_id").
-		WherePK()
+  query := u.db.NewUpdate().
+    Model(profile).
+    OmitZero().
+    ExcludeColumn("user_id").
+    WherePK()
 
-	res, err := query.Exec(ctx)
+  res, err := query.Exec(ctx)
 
-	return util.CheckSqlResult(res, err)
+  return util.CheckSqlResult(res, err)
 }
 
 func (u UserRepository) CreateUser(user *users.User, profile *users.Profile) error {
-	ctx, cancel := context.WithTimeout(context.Background(), time.Second*5)
-	defer cancel()
+  ctx, cancel := context.WithTimeout(context.Background(), time.Second*5)
+  defer cancel()
 
-	tx, err := u.db.BeginTx(ctx, nil)
-	if err != nil {
-		return err
-	}
+  tx, err := u.db.BeginTx(ctx, nil)
+  if err != nil {
+    return err
+  }
 
-	_, err = tx.NewInsert().
-		Model(user).
-		Returning("NULL").
-		Exec(ctx)
+  _, err = tx.NewInsert().
+    Model(user).
+    Returning("NULL").
+    Exec(ctx)
 
-	if err != nil {
-		tx.Rollback()
-		return err
-	}
+  if err != nil {
+    tx.Rollback()
+    return err
+  }
 
-	_, err = tx.NewInsert().
-		Model(profile).
-		Returning("NULL").
-		Exec(ctx)
-	if err != nil {
-		tx.Rollback()
-	} else {
-		tx.Commit()
-	}
-	return err
+  _, err = tx.NewInsert().
+    Model(profile).
+    Returning("NULL").
+    Exec(ctx)
+  if err != nil {
+    tx.Rollback()
+  } else {
+    tx.Commit()
+  }
+  return err
 }
 
 func (u UserRepository) FindUserById(id string) (*users.User, error) {
-	ctx, cancel := context.WithTimeout(context.Background(), time.Second*5)
-	defer cancel()
+  ctx, cancel := context.WithTimeout(context.Background(), time.Second*5)
+  defer cancel()
 
-	usr := new(users.User)
-	err := u.db.NewSelect().
-		Model(usr).
-		Where("id = ?", id).
-		Scan(ctx)
+  usr := new(users.User)
+  err := u.db.NewSelect().
+    Model(usr).
+    Where("id = ?", id).
+    Scan(ctx)
 
-	if err != nil {
-		return nil, err
-	}
-	return usr, nil
+  if err != nil {
+    return nil, err
+  }
+  return usr, nil
 }
 
 func (u UserRepository) FindUserProfiles(userId string) (*users.Profile, error) {
-	ctx, cancel := context.WithTimeout(context.Background(), time.Second*5)
-	defer cancel()
+  ctx, cancel := context.WithTimeout(context.Background(), time.Second*5)
+  defer cancel()
 
-	profile := new(users.Profile)
-	query := u.db.NewSelect().
-		Model(profile).
-		Relation("User").
-		Where("user_id = ?", userId)
+  profile := new(users.Profile)
+  query := u.db.NewSelect().
+    Model(profile).
+    Relation("User").
+    Where("user_id = ?", userId)
 
-	err := query.
-		Scan(ctx)
+  err := query.
+    Scan(ctx)
 
-	if err != nil {
-		return nil, err
-	}
-	return profile, nil
+  if err != nil {
+    return nil, err
+  }
+  return profile, nil
 }
 
 func (u UserRepository) FindUserByEmail(email string) (*users.User, error) {
-	ctx, cancel := context.WithTimeout(context.Background(), time.Second*5)
-	defer cancel()
+  ctx, cancel := context.WithTimeout(context.Background(), time.Second*5)
+  defer cancel()
 
-	usr := new(users.User)
-	err := u.db.NewSelect().
-		Model(usr).
-		Where("email = ?", email).
-		Scan(ctx, usr)
+  usr := new(users.User)
+  err := u.db.NewSelect().
+    Model(usr).
+    Where("email = ?", email).
+    Scan(ctx, usr)
 
-	if err != nil {
-		return nil, err
-	}
-	return usr, nil
+  if err != nil {
+    return nil, err
+  }
+  return usr, nil
 }
 
 func (u UserRepository) UpdateUser(user *users.User) error {
-	ctx, cancel := context.WithTimeout(context.Background(), time.Second*5)
-	defer cancel()
+  ctx, cancel := context.WithTimeout(context.Background(), time.Second*5)
+  defer cancel()
 
-	query := u.db.NewUpdate().
-		Model(user).
-		OmitZero().
-		WherePK()
+  query := u.db.NewUpdate().
+    Model(user).
+    OmitZero().
+    WherePK()
 
-	res, err := query.
-		Exec(ctx)
+  res, err := query.
+    Exec(ctx)
 
-	return util.CheckSqlResult(res, err)
+  return util.CheckSqlResult(res, err)
 }
 
 func (u UserRepository) DeleteUser(userId string) error {
-	ctx, cancel := context.WithTimeout(context.Background(), time.Second*5)
-	defer cancel()
+  ctx, cancel := context.WithTimeout(context.Background(), time.Second*5)
+  defer cancel()
 
-	res, err := u.db.NewDelete().
-		Model((*users.User)(nil)).
-		Where("id = ?", userId).
-		Exec(ctx)
+  res, err := u.db.NewDelete().
+    Model((*users.User)(nil)).
+    Where("id = ?", userId).
+    Exec(ctx)
 
-	return util.CheckSqlResult(res, err)
+  return util.CheckSqlResult(res, err)
 }

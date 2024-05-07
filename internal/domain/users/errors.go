@@ -1,7 +1,7 @@
 package users
 
 import (
-	"errors"
+  "errors"
 )
 
 var ErrHashPassword = errors.New("failed to hash password")

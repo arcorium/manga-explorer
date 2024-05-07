@@ -1,17 +1,17 @@
 package mapper
 
 import (
-	"manga-explorer/internal/domain/mangas"
-	"manga-explorer/internal/domain/mangas/dto"
-	"manga-explorer/internal/infrastructure/file"
-	fileService "manga-explorer/internal/infrastructure/file/service"
+  "manga-explorer/internal/domain/mangas"
+  "manga-explorer/internal/domain/mangas/dto"
+  "manga-explorer/internal/infrastructure/file"
+  fileService "manga-explorer/internal/infrastructure/file/service"
 )
 
 func ToPageResponse(page *mangas.Page, fs fileService.IFile) dto.PageResponse {
-	return dto.PageResponse{
-		Page:     page.Number,
-		ImageURL: fs.GetFullpath(file.MangaAsset, page.ImageURL),
-	}
+  return dto.PageResponse{
+    Page:     page.Number,
+    ImageURL: fs.GetFullpath(file.MangaAsset, page.ImageURL),
+  }
 }
 
 //func MapPageCreateInput(input *dto.PageCreateInput, filenames []file.Name) []mangas.Page {
@@ -26,5 +26,5 @@ func ToPageResponse(page *mangas.Page, fs fileService.IFile) dto.PageResponse {
 //}
 
 func MapPageCreateInput(input *dto.PageCreateInput, filename file.Name) mangas.Page {
-	return mangas.NewPage(input.ChapterId, filename, input.Page.Number)
+  return mangas.NewPage(input.ChapterId, filename, input.Page.Number)
 }

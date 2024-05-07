@@ -18,7 +18,7 @@ RUN make build
 
 #RUN go test -v
 
-FROM alpine AS runner
+FROM alpine:3.19 AS runner
 
 COPY --from=builder /app/build/ /app/.env /app/
 
