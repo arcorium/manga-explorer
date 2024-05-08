@@ -57,7 +57,6 @@ func (s serverFileService) Upload(types file.AssetType, fileHeader *multipart.Fi
   if err != nil {
     return "", status.Error(status.BAD_REQUEST_ERROR)
   }
-  // TODO: Response size each image
 
   // Make new filename and append the format
   filename := format.Filename(util.GenerateRandomString(30))

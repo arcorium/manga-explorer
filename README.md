@@ -8,11 +8,11 @@ Simple manga reader backend app
 
 - Role Based Access Control (RBAC) `LIMITED`
 - Auth by Access Token
-- Forget Password
+- Forgot Password
 - Email Verification
 - Multi-Login Support
 - CRUD User
-- Login using external services (OAuth) **(TODO)**
+- Login Using External Services (OAuth) **(TODO)**
 
 ### Manga
 

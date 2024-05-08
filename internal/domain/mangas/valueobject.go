@@ -72,21 +72,21 @@ type SearchFilter struct {
   IsOriginInclude bool
 }
 
-func (f SearchFilter) HasGenre() bool {
+func (f *SearchFilter) HasGenre() bool {
   return f.Genres.HasInclude()
   //|| f.Genres.HasExclude()
 }
 
-func (f SearchFilter) HasBothGenre() bool {
+func (f *SearchFilter) HasBothGenre() bool {
   return f.Genres.HasInclude()
   //&& f.Genres.HasExclude()
 }
 
-func (f SearchFilter) HasOrigin() bool {
+func (f *SearchFilter) HasOrigin() bool {
   return len(f.Origins) != 0
 }
 
-func (f SearchFilter) HasTitle() bool {
+func (f *SearchFilter) HasTitle() bool {
   return len(f.Title) != 0
 }
 

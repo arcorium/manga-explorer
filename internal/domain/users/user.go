@@ -65,7 +65,7 @@ func (u *User) GenerateAccessTokenClaims(duration time.Duration) jwt.MapClaims {
   defaultClaims["id"] = uuid.NewString()
   defaultClaims["uid"] = u.Id
   defaultClaims["name"] = u.Username
-  defaultClaims["role"] = u.Role.String() // TODO: Maybe better to have the uint8 instead
+  defaultClaims["role"] = u.Role.String() // NOTE: Maybe better to have the uint8 instead
 
   return defaultClaims
 }
