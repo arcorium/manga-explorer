@@ -20,7 +20,7 @@ RUN make build
 
 FROM alpine:3.19 AS runner
 
-COPY --from=builder /app/build/ /app/.env /app/
+COPY --from=builder /app/build/ /app/*.env /app/
 
 WORKDIR /app
 

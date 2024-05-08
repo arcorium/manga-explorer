@@ -1,11 +1,36 @@
 basePath: /api/v1
 definitions:
+  common.CriterionOption-string:
+    properties:
+      excludes:
+        description: Operation is using OR for each member and AND operation with
+          Include
+        items:
+          type: string
+        type: array
+      includes:
+        items:
+          type: string
+        type: array
+      is_and:
+        description: Operation applied to Include member
+        type: boolean
+    type: object
   common.FieldError:
     properties:
       error:
         type: string
       field:
         type: string
+    type: object
+  common.IncludeArray-common_Country:
+    properties:
+      is_include:
+        type: boolean
+      values:
+        items:
+          type: string
+        type: array
     type: object
   common.ParameterError:
     properties:
@@ -411,6 +436,17 @@ definitions:
         type: integer
     type: object
   dto.MangaSearchQuery:
+    properties:
+      element:
+        type: integer
+      genre:
+        $ref: '#/definitions/common.CriterionOption-string'
+      origin:
+        $ref: '#/definitions/common.IncludeArray-common_Country'
+      page:
+        type: integer
+      title:
+        type: string
     type: object
   dto.MangaTranslationInsertInput:
     properties:
@@ -697,7 +733,7 @@ info:
   contact:
     email: arcorium.l@gmail.com
     name: arcorium
-    url: github.com/arcorium
+    url: http://github.com/arcorium
   description: Simple manga reader app with rate, favorite and comment features
   title: Manga Explorer API
   version: "1.0"
@@ -3030,15 +3066,7 @@ paths:
       - users
   /users/profiles/image:
     delete:
-      consumes:
-      - multipart/form-data
-      description: Edit logged-in user profile image
-      parameters:
-      - description: profile's image
-        in: formData
-        name: image
-        required: true
-        type: file
+      description: Delete logged-in user profile image
       produces:
       - application/json
       responses:
@@ -3070,7 +3098,7 @@ paths:
                         type: object
                     type: object
               type: object
-      summary: Edit Profile Image
+      summary: Delete Profile Image
       tags:
       - users
     put:

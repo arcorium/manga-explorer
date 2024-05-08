@@ -11,7 +11,7 @@ const docTemplate = `{
         "title": "{{.Title}}",
         "contact": {
             "name": "arcorium",
-            "url": "github.com/arcorium",
+            "url": "http://github.com/arcorium",
             "email": "arcorium.l@gmail.com"
         },
         "version": "{{.Version}}"
@@ -4240,26 +4240,14 @@ const docTemplate = `{
                 }
             },
             "delete": {
-                "description": "Edit logged-in user profile image",
-                "consumes": [
-                    "multipart/form-data"
-                ],
+                "description": "Delete logged-in user profile image",
                 "produces": [
                     "application/json"
                 ],
                 "tags": [
                     "users"
                 ],
-                "summary": "Edit Profile Image",
-                "parameters": [
-                    {
-                        "type": "file",
-                        "description": "profile's image",
-                        "name": "image",
-                        "in": "formData",
-                        "required": true
-                    }
-                ],
+                "summary": "Delete Profile Image",
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -5223,6 +5211,28 @@ const docTemplate = `{
         }
     },
     "definitions": {
+        "common.CriterionOption-string": {
+            "type": "object",
+            "properties": {
+                "excludes": {
+                    "description": "Operation is using OR for each member and AND operation with Include",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "includes": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "is_and": {
+                    "description": "Operation applied to Include member",
+                    "type": "boolean"
+                }
+            }
+        },
         "common.FieldError": {
             "type": "object",
             "properties": {
@@ -5231,6 +5241,20 @@ const docTemplate = `{
                 },
                 "field": {
                     "type": "string"
+                }
+            }
+        },
+        "common.IncludeArray-common_Country": {
+            "type": "object",
+            "properties": {
+                "is_include": {
+                    "type": "boolean"
+                },
+                "values": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
                 }
             }
         },
@@ -5828,7 +5852,24 @@ const docTemplate = `{
             }
         },
         "dto.MangaSearchQuery": {
-            "type": "object"
+            "type": "object",
+            "properties": {
+                "element": {
+                    "type": "integer"
+                },
+                "genre": {
+                    "$ref": "#/definitions/common.CriterionOption-string"
+                },
+                "origin": {
+                    "$ref": "#/definitions/common.IncludeArray-common_Country"
+                },
+                "page": {
+                    "type": "integer"
+                },
+                "title": {
+                    "type": "string"
+                }
+            }
         },
         "dto.MangaTranslationInsertInput": {
             "type": "object",
